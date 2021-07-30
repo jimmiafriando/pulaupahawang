@@ -1,0 +1,41 @@
+.main-footer{
+    color: white;
+    background-color: #373737;
+    position: relative;
+    bottom: 0%;
+    /* width: 100%; */
+    display: flex;
+    padding: 20px 40px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo{
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    padding-left: 60px;
+}
+.icon{
+    padding-right: 30px;
+    object-fit: contain;
+}
+
+.contact{
+    margin-right: 30px;
+    padding-top: 10px;
+}
+
+/* .container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo{
+    padding-right: 600px;
+}
+
+.contact{
+    font-weight: bold;
+} */
