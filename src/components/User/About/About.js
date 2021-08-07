@@ -1,15 +1,17 @@
 import React from 'react';
 import './About.css';
-import cover from '../../images/About.svg';
-import images from '../../images/About2.svg';
+import styled from 'styled-components';
+import cover from '../../../images/About.svg';
+import images from '../../../images/About2.svg';
+
 
 export default function About() {
   return (
     <>
-      <div className='About'>
-        <div className='Cover'>
-          <img src={cover} alt="cover" />
-        </div>
+      <div className='Background-user'>
+       <Cover>
+        <img src={cover} alt="cover" />
+       </Cover>
 
         <div className='Title'>
           Pulau Pahawang
@@ -27,17 +29,17 @@ export default function About() {
         exercitation ullamco laboris.
         </p>
 
-        <div className='Images'>
+        <Images>
           <img src={images} alt="images" />
-        </div>
+        </Images>
       </div>
 
-      <div className='Content'>
+      <Content>
         <div>
+        
           <div className='Title-2'>
           Lorem ipsum dolor sit amet ?
           </div>
-        
           <p className='Artikel-2'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
           et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
@@ -60,9 +62,9 @@ export default function About() {
           deserunt mollit anim id est laborum.
           </p>
         </div>
-      </div>
+      </Content>
 
-      <div className='About'>
+      <div className='Background-user'>
         <div className='Title-3'>
         Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet ?
         </div>
@@ -90,3 +92,20 @@ export default function About() {
     </>
   );
 }
+
+const Cover = styled.div`
+  display: flex;
+  justify-content: center;
+`; 
+
+const Images = styled.div`
+  padding-top: 30px;
+  padding-bottom: 30PX;
+  display: flex;
+  justify-content: center;
+`;
+
+const Content = styled.div`
+  display: flex;
+  background: white;
+`;

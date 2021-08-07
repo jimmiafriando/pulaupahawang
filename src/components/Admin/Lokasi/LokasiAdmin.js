@@ -1,23 +1,22 @@
 import React from 'react';
-import './Lokasi.css';
-import lokasi from '../../images/Lokasi.svg';
+import styled from 'styled-components';
+import lokasi from '../../../images/Lokasi.svg';
 import { Link } from 'react-router-dom';
+
 
 export default function Lokasi() {
   return(
     <>
-      <div className='Lokasi'>
-        <div className='Cover-lokasi'>
+      <div className='Background-admin'>
+        <Cover>
           <img src={lokasi} alt="lokasi" />
-        </div>
+          </Cover>
 
-        <li>
-          <Link to='/Lokasimaps'>
-            <button>
+          <Link to='/LokasimapsAdmin'>
+            <Button>
               VIEW
-            </button>
+            </Button>
           </Link>
-        </li>
 
         <div className='Title'>
           Lokasi Pulau Pahawang
@@ -36,9 +35,9 @@ export default function Lokasi() {
         </p>
 
         <div className='Maps'>
-          <div className='main-title'>
+          <Title>
             Maps
-          </div>
+          </Title>
           <div>
           BLABALBLBALBABBDABB
           NAPNDPANDPADNA
@@ -50,3 +49,43 @@ export default function Lokasi() {
     </>
   )
 }
+
+const Cover = styled.div`
+  padding-top: 20px;
+  display: flex;
+  justify-content: center;
+`; 
+
+const Title = styled.div`
+  color: black;
+  font-size: 30px;
+  font-weight: bold;
+  padding-bottom: 10px;
+`;
+
+const Button = styled.button`
+  margin: 0;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  margin-top: 40px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  background: #19B200;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  &:hover {
+    padding: 10px 30px;
+    transition: all 0.3s ease-out;
+    background-color: #6C63FF;
+    color: white;
+    border-radius: 20px;
+    border: 2px solid var(--white);
+    transition: all 0.3s ease-out;
+  }
+`;

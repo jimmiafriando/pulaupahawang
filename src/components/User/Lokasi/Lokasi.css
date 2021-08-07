@@ -1,0 +1,23 @@
+:root {
+  --white: white;
+}
+
+.Maps {
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 30px;
+  margin: 0px 200px;
+  margin-top: 20px;
+  padding: 10px 0px;
+  text-align: center;
+}
+
+/* lokasi-maps */
+  .Lokasi-maps {
+    text-align: center;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 20px 0px;
+    margin: 0px 380px; 
+}

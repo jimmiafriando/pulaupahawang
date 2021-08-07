@@ -1,10 +1,11 @@
-.About {
+.Background-user {
   background: #6CA7FF;
+  padding: 20px 20px;
 }
 
-.Cover {
-  display: flex;
-  justify-content: center;
+.Background-admin {
+  background: #4D4D4D;
+  padding: 20px 20px;
 }
 
 .Title {
@@ -33,8 +34,8 @@
 }
 
 .Artikel {
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 0px 40px;
+  padding-top: 10px;
   color: white;
   font-size: 20px;
   text-align: justify;
@@ -54,17 +55,5 @@
   font-size: 20px;
   padding-left: 40px;
   padding-right: 40px;
-  padding-bottom: 20px;
   text-align: justify;
-}
-
-.Images {
-  padding-top: 30px;
-  padding-bottom: 30PX;
-  display: flex;
-  justify-content: center;
-}
-
-.Content {
-  display: flex;
 }

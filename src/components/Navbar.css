@@ -9,7 +9,19 @@
   position: sticky;
   top: 0;
   /* z-index: 999; */
-  
+}
+
+.navbarAdmin {
+  background: #202020;
+  box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.25);
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  /* z-index: 999; */
 }
 
 .navbar-logo {
@@ -44,6 +56,19 @@
   color: black;
   text-decoration: none;
   padding: 0.5rem 1rem;
+}
+
+.nav-links-admin {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.nav-links-admin:hover {
+  background-color: #6CA7FF;
+  border-radius: 20px;
+  color: #fff;
+  transition: all 0.2s ease-out;
 }
 
 .nav-links:hover {
