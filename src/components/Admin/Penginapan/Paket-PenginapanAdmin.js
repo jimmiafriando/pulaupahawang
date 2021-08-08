@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Image from '../../../images/PaketPenginapan.svg';
-import PaketWisata from '../../Paket/Paket-wisata';
+import pluscover from '../../../images/pluscover.png';
 
 
 export default function PaketPenginapan() {
@@ -9,37 +8,25 @@ export default function PaketPenginapan() {
       <>
         <div className='Background-admin'>
           <Title>
-              Andreas Resort
+              PENGINAPAN
           </Title>
+        
+        <MainInput>
+          <Input type="text" id="#" name="#" placeholder="Nama Trip"/>
+        </MainInput>
 
           <Cover>
-            <img src={Image} alt="paketPeninapan"/>
+            <img src={pluscover} alt="pakettrip"/>
           </Cover>
         
-          <p className='Artikel'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.
-          </p>
+          <form>
+            <Textarea>Caption...</Textarea>
+          </form>
 
           <Content>
             <div>
               <div className='Title-2'>
-                PAKET PENGINAPAN
+                PAKET WISATA
               </div>
               <Boxpaket>
                 <Content>
@@ -50,12 +37,26 @@ export default function PaketPenginapan() {
                     HARGA
                   </Paket>
                 </Content>
-                  <PaketWisata Peserta="2" Harga="Rp.400.000"/>
-                  <PaketWisata Peserta="4" Harga="Rp.800.000"/>
-                  <PaketWisata Peserta="6" Harga="Rp.1.100.000"/>
-                  <PaketWisata Peserta="7" Harga="Rp.1.300.000"/>
-                  <PaketWisata Peserta="8" Harga="Rp.1.500.000"/>
-                  <PaketWisata Peserta="9" Harga="Rp.1.600.000"/>
+                <div>
+                  <Peserta type="text"  placeholder="2"/>
+                  <Harga type="number"  placeholder="Rp.500.000"/>
+                </div>
+                <div>
+                  <Peserta type="text"  placeholder="2"/>
+                  <Harga type="number"  placeholder="Rp.500.000"/>
+                </div>
+                <div>
+                  <Peserta type="text"  placeholder="2"/>
+                  <Harga type="number"  placeholder="Rp.500.000"/>
+                </div>
+                <div>
+                  <Peserta type="text"  placeholder="2"/>
+                  <Harga type="number"  placeholder="Rp.500.000"/>
+                </div>
+                <div>
+                  <Peserta type="text"  placeholder="2"/>
+                  <Harga type="number"  placeholder="Rp.500.000"/>
+                </div>
               </Boxpaket>
             </div>
 
@@ -63,13 +64,9 @@ export default function PaketPenginapan() {
               <div className='Title-2'>
                 FASILITAS
               </div>
-              <p className='Artikel-2'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
-                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
-                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                deserunt mollit anim id est laborum.
-              </p>
+              <form>
+                <Textarea2>Text...</Textarea2>
+              </form>
             </div>
           </Content>
 
@@ -77,30 +74,52 @@ export default function PaketPenginapan() {
             <div className='Title-2'>
               NOTE :
             </div>
-            <Boxnote>
-              <MainNote>
-                1. nkasdnkkjandjkandk
-              </MainNote>
-              <MainNote>
-                2. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                3. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                4. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                5. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                6. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                7. nkasdnkkjandjkandk
-              </MainNote>
-            </Boxnote>
+            <form>
+                <Textarea3>Text...</Textarea3>
+            </form>
+            <Button>
+              UPLOAD
+            </Button>
           </div>
 
         </div>
       </>
   )
 }
+
+const Peserta = styled.input`
+border: 2px solid black;
+border-radius: 10px;
+padding: 5px 10px;
+margin: 5px 20px;
+width: 30%;
+outline: none;
+&:focus{
+  border: 2px solid #6C63FF;
+}
+&::-webkit-inner-spin-button,
+-webkit-outer-spin-button{
+  -webkit-appearance: none; 
+margin: 0;
+}
+`;
+
+const Harga = styled.input`
+border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px 20px;
+  width: 30%;
+  outline: none;
+  &:focus{
+    border: 2px solid #6C63FF;
+  }
+  &::-webkit-inner-spin-button,
+  -webkit-outer-spin-button{
+    -webkit-appearance: none; 
+  margin: 0;
+  }
+`;
 
 const Title = styled.div`
   color: white;
@@ -114,7 +133,7 @@ const Title = styled.div`
 `;
 
 const Cover = styled.div`
-  padding-top: 20px;
+  padding-top: 10px;
   display: flex;
   justify-content: center;
 `; 
@@ -135,16 +154,102 @@ const Paket = styled.div`
   text-align: center;
 `;
 
-const Boxnote = styled.div`
-  Background-color: white;
-  border-radius: 20px;
-  padding: 10px;
-  margin-right: 900px; 
+const Input = styled.input`
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px 0px;
+  width: 30%;
+  outline: none;
+  &:focus{
+    border: 4px solid #6C63FF;
+  }
+  &::-webkit-inner-spin-button,
+  -webkit-outer-spin-button{
+    -webkit-appearance: none; 
+  margin: 0;
+  }
 `;
 
-const MainNote = styled.p`
-  color: black;
-  font-size: 20px;
-  padding: 2px 40px;
-  text-align: justify;
+const MainInput = styled.div`
+  margin-left: 15%;
+  margin-top: 10px;
+`;
+
+const Textarea = styled.textarea`
+  margin: 20px 10%;
+  width: 80%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 10px;
+  outline:none;
+  background-color: white;
+  font-size: 16px;
+  resize: none;
+  &:focus{
+    border: 4px solid #6C63FF;
+  }
+`;
+
+const Textarea2 = styled.textarea`
+  margin: 20px 5%;
+  width: 800px;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 10px;
+  outline:none;
+  background-color: white;
+  font-size: 16px;
+  resize: none;
+  &:focus{
+    border: 4px solid #6C63FF;
+  }
+`;
+
+const Textarea3 = styled.textarea`
+  margin: 20px 5%;
+  width: 400px;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 10px;
+  outline:none;
+  background-color: white;
+  font-size: 16px;
+  resize: none;
+  &:focus{
+    border: 4px solid #6C63FF;
+  }
+`;
+
+const Button = styled.button`
+  margin: 0;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  margin-top: 40px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  background: #19B200;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  &:hover {
+    padding: 10px 30px;
+    transition: all 0.3s ease-out;
+    background-color: #6C63FF;
+    color: white;
+    border-radius: 20px;
+    border: 2px solid var(--white);
+    transition: all 0.3s ease-out;
+  }
 `;

@@ -49,7 +49,7 @@ function App() {
             {/* <Route path='/services' component={Services} /> */}
           </Switch>
             {/* admin */}
-            <Switch className='page-container-admin'>
+            <Switch>
             <Route path='/AdminLogout' component={AdminLogout} />
             <Route path='/NewAdmin' component={NewAdmin} />
             <Route path='/LokasiAdmin' component={LokasiAdmin} />

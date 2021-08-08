@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import Images from '../../../images/Trip.svg';
 import Images2 from '../../../images/Trip-2.svg';
+import plus from '../../../images/plus.png';
 import CardTripComp from '../../Card/Card';
+import '../About/AboutAdmin.css'
 import { Link } from 'react-router-dom';
 
-export default function Trip() {
+export default function TripAdmin() {
   return (
     <>
       <div className='Background-admin'>
@@ -25,8 +27,12 @@ export default function Trip() {
           <Link to='/PaketTripAdmin' className='line-dec'>
             <CardTripComp Title="Pasir Timbul" Image={Images2}/>
           </Link>
-        </Card>
 
+          <Link to='/PaketTripAdmin'>
+            <img src={plus} alt='#'/>
+          </Link>
+
+        </Card>
       </div>
 
     </>

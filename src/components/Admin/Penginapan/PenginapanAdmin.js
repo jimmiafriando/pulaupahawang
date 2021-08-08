@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Images from '../../../images/Penginapan.svg';
 import Images2 from '../../../images/Penginapan-2.svg';
 import CardPenginapanComp from '../../Card/Card';
+import plus from '../../../images/plus.png';
 import { Link } from 'react-router-dom';
 
 export default function Penginapan() {
@@ -25,6 +26,11 @@ export default function Penginapan() {
           <Link to='/PaketPenginapanAdmin' className='line-dec'>
             <CardPenginapanComp Title="Tenda Penginapan" Image={Images2}/>
           </Link>
+
+          <Link to='/PaketPenginapanAdmin'>
+            <img src={plus} alt='#'/>
+          </Link>
+
         </Card>
 
       </div>

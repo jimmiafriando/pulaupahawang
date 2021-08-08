@@ -7,7 +7,7 @@ import images from '../../../images/About2.svg';
 export default function About() {
   return (
     <>
-      <div className='Background-Admin'>
+      <div className='Background-admin'>
        <Cover>
         <img src={cover} alt="cover" />
        </Cover>
@@ -63,7 +63,7 @@ export default function About() {
         </div>
       </Content>
 
-      <div className='Background-user'>
+      <div className='Background-admin'>
         <div className='Title-3'>
         Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet ?
         </div>

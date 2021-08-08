@@ -6,6 +6,8 @@
   .Background-admin {
     background: #4D4D4D;
     padding: 20px 20px;
+  min-height: 70vh;
+
   }
   
   .Title {

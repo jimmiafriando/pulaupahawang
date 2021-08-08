@@ -5,12 +5,12 @@
   background:#6CA7FF;
 }
 
-.page-container-admin{
+/* .page-container-admin{
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   background:#4D4D4D;
-}
+} */
 
 .content-warp{
   flex: 1;
