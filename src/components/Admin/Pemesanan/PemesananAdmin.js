@@ -8,6 +8,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -27,16 +28,16 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, trip, penginapan, tanggal, detail ) {
-  return { name, trip, penginapan, tanggal, detail };
+function createData(name, trip, penginapan, tanggal, status, detail ) {
+  return { name, trip, penginapan, tanggal, status, detail };
 }
 
 const rows = [
-  createData('Jimmi Afriando Akbar', 'Pulau Pahawang', 'Andreas Resort', '12/01/2021', 'Detail'),
-  createData('Haidar', 'Pahawang Kecil', 'Tenda', '20/02/2021', 'Detail'),
-  createData('Emilia Sari', 'Pulau Pahawang', 'Tenda', '16/03/2021', 'Detail'),
-  createData('Mufti Alfarokhul Azam', 'Hotel Pahawang', 'Andreas Resort', '23/04/2021', 'Detail'),
-  createData('Ari Corvin', 'Pulau Pahawang', 'Andreas Resort', '13/0/2021', 'Detail'),
+  createData('Jimmi Afriando Akbar', 'Pulau Pahawang', 'Andreas Resort', '12/01/2021','Succes', 'Detail'),
+  createData('Haidar', 'Pahawang Kecil', 'Tenda', '20/02/2021','Waiting', 'Detail'),
+  createData('Emilia Sari', 'Pulau Pahawang', 'Tenda', '16/03/2021','Reject', 'Detail'),
+  createData('Mufti Alfarokhul Azam', 'Hotel Pahawang', 'Andreas Resort', '23/04/2021','Succes', 'Detail'),
+  createData('Ari Corvin', 'Pulau Pahawang', 'Andreas Resort', '13/0/2021','Waiting', 'Detail'),
 ];
 
 const useStyles = makeStyles({
@@ -62,6 +63,7 @@ export default function CustomizedTables() {
             <StyledTableCell align="right">Trip</StyledTableCell>
             <StyledTableCell align="right">Penginapan</StyledTableCell>
             <StyledTableCell align="right">Tanggal</StyledTableCell>
+            <StyledTableCell align="right">Status</StyledTableCell>
             <StyledTableCell align="right">Detail</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -74,7 +76,9 @@ export default function CustomizedTables() {
               <StyledTableCell align="right">{row.trip}</StyledTableCell>
               <StyledTableCell align="right">{row.penginapan}</StyledTableCell>
               <StyledTableCell align="right">{row.tanggal}</StyledTableCell>
-              <StyledTableCell align="right">{row.detail}</StyledTableCell>
+              <StyledTableCell align="right">{row.status}</StyledTableCell>
+              <StyledTableCell align="right"><Link className='line-dec' to='/DetailPemesanan'>{row.detail}</Link></StyledTableCell>
+              
             </StyledTableRow>
           ))}
         </TableBody>

@@ -23,6 +23,7 @@ import PenginapanAdmin from './components/Admin/Penginapan/PenginapanAdmin';
 import PaketPenginapanAdmin from './components/Admin/Penginapan/Paket-PenginapanAdmin';
 import PemesananAdmin from './components/Admin/Pemesanan/PemesananAdmin';
 import AboutAdmin from './components/Admin/About/AboutAdmin';
+import DetailPemesanan from './components/Admin/Pemesanan/DetailPemesanan';
 
 
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -60,6 +61,7 @@ function App() {
             <Route path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} />
             <Route path='/PemesananAdmin' component={PemesananAdmin} />
             <Route path='/AboutAdmin' component={AboutAdmin} />
+            <Route path='/DetailPemesanan' component={DetailPemesanan} />
             </Switch>
 
         </Router>

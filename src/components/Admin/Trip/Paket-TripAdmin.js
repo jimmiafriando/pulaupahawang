@@ -1,24 +1,82 @@
 import React from 'react';
 import styled from 'styled-components';
-import pluscover from '../../../images/pluscover.png';
+import remove from '../../../images/Remove.svg';
+import refresh from '../../../images/Refresh.svg';
+import ImageUploading from 'react-images-uploading';
 
+export default function PaketTripAdmin() {
+  const [images, setImages] = React.useState([]);
+  const maxNumber = 69;
 
-export default function PaketTrip() {
+  const onChange = (imageList, addUpdateIndex) => {
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+  };
+
   return(
       <>
         <div className='Background-admin'>
           <Title>
-              TRIP
+              PENGINAPAN
           </Title>
         
         <MainInput>
           <Input type="text" id="#" name="#" placeholder="Nama Trip"/>
         </MainInput>
+        <Border>
+              <div className='Title-3'>
+                Masukan Foto Penginapan
+              </div>
 
           <Cover>
-            <img src={pluscover} alt="pakettrip"/>
+          <div>
+            <ImageUploading
+              multiple
+              value={images}
+              onChange={onChange}
+              maxNumber={maxNumber}
+              dataURLKey="data_url"
+            >
+              {({
+                  imageList,
+                  onImageUpload,
+                  onImageRemoveAll,
+                  onImageUpdate,
+                  onImageRemove,
+                  isDragging,
+                  dragProps,
+                }) => (
+          // write your building UI
+          <div>
+            <ButtonImg
+              style={isDragging ? { color: 'red' } : undefined}
+              onClick={onImageUpload}
+              {...dragProps}
+            >
+              Click or Drop here
+            </ButtonImg>
+            &nbsp;
+            <ButtonImg2 onClick={onImageRemoveAll}>Remove all images</ButtonImg2>
+            {imageList.map((image, index) => (
+              <ImgUp>
+                <img src={image['data_url']} alt="" width="350" />
+                <div>
+                  <div>
+                  <img className='main-image' onClick={() => onImageUpdate(index)} src={refresh} alt="remove"/>
+                  </div>
+                  <div>
+                  <img className='main-image2' onClick={() => onImageRemove(index)} src={remove} alt="remove"/>
+                  </div>
+                </div>
+              </ImgUp>
+            ))}
+          </div>
+        )}
+      </ImageUploading>
+    </div>
           </Cover>
-        
+          </Border>
+
           <form>
             <Textarea>Caption...</Textarea>
           </form>
@@ -86,6 +144,18 @@ export default function PaketTrip() {
       </>
   )
 }
+
+const ImgUp = styled.div`
+display: flex;
+margin: 20px 0px;
+`;
+
+const Border = styled.div`
+border: 2px solid white;
+border-radius: 30px;
+padding: 10px 0px;
+margin: 0px 100px
+`;
 
 const Peserta = styled.input`
 border: 2px solid black;
@@ -239,6 +309,27 @@ const Button = styled.button`
   border-radius: 20px;
   background: #19B200;
   outline: none;
+  border:  1px solid;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  &:hover {
+    padding: 10px 30px;
+    transition: all 0.3s ease-out;
+    background-color: #6C63FF;
+    color: white;
+    border-radius: 20px;
+    border: 1px solid var(--white);
+    transition: all 0.3s ease-out;
+  }
+`;
+
+const ButtonImg = styled.button`
+  margin: 10px 0px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  background: #19B200;
+  outline: none;
   border: none;
   cursor: pointer;
   color: white;
@@ -249,7 +340,28 @@ const Button = styled.button`
     background-color: #6C63FF;
     color: white;
     border-radius: 20px;
-    border: 2px solid var(--white);
+    border: 0px solid var(--white);
+    transition: all 0.3s ease-out;
+  }
+`;
+
+const ButtonImg2 = styled.button`
+  margin: 10px 0px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  background: red;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  &:hover {
+    padding: 10px 30px;
+    transition: all 0.3s ease-out;
+    background-color: #F26A6A;
+    color: white;
+    border-radius: 20px;
+    border: 0px solid var(--white);
     transition: all 0.3s ease-out;
   }
 `;

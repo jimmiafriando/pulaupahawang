@@ -75,7 +75,7 @@ const Button = styled.button`
   border-radius: 20px;
   background: #19B200;
   outline: none;
-  border: none;
+  border:  1px solid;
   cursor: pointer;
   color: white;
   font-weight: bold;
@@ -85,7 +85,7 @@ const Button = styled.button`
     background-color: #6C63FF;
     color: white;
     border-radius: 20px;
-    border: 2px solid var(--white);
+    border: 1px solid var(--white);
     transition: all 0.3s ease-out;
   }
 `;

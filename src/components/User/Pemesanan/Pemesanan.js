@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export default function Penginapan() {
+export default function Pemesanan() {
   return (
     <>
       <div className='Background-user'>
@@ -29,6 +29,7 @@ export default function Penginapan() {
               <option value="pahawang">Pulau Pahawang</option>
               <option value="pahawangkecil">Pahawang Kecil</option>
               <option value="Pasir Timbul">Pasir Timbul</option>
+              <option value="none">--</option>
             </Select>
           </div>
           <div>
@@ -36,6 +37,7 @@ export default function Penginapan() {
               <option value="Andreas">Andreas Resort</option>
               <option value="Tenda pahawang">Tenda Pahawang</option>
               <option value="Hotel Pahawang">Hotel Pahawang</option>
+              <option value="none">--</option>
             </Select>
           </div>
           <div>
@@ -236,7 +238,7 @@ const Button = styled.button`
   border-radius: 20px;
   background: #19B200;
   outline: none;
-  border: none;
+  border:  1px solid;
   cursor: pointer;
   color: white;
   font-weight: bold;
@@ -246,7 +248,7 @@ const Button = styled.button`
     background-color: #6C63FF;
     color: white;
     border-radius: 20px;
-    border: 2px solid var(--white);
+    border: 1px solid var(--white);
     transition: all 0.3s ease-out;
   }
 `;

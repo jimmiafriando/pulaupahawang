@@ -2,8 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import './Trip.css';
 import Image from '../../../images/PaketTrip.svg';
+import Image2 from '../../../images/PaketTrip2.svg';
+import Image3 from '../../../images/PaketTrip3.svg';
 import PaketWisata from '../../Paket/Paket-wisata';
-
+import Slider from 'infinite-react-carousel';
 
 export default function PaketTrip() {
   return(
@@ -12,11 +14,18 @@ export default function PaketTrip() {
           <Title>
               Pulau Pahawang
           </Title>
-
-          <Cover>
-            <img src={Image} alt="pakettrip"/>
-          </Cover>
-        
+              <Slider className='Slider-cover' dots>
+                <div>
+                  <Imgslide src={Image} alt="PaketTrip"/>
+                </div>
+                <div>
+                  <Imgslide src={Image2} alt="PaketTrip"/>
+                </div>
+                <div>
+                  <Imgslide src={Image3} alt="PaketTrip"/>
+                </div>
+              </Slider>
+              
           <p className='Artikel'>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
             incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
@@ -114,11 +123,11 @@ const Title = styled.div`
   border-radius: 10px;
 `;
 
-const Cover = styled.div`
-  padding-top: 20px;
-  display: flex;
-  justify-content: center;
-`; 
+const Imgslide = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+`;
 
 const Content = styled.div`
   display: flex;

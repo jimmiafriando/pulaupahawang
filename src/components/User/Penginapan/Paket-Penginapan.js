@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import Image from '../../../images/PaketPenginapan.svg';
+import Image2 from '../../../images/PaketTrip2.svg';
+import Image3 from '../../../images/PaketTrip3.svg';
 import PaketWisata from '../../Paket/Paket-wisata';
+import Slider from 'infinite-react-carousel';
 
 
 export default function PaketPenginapan() {
@@ -12,9 +15,17 @@ export default function PaketPenginapan() {
               Andreas Resort
           </Title>
 
-          <Cover>
-            <img src={Image} alt="paketPeninapan"/>
-          </Cover>
+          <Slider className='Slider-cover' dots>
+                <div>
+                  <Imgslide src={Image} alt="paketPeninapan"/>
+                </div>
+                <div>
+                  <Imgslide src={Image2} alt="paketPeninapan"/>
+                </div>
+                <div>
+                  <Imgslide src={Image3} alt="paketPeninapan"/>
+                </div>
+          </Slider>
         
           <p className='Artikel'>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
@@ -102,6 +113,12 @@ export default function PaketPenginapan() {
   )
 }
 
+const Imgslide = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+`;
+
 const Title = styled.div`
   color: white;
   font-size: 25px;
@@ -112,12 +129,6 @@ const Title = styled.div`
   padding: 3px 0px;
   border-radius: 10px;
 `;
-
-const Cover = styled.div`
-  padding-top: 20px;
-  display: flex;
-  justify-content: center;
-`; 
 
 const Content = styled.div`
   display: flex;

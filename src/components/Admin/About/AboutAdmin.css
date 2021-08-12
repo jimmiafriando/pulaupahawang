@@ -6,7 +6,7 @@
   .Background-admin {
     background: #4D4D4D;
     padding: 20px 20px;
-  min-height: 70vh;
+    min-height: 80vh;
 
   }
   
@@ -58,4 +58,16 @@
     padding-left: 40px;
     padding-right: 40px;
     text-align: justify;
+  }
+
+  .main-image{
+    cursor: pointer;
+    margin-top: 50px;
+    margin-left: 10px;
+  }
+
+  .main-image2{
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 10px;
   }
