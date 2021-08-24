@@ -1,31 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import './Trip.css'
-import Images from '../../../images/Trip.svg';
-import Images2 from '../../../images/Trip-2.svg';
+import Images from '../../../images/PaketTrip.jpg';
 import CardTripComp from '../../Card/Card';
 import { Link } from 'react-router-dom';
+import firebase from '../../../config/firebase';
+import NavbarUser from '../../../components/NavbarUser/Navbar';
+
+
 
 export default function Trip() {
+  const [dataTrip, setDataTrip] = useState([]);
+  
+  useEffect(()=>{
+    const readTrip = firebase.database().ref('Trip/');
+    readTrip.on('value', (snapshot)=>{
+      const trip = snapshot.val();
+      const dataTrip = [];
+      for (let id in trip) {
+        dataTrip.push(trip[id]);
+      }
+      setDataTrip(dataTrip);
+      console.log(dataTrip)
+    });
+  },[]);
   return (
     <>
+    <NavbarUser/>
       <div className='Background-user'>
         <Title>
           PILIHAN PAKET WISATA TRIP
         </Title>
       
         <Card>
-          <Link to='/PaketTrip' className='line-dec'>
-            <CardTripComp Title="Pulau Pahawang" Image={Images}/>
+    {dataTrip.map( (data) => {
+      const newTo = { 
+        pathname: "/PaketTrip", 
+        param1: data
+        };
+      return (
+        <>
+          <Link to={newTo} className='line-dec'>
+            <CardTripComp Title={data.name} Image={Images}/>
           </Link>
-          
-          <Link to='/PaketTrip' className='line-dec'>
-            <CardTripComp Title="Pahawang Kecil" Image={Images2}/>
-          </Link>
-
-          <Link to='/PaketTrip' className='line-dec'>
-            <CardTripComp Title="Pasir Timbul" Image={Images2}/>
-          </Link>
+        </>
+      )
+    })
+}
+        
+        
         </Card>
 
       </div>

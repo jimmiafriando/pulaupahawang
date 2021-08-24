@@ -1,9 +1,96 @@
-import React from 'react';
 import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import firebase from '../../../config/firebase';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import NavbarUser from '../../../components/NavbarUser/Navbar';
+
+const useStyles = makeStyles((theme) => ({
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    borderRadius: 10,
+    textAlign: 'center', 
+  },
+}));
+
 
 export default function Pemesanan() {
-  return (
+  const [noteList, setNoteList] = useState();
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const [wisata, setWisata] = useState('');
+  const [penginapan, setPenginapan] = useState('');
+  const [dewasa, setDewasa] = useState('');
+  const [email, setEmail] = useState('');
+  const [tanggal, setTanggal] = useState('');
+  const [anak, setAnak] = useState('');
+  const [catatan, setCatatan] = useState('Catatan...');
+  const [waktu, setWaktu] = useState('');
+
+  const saveNotes = () => {
+    const createRef = firebase.database().ref('pemesanan/');
+    const create = {
+      name,
+      number,
+      wisata,
+      penginapan,
+      dewasa,
+      email,
+      tanggal,
+      anak,
+      catatan,
+      waktu
+    };
+    setName('')
+    setNumber('')
+    setWisata('')
+    setPenginapan('')
+    setDewasa('')
+    setEmail('')
+    setTanggal('')
+    setAnak('')
+    setCatatan('')
+    setWaktu('')
+
+    createRef.push(create);
+  };
+
+  useEffect(()=>{
+    const readNote = firebase.database().ref('pemesananAdmin/');
+    readNote.on('value', (snapshot)=>{
+      const note = snapshot.val();
+      const noteList = [];
+      for (let id in note) {
+        noteList.push({id,...note[id]});
+      }
+      setNoteList(noteList);
+    });
+  },[]);
+
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+return (
     <>
+    <NavbarUser/>
       <div className='Background-user'>
         <Title>
           PESAN PAKET TOUR
@@ -18,31 +105,31 @@ export default function Pemesanan() {
         <Formdata>
         <Dataleft>  
           <div>
-            <Input type="text" id="#" name="#" placeholder="Nama"/>
+            <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama"/>
           </div>
           <div>
-            <Input type="number" id="#" name="#" placeholder="Telephone / Whatsapp"/>
+            <Input value={number} onChange={e => setNumber(e.target.value)} type="number" id="#" name="#" placeholder="Telephone / Whatsapp"/>
           </div>
           <div>
             <Label>Tujuan :</Label>
-            <Select id="Pulau" name="Pulau">
-              <option value="pahawang">Pulau Pahawang</option>
-              <option value="pahawangkecil">Pahawang Kecil</option>
-              <option value="Pasir Timbul">Pasir Timbul</option>
-              <option value="none">--</option>
+            <Select value={wisata} onChange={e => setWisata(e.target.value)}>
+              <option>--</option>
+              <option >Pulau Pahawang</option>
+              <option >Pahawang Kecil</option>
+              <option >Pasir Timbul</option>
             </Select>
           </div>
           <div>
-            <Select id="Penginapan" name="Penginapan">
-              <option value="Andreas">Andreas Resort</option>
-              <option value="Tenda pahawang">Tenda Pahawang</option>
-              <option value="Hotel Pahawang">Hotel Pahawang</option>
-              <option value="none">--</option>
+            <Select value={penginapan} onChange={e => setPenginapan(e.target.value)}>
+              <option>--</option>
+              <option>Andreas Resort</option>
+              <option>Tenda Pahawang</option>
+              <option>Hotel Pahawang</option>
             </Select>
           </div>
           <div>
           <Label>Dewasa :</Label>
-          <Input type="number" id="#" name="#" placeholder="4"/>
+          <Input type="number" value={dewasa} onChange={e => setDewasa(e.target.value)} id="#" name="#" placeholder="4"/>
           </div>
         </Dataleft>  
         </Formdata>
@@ -50,11 +137,11 @@ export default function Pemesanan() {
         <Formdata2>
         <Dataright>
           <div>
-            <Input refs="email" type="email" id="#" name="#" placeholder="Email"/>
+            <Input refs="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email"/>
           </div>
           <div>
             <Label>Tanggal Keberangkatan :</Label>
-            <Input type="text" id="#" name="#" placeholder="DD/MM/YYYY"/>
+            <Input type="text" value={tanggal} onChange={e => setTanggal(e.target.value)} placeholder="DD/MM/YYYY"/>
           </div>
           <div>
             <Label>Waktu Liburan</Label>
@@ -74,20 +161,41 @@ export default function Pemesanan() {
           </div>
           <div>
           <Label>Anak-anak (2th-5th) :</Label>
-          <Input type="number" id="#" name="#" placeholder="2"/>
+          <Input type="number" value={anak} onChange={e => setAnak(e.target.value)} placeholder="2"/>
           </div>
         </Dataright>
         </Formdata2>
       </Form>
 
     <form>
-      <Textarea>Catatan...</Textarea>
+      <Textarea value={catatan} onChange={e => setCatatan(e.target.value)} >Catatan...</Textarea>
     </form>
 
-    <Button>
+    <Button onClick={() => { saveNotes(); handleOpen();}} >
       Kirim Pesanan
     </Button>
+    <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">Pemesanan Berhasil!!</h2>
+            <br/>
+            <p id="transition-modal-description">Silahkan tunggu 2x24jam, pesanan anda akan segera kami proses</p>
+          </div>
+        </Fade>
+      </Modal>
 
+    {noteList ? noteList.map((data ) => 
     <Form>
         <div>
         
@@ -95,11 +203,12 @@ export default function Pemesanan() {
             SYARAT & KETENTUAN
           </div>
           <p className='Artikel-2'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
+            {data.syarat}
+          {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
           et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
           aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
           dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-          deserunt mollit anim id est laborum.
+          deserunt mollit anim id est laborum. */}
           </p>
         </div>
 
@@ -109,18 +218,16 @@ export default function Pemesanan() {
           </div>
         
           <p className='Artikel-2'>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
-          et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-          aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-          deserunt mollit anim id est laborum.
+          {data.note}
           </p>
         </div>
       </Form>
+          ): ''}
 
     </>
   )
 }
+
 
 const Textarea = styled.textarea`
   margin: 20px 10%;
@@ -189,7 +296,7 @@ const Input = styled.input`
   width: 90%;
   outline: none;
   &:focus{
-    border: 4px solid #6C63FF;
+    border: 2px solid #6C63FF;
   }
   &::-webkit-inner-spin-button,
   -webkit-outer-spin-button{
@@ -221,7 +328,7 @@ const Select = styled.select`
   width: 30%;
   outline: none;
   &:focus{
-    border: 4px solid #6C63FF;
+    border: 2px solid #6C63FF;
   }
   &::-webkit-inner-spin-button,
     -webkit-outer-spin-button{

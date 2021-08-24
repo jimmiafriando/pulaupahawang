@@ -2,11 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import cover from '../../../images/About.svg';
 import images from '../../../images/About2.svg';
-
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 
 export default function About() {
   return (
     <>
+    <NavbarAdmin/>
       <div className='Background-admin'>
        <Cover>
         <img src={cover} alt="cover" />
@@ -63,7 +64,7 @@ export default function About() {
         </div>
       </Content>
 
-      <div className='Background-admin'>
+      <div className='Background-adminAbout'>
         <div className='Title-3'>
         Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet ?
         </div>

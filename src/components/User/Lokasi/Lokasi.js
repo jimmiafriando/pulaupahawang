@@ -3,11 +3,13 @@ import './Lokasi.css';
 import styled from 'styled-components';
 import lokasi from '../../../images/Lokasi.svg';
 import { Link } from 'react-router-dom';
+import NavbarUser from '../../../components/NavbarUser/Navbar';
 
 
 export default function Lokasi() {
   return(
     <>
+      <NavbarUser/>
       <div className='Background-user'>
         <Cover>
           <img src={lokasi} alt="lokasi" />

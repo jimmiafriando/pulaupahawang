@@ -1,30 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Images from '../../../images/Penginapan.svg';
-import Images2 from '../../../images/Penginapan-2.svg';
 import CardPenginapanComp from '../../Card/Card';
 import { Link } from 'react-router-dom';
+import firebase from '../../../config/firebase';
+import NavbarUser from '../../../components/NavbarUser/Navbar';
+
 
 export default function Penginapan() {
+  const [dataPenginapan, setDataPenginapan] = useState([]);
+  
+  useEffect(()=>{
+    const readPenginapan = firebase.database().ref('Penginapan/');
+    readPenginapan.on('value', (snapshot)=>{
+      const Penginapan = snapshot.val();
+      const dataPenginapan = [];
+      for (let id in Penginapan) {
+        dataPenginapan.push(Penginapan[id]);
+      }
+      setDataPenginapan(dataPenginapan);
+      console.log(dataPenginapan)
+    });
+  },[]);
   return (
     <>
+    <NavbarUser/>
       <div className='Background-user'>
         <Title>
           PILIHAN PAKET WISATA PENGINAPAN
         </Title>
       
         <Card>
-          <Link to='/PaketPenginapan' className='line-dec'>
-            <CardPenginapanComp Title="Andreas Resort" Image={Images}/>
+        {dataPenginapan.map( (data) => {
+      const penginapan = { 
+        pathname: "/PaketTrip", 
+        param1: data
+        };
+      return (
+        <>
+          <Link to={penginapan} className='line-dec'>
+            <CardPenginapanComp Title={data.name} Image={Images}/>
           </Link>
-          
-          <Link to='/PaketPenginapan' className='line-dec'>
-            <CardPenginapanComp Title="Hotel Pahawang" Image={Images2}/>
-          </Link>
-
-          <Link to='/PaketPenginapan' className='line-dec'>
-            <CardPenginapanComp Title="Tenda Penginapan" Image={Images2}/>
-          </Link>
+        </>
+      )
+    })
+}
         </Card>
 
       </div>

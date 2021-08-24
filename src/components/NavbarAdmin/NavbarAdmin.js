@@ -11,7 +11,6 @@ function Navbar() {
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => {
     setClick(false);
-    setIsAdmin(false)
   }
 
   const onMouseEnter = () => {
@@ -30,26 +29,26 @@ function Navbar() {
     }
   };
 
-  const [isAdmin, setIsAdmin] = useState(false)
   return (
     <>
-      <nav className={!isAdmin ? 'navbar' : 'navbarAdmin'}>
+      <nav className='navbarAdmin'>
         <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-          <img src={isAdmin ? "assets/logowhite.png" : "assets/logoblack.png" } alt="#"/>
+          <img src="assets/logowhite.png" alt="#"/>
         </Link>
         <div className='menu-icon' onClick={handleClick}>
           <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
         </div>
         <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+          
           <li className='nav-item'>
-            <Link to='/' className={ isAdmin? 'nav-links-admin' : 'nav-links'} onClick={closeMobileMenu}>
+            <Link to='/AboutAdmin' className='nav-links-admin' onClick={closeMobileMenu}>
               About
             </Link>
           </li>
           <li className='nav-item'>
             <Link
-              to='/Lokasi'
-              className={ isAdmin? 'nav-links-admin' : 'nav-links'}
+              to='/LokasiAdmin'
+              className='nav-links-admin'
               onClick={closeMobileMenu}
             >
               Lokasi
@@ -61,7 +60,7 @@ function Navbar() {
             onMouseLeave={onMouseLeave}
           >
             <Link
-              className={ isAdmin? 'nav-links-admin' : 'nav-links'}
+              className='nav-links-admin'
               onClick={closeMobileMenu}
             >
               Paket Destinasi <i className='fas fa-caret-down' />
@@ -70,8 +69,8 @@ function Navbar() {
           </li>
           <li className='nav-menu-item'>
             <Link
-              to='/Trip'
-              className={ isAdmin? 'nav-links-admin' : 'nav-links'}
+              to='/TripAdmin'
+              className='nav-links-admin'
               onClick={closeMobileMenu}
             >
               Trip
@@ -79,8 +78,8 @@ function Navbar() {
           </li>
           <li className='nav-menu-item'>
             <Link
-              to='/Penginapan'
-              className={ isAdmin? 'nav-links-admin' : 'nav-links'}
+              to='/PenginapanAdmin'
+              className='nav-links-admin'
               onClick={closeMobileMenu}
             >
               Penginapan
@@ -88,8 +87,8 @@ function Navbar() {
           </li>
           <li className='nav-item'>
             <Link
-              to='/Pemesanan'
-              className={ isAdmin? 'nav-links-admin' : 'nav-links'}
+              to='/PemesananAdmin'
+              className='nav-links-admin'
               onClick={closeMobileMenu}
             >
               Pemesanan
@@ -97,7 +96,7 @@ function Navbar() {
           </li>
           <li>
             <Link
-              to='/Admin'
+              to='/AdminLogout'
               className='nav-links-mobile'
               onClick={closeMobileMenu}
             >
@@ -105,7 +104,7 @@ function Navbar() {
             </Link>
           </li>
         </ul>
-        <Button onClick={() => setIsAdmin('navbarAdmin')}/>
+        <Button/>
       </nav>
     </>
   );

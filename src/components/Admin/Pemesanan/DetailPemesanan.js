@@ -1,39 +1,42 @@
-import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 
-export default function DetailPemesanan() {
+export default function DetailPemesanan(props) {
+  const dataList = props.location.param1
+  
   return (
     <>
+    <NavbarAdmin/>
       <div className='Background-admin'>
         <Title>
           DETAIL
         </Title>
-      
+        <div>
       <Form>
         <Formdata>
         <Dataleft>  
           <Data>
-            Jimmi Afriando Akbar
+            {dataList.name}
           </Data>
           <Data>
-            08984875449
+            {dataList.number}
           </Data>
           <div>
             <Label>Tujuan :</Label>
             <Select>
-                Pulau Pahawang
+                {dataList.wisata}
             </Select>
           </div>
           <div>
             <Select>
-                --
+              {dataList.penginapan}
             </Select>
           </div>
           <div>
           <Label>Dewasa :</Label>
           <Data>
-            2
+            {dataList.dewasa}
           </Data>
           </div>
         </Dataleft>  
@@ -42,12 +45,12 @@ export default function DetailPemesanan() {
         <Formdata2>
         <Dataright>
             <Data>
-                Jimmi_afr@apps.ipb.ac.id
+              {dataList.email}
             </Data>
           <div>
             <Label>Tanggal Keberangkatan :</Label>
             <Data>
-                12/01/2022
+              {dataList.tanggal}
             </Data>
           </div>
           <div>
@@ -69,18 +72,18 @@ export default function DetailPemesanan() {
           <div>
           <Label>Anak-anak (2th-5th) :</Label>
           <Data>
-            4
+            {dataList.anak}
           </Data>
           </div>
         </Dataright>
         </Formdata2>
       </Form>
-
     <form>
         <Textarea>
-            Pengen berenang!
+            {dataList.catatan}
         </Textarea>
     </form>
+      </div>
     <Link to='/PemesananAdmin'>
       <Button>
         Accept
@@ -106,7 +109,7 @@ const Button = styled.button`
   border-radius: 20px;
   background: #19B200;
   outline: none;
-  border: none;
+  border: 1px solid;
   cursor: pointer;
   color: white;
   font-weight: bold;
@@ -116,7 +119,7 @@ const Button = styled.button`
     background-color: #60C564;
     color: white;
     border-radius: 20px;
-    border: 2px solid var(--white);
+    border: 1px solid var(--white);
     transition: all 0.3s ease-out;
   }
 `;
@@ -132,7 +135,7 @@ const Button2 = styled.button`
   border-radius: 20px;
   background: red;
   outline: none;
-  border: none;
+  border: 1px solid;
   cursor: pointer;
   color: white;
   font-weight: bold;
@@ -142,7 +145,7 @@ const Button2 = styled.button`
     background-color: #F26A6A;
     color: white;
     border-radius: 20px;
-    border: 2px solid var(--white);
+    border: 1px solid var(--white);
     transition: all 0.3s ease-out;
   }
 `;

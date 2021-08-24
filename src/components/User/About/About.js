@@ -3,11 +3,14 @@ import './About.css';
 import styled from 'styled-components';
 import cover from '../../../images/About.svg';
 import images from '../../../images/About2.svg';
+import NavbarUser from '../../../components/NavbarUser/Navbar';
+
 
 
 export default function About() {
   return (
     <>
+      <NavbarUser/>
       <div className='Background-user'>
        <Cover>
         <img src={cover} alt="cover" />

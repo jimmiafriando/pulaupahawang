@@ -27,6 +27,7 @@ const Listpaket = styled.div`
   text-align: center;
   padding: 2px 20px;
   margin: 5px 0px;
+  width: 100%;
 `;
 
 const Content = styled.div`

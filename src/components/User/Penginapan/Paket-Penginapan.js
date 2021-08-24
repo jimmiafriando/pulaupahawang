@@ -1,50 +1,37 @@
-import React from 'react';
 import styled from 'styled-components';
 import Image from '../../../images/PaketPenginapan.svg';
 import Image2 from '../../../images/PaketTrip2.svg';
 import Image3 from '../../../images/PaketTrip3.svg';
 import PaketWisata from '../../Paket/Paket-wisata';
 import Slider from 'infinite-react-carousel';
+import NavbarUser from '../../../components/NavbarUser/Navbar';
 
 
-export default function PaketPenginapan() {
+export default function PaketPenginapan(props) {
+  const dataPenginapan = props.location.param1
+  console.log(dataPenginapan)
   return(
       <>
+      <NavbarUser/>
         <div className='Background-user'>
           <Title>
-              Andreas Resort
+            {dataPenginapan.name}
           </Title>
-
-          <Slider className='Slider-cover' dots>
+            
+              <Slider className='Slider-cover' dots>
                 <div>
-                  <Imgslide src={Image} alt="paketPeninapan"/>
+                  <Imgslide src={Image} alt="PaketTrip"/>
                 </div>
                 <div>
-                  <Imgslide src={Image2} alt="paketPeninapan"/>
+                  <Imgslide src={Image2} alt="PaketTrip"/>
                 </div>
                 <div>
-                  <Imgslide src={Image3} alt="paketPeninapan"/>
+                  <Imgslide src={Image3} alt="PaketTrip"/>
                 </div>
-          </Slider>
-        
+              </Slider>
+              
           <p className='Artikel'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.
+            {dataPenginapan.caption}
           </p>
 
           <Content>
@@ -61,52 +48,33 @@ export default function PaketPenginapan() {
                     HARGA
                   </Paket>
                 </Content>
-                  <PaketWisata Peserta="2" Harga="Rp.400.000"/>
-                  <PaketWisata Peserta="4" Harga="Rp.800.000"/>
-                  <PaketWisata Peserta="6" Harga="Rp.1.100.000"/>
-                  <PaketWisata Peserta="7" Harga="Rp.1.300.000"/>
-                  <PaketWisata Peserta="8" Harga="Rp.1.500.000"/>
-                  <PaketWisata Peserta="9" Harga="Rp.1.600.000"/>
+                  <PaketWisata Peserta={dataPenginapan.peserta1} Harga={dataPenginapan.harga1}/>
+                  <PaketWisata Peserta={dataPenginapan.peserta2} Harga={dataPenginapan.harga2}/>
+                  <PaketWisata Peserta={dataPenginapan.peserta3} Harga={dataPenginapan.harga3}/>
+                  <PaketWisata Peserta={dataPenginapan.peserta4} Harga={dataPenginapan.harga4}/>
               </Boxpaket>
             </div>
 
-            <div>
+            <Mainflex>
               <div className='Title-2'>
                 FASILITAS
               </div>
               <p className='Artikel-2'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
-                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
-                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                deserunt mollit anim id est laborum.
+                {dataPenginapan.fasilitas}
               </p>
-            </div>
-          </Content>
+            </Mainflex>
 
-          <div>
+          <Mainflex>
             <div className='Title-2'>
               NOTE :
             </div>
             <Boxnote>
               <MainNote>
-                1. nkasdnkkjandjkandk
-              </MainNote>
-              <MainNote>
-                2. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                3. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                4. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                5. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                6. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                7. nkasdnkkjandjkandk
+                {dataPenginapan.note}
               </MainNote>
             </Boxnote>
-          </div>
+          </Mainflex>
+          </Content>
 
         </div>
       </>
@@ -150,7 +118,13 @@ const Boxnote = styled.div`
   Background-color: white;
   border-radius: 20px;
   padding: 10px;
-  margin-right: 900px; 
+  margin-right: 900px;
+  width:100%; 
+  height: 70% ;
+`;
+
+const Mainflex = styled.div`
+width: 40%
 `;
 
 const MainNote = styled.p`

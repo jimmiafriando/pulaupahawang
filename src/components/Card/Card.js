@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const CardComp = (Props) => {
     return (
         <Card>
-           <img src={Props.Image} alt="Trip" />
+           <Image src={Props.Image} alt="Trip" />
             <Title>
                 {Props.Title}
             </Title>
@@ -23,4 +23,11 @@ const Title = styled.p`
 
 const Card = styled.div`
     margin: 0px 10px;
+`;
+
+const Image = styled.img`
+width: 180px;
+height: 180px;
+object-fit: cover;
+border-radius:40px;;
 `;

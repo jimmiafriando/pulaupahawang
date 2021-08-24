@@ -6,10 +6,12 @@ import plus from '../../../images/plus.png';
 import CardTripComp from '../../Card/Card';
 import '../About/AboutAdmin.css'
 import { Link } from 'react-router-dom';
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 
 export default function TripAdmin() {
   return (
     <>
+    <NavbarAdmin/>
       <div className='Background-admin'>
         <Title>
           PILIHAN PAKET WISATA TRIP

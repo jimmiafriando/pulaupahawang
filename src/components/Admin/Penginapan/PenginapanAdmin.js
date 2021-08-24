@@ -4,12 +4,14 @@ import Images from '../../../images/Penginapan.svg';
 import Images2 from '../../../images/Penginapan-2.svg';
 import CardPenginapanComp from '../../Card/Card';
 import plus from '../../../images/plus.png';
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 import { Link } from 'react-router-dom';
 
 export default function Penginapan() {
   return (
     <>
       <div className='Background-admin'>
+        <NavbarAdmin/>
         <Title>
           PILIHAN PAKET WISATA PENGINAPAN
         </Title>

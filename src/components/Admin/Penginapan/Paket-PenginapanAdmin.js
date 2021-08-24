@@ -1,90 +1,160 @@
-import React from 'react';
+import React, { useState } from 'react';
+import firebase, { storage } from '../../../config/firebase';
 import styled from 'styled-components';
 import remove from '../../../images/Remove.svg';
-import refresh from '../../../images/Refresh.svg';
-import ImageUploading from 'react-images-uploading';
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
+// import { v4 as uuid } from 'uuid';
 
 export default function PaketPenginapanAdmin() {
-  const [images, setImages] = React.useState([]);
-  const maxNumber = 69;
+  const [images, setImages] = useState([]);
+  const [urls, setUrls] = useState([]);
+  const [progress, setProgress] = useState(0);
+  const [name, setName] = useState('');
+  const [caption, setCaption] = useState('Caption...');
+  const [peserta1, setPeserta1] = useState('');
+  const [peserta2, setPeserta2] = useState('');
+  const [peserta3, setPeserta3] = useState('');
+  const [peserta4, setPeserta4] = useState('');
+  const [harga1, setHarga1] = useState('');
+  const [harga2, setHarga2] = useState('');
+  const [harga3, setHarga3] = useState('');
+  const [harga4, setHarga4] = useState('');
+  const [fasilitas, setFasilitas] = useState('text...');
+  const [note, setNote] = useState('text...');
 
-  const onChange = (imageList, addUpdateIndex) => {
-    console.log(imageList, addUpdateIndex);
-    setImages(imageList);
+  const handleChange = (e) => {
+    for (let i = 0; i < e.target.files.length; i++) {
+      const newImage = e.target.files[i];
+      newImage["id"] = Math.random();
+      setImages((prevState) => [...prevState, newImage]);
+    }
   };
+
+  const savePenginapan = () => {
+    const promises = [];
+    
+    images.map((image) => {
+      // const id = uuid();
+      const uploadTask = storage.ref(`imagesPenginapan/${image.name}`).put(image);
+      promises.push(uploadTask);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgress(progress);
+        },
+        (error) => {
+          console.log(error);
+        },
+        async () => {
+          await storage
+            .ref("imagesPenginapan")
+            .child(image.name)
+            .getDownloadURL()
+            .then((urls) => {
+              setUrls((prevState) => [...prevState, urls]);
+            });
+        }
+      );
+    });
+
+    Promise.all(promises)
+      .then(() => alert("All images uploaded"))
+      .catch((err) => console.log(err));
+
+
+    const createRef = firebase.database().ref('Penginapan/');
+    const create = {
+      name,
+      caption,
+      peserta1,
+      peserta2,
+      peserta3,
+      peserta4,
+      harga1,
+      harga2,
+      harga3,
+      harga4,
+      fasilitas,
+      note
+    };
+    setName('')
+    setCaption('Caption...')
+    setPeserta1('')
+    setPeserta2('')
+    setPeserta3('')
+    setPeserta4('')
+    setHarga1('')
+    setHarga2('')
+    setHarga3('')
+    setHarga4('')
+    setFasilitas('text...')
+    setNote('text...')
+
+    createRef.push(create);
+  };
+
+  const deleteImage = (id) => {
+    const uploadTask = storage.ref(`imagesPenginapan/`).child(id);
+    uploadTask.delete().then(function() {
+      // File deleted successfully
+    }).catch(function(error) {
+      // Uh-oh, an error occurred!
+    });
+  };
+
+  console.log("images: ", images);
+  console.log("urls", urls);
 
   return(
       <>
+      <NavbarAdmin/>
         <div className='Background-admin'>
           <Title>
-              PENGINAPAN
+              Penginapan
           </Title>
         
         <MainInput>
-          <Input type="text" id="#" name="#" placeholder="Nama Trip"/>
+          <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Penginapan"/>
         </MainInput>
         <Border>
               <div className='Title-3'>
                 Masukan Foto Penginapan
               </div>
+              <Progress>
+                <progress value={progress} max="100" />
+              </Progress>
+              <div>
+                <ButtonImg type="file" multiple onChange={handleChange} />
+              </div>
 
           <Cover>
-          <div>
-            <ImageUploading
-              multiple
-              value={images}
-              onChange={onChange}
-              maxNumber={maxNumber}
-              dataURLKey="data_url"
-            >
-              {({
-                  imageList,
-                  onImageUpload,
-                  onImageRemoveAll,
-                  onImageUpdate,
-                  onImageRemove,
-                  isDragging,
-                  dragProps,
-                }) => (
-          // write your building UI
-          <div>
-            <ButtonImg
-              style={isDragging ? { color: 'red' } : undefined}
-              onClick={onImageUpload}
-              {...dragProps}
-            >
-              Click or Drop here
-            </ButtonImg>
-            &nbsp;
-            <ButtonImg2 onClick={onImageRemoveAll}>Remove all images</ButtonImg2>
-            {imageList.map((image, index) => (
-              <ImgUp>
-                <img src={image['data_url']} alt="" width="350" />
-                <div>
-                  <div>
-                  <img className='main-image' onClick={() => onImageUpdate(index)} src={refresh} alt="remove"/>
-                  </div>
-                  <div>
-                  <img className='main-image2' onClick={() => onImageRemove(index)} src={remove} alt="remove"/>
-                  </div>
-                </div>
-              </ImgUp>
-            ))}
-          </div>
-        )}
-      </ImageUploading>
-    </div>
+            <div>
+                  {urls.map((url, i) => (
+                <img
+                    key={i}
+                    style={{ width: "350px" }}
+                    src={url || "http://via.placeholder.com/300"}
+                    alt="firebase"
+                    />
+                    ))}
+                  {urls.map((id) => (
+                <img key={id} className='main-image' onClick={() => deleteImage(id)} src={remove} alt="refresh"/>
+                ))}
+            </div>
           </Cover>
           </Border>
 
           <form>
-            <Textarea>Caption...</Textarea>
+            <Textarea value={caption} onChange={e => setCaption(e.target.value)}>Caption...</Textarea>
           </form>
 
           <Content>
             <div>
-              <div className='Title-2'>
-                PAKET WISATA
+              <div className='Title-3'>
+                PAKET PENGINAPAN
               </div>
               <Boxpaket>
                 <Content>
@@ -96,46 +166,42 @@ export default function PaketPenginapanAdmin() {
                   </Paket>
                 </Content>
                 <div>
-                  <Peserta type="text"  placeholder="2"/>
-                  <Harga type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta1} onChange={e => setPeserta1(e.target.value)} type="number"  placeholder="2"/>
+                  <Harga value={harga1} onChange={e => setHarga1(e.target.value)} type="number"  placeholder="Rp.500.000"/>
                 </div>
                 <div>
-                  <Peserta type="text"  placeholder="2"/>
-                  <Harga type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta2} onChange={e => setPeserta2(e.target.value)} type="number"  placeholder="2"/>
+                  <Harga value={harga2} onChange={e => setHarga2(e.target.value)} type="number"  placeholder="Rp.500.000"/>
                 </div>
                 <div>
-                  <Peserta type="text"  placeholder="2"/>
-                  <Harga type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta3} onChange={e => setPeserta3(e.target.value)} type="number"  placeholder="2"/>
+                  <Harga value={harga3} onChange={e => setHarga3(e.target.value)} type="number"  placeholder="Rp.500.000"/>
                 </div>
                 <div>
-                  <Peserta type="text"  placeholder="2"/>
-                  <Harga type="number"  placeholder="Rp.500.000"/>
-                </div>
-                <div>
-                  <Peserta type="text"  placeholder="2"/>
-                  <Harga type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta4} onChange={e => setPeserta4(e.target.value)} type="number"  placeholder="2"/>
+                  <Harga value={harga4} onChange={e => setHarga4(e.target.value)} type="number"  placeholder="Rp.500.000"/>
                 </div>
               </Boxpaket>
             </div>
 
             <div>
-              <div className='Title-2'>
+              <div className='Title-3'>
                 FASILITAS
               </div>
               <form>
-                <Textarea2>Text...</Textarea2>
+                <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} >Text...</Textarea2>
               </form>
             </div>
           </Content>
 
           <div>
-            <div className='Title-2'>
+            <div className='Title-3'>
               NOTE :
             </div>
             <form>
-                <Textarea3>Text...</Textarea3>
+                <Textarea3 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea3>
             </form>
-            <Button>
+            <Button onClick={savePenginapan}>
               UPLOAD
             </Button>
           </div>
@@ -145,9 +211,16 @@ export default function PaketPenginapanAdmin() {
   )
 }
 
-const ImgUp = styled.div`
-display: flex;
-margin: 20px 0px;
+
+
+// const ImgUp = styled.div`
+// display: flex;
+// margin: 20px 0px;
+// `;
+
+const Progress = styled.div`
+// background: blue;
+margin-left: 50px;
 `;
 
 const Border = styled.div`
@@ -206,6 +279,7 @@ const Cover = styled.div`
   padding-top: 10px;
   display: flex;
   justify-content: center;
+  // background: red;
 `; 
 
 const Content = styled.div`
@@ -324,9 +398,10 @@ const Button = styled.button`
   }
 `;
 
-const ButtonImg = styled.button`
-  margin: 10px 0px;
-  padding: 10px 30px;
+const ButtonImg = styled.input`
+  margin: 10px 10px;
+  margin-left: 50px;
+  padding: 10px 10px;
   border-radius: 20px;
   background: #19B200;
   outline: none;
@@ -335,30 +410,9 @@ const ButtonImg = styled.button`
   color: white;
   font-weight: bold;
   &:hover {
-    padding: 10px 30px;
+    padding: 10px 10px;
     transition: all 0.3s ease-out;
     background-color: #6C63FF;
-    color: white;
-    border-radius: 20px;
-    border: 0px solid var(--white);
-    transition: all 0.3s ease-out;
-  }
-`;
-
-const ButtonImg2 = styled.button`
-  margin: 10px 0px;
-  padding: 10px 30px;
-  border-radius: 20px;
-  background: red;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  color: white;
-  font-weight: bold;
-  &:hover {
-    padding: 10px 30px;
-    transition: all 0.3s ease-out;
-    background-color: #F26A6A;
     color: white;
     border-radius: 20px;
     border: 0px solid var(--white);

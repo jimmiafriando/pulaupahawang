@@ -1,11 +1,13 @@
 import React from 'react';
 import images from '../../images/logowhite.png';
 import styled from 'styled-components';
+import NavbarAdmin from '../../components/NavbarAdmin/NavbarAdmin';
 import { Link } from 'react-router-dom';
 
 export default function AdminLogout() {
   return (
     <>
+      <NavbarAdmin/>
     <div className='Background-admin'>
       <Form>
         <form>

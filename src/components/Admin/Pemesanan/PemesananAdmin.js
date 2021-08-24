@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -9,6 +9,9 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
+import firebase from '../../../config/firebase';
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
+
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -28,34 +31,51 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, trip, penginapan, tanggal, status, detail ) {
-  return { name, trip, penginapan, tanggal, status, detail };
-}
-
-const rows = [
-  createData('Jimmi Afriando Akbar', 'Pulau Pahawang', 'Andreas Resort', '12/01/2021','Succes', 'Detail'),
-  createData('Haidar', 'Pahawang Kecil', 'Tenda', '20/02/2021','Waiting', 'Detail'),
-  createData('Emilia Sari', 'Pulau Pahawang', 'Tenda', '16/03/2021','Reject', 'Detail'),
-  createData('Mufti Alfarokhul Azam', 'Hotel Pahawang', 'Andreas Resort', '23/04/2021','Succes', 'Detail'),
-  createData('Ari Corvin', 'Pulau Pahawang', 'Andreas Resort', '13/0/2021','Waiting', 'Detail'),
-];
-
 const useStyles = makeStyles({
   table: {
     minWidth: 700,
   },
 });
 
+
 export default function CustomizedTables() {
   const classes = useStyles();
+  const [pemesananList, setPemesananList] = useState([]);
+  const [syarat, setSyarat] = useState('Text...');
+  const [note, setNote] = useState('Text...');
+
+  const createNote = () => {
+    const createRef = firebase.database().ref('pemesananAdmin/');
+    const create = {
+      syarat,
+      note
+    };
+    setSyarat('')
+    setNote('')
+    createRef.push(create);
+  };
+
+  useEffect(()=>{
+    const readPemesanan = firebase.database().ref('pemesanan/');
+    readPemesanan.on('value', (snapshot)=>{
+      const pemesanan = snapshot.val();
+      const pemesananList = [];
+      for (let id in pemesanan) {
+        pemesananList.push({ id,...pemesanan[id] });
+      }
+      setPemesananList(pemesananList);
+    });
+  },[]);
 
   return (
+    <>
+      <NavbarAdmin/>
     <div className='Background-admin'>
       <Title>
           PESANAN PAKET TOUR
       </Title>
 
-    <TableContainer component={Paper}>
+      <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
@@ -68,47 +88,60 @@ export default function CustomizedTables() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.trip}</StyledTableCell>
-              <StyledTableCell align="right">{row.penginapan}</StyledTableCell>
-              <StyledTableCell align="right">{row.tanggal}</StyledTableCell>
-              <StyledTableCell align="right">{row.status}</StyledTableCell>
-              <StyledTableCell align="right"><Link className='line-dec' to='/DetailPemesanan'>{row.detail}</Link></StyledTableCell>
+
+      {pemesananList.map( (dataList) => {
+      const newTo = { 
+        pathname: "/DetailPemesanan", 
+        param1: dataList
+        };
+      return (
+        <>
+          <StyledTableRow key={dataList.id}>
+              <StyledTableCell component="th" scope="row">{dataList.name}</StyledTableCell>
+              <StyledTableCell align="right">{dataList.wisata}</StyledTableCell>
+              <StyledTableCell align="right">{dataList.penginapan}</StyledTableCell>
+              <StyledTableCell align="right">{dataList.tanggal}</StyledTableCell>
+              <StyledTableCell align="right">Waiting</StyledTableCell>
+              <StyledTableCell align="right"><Link className='line-dec' to={newTo}>Detail</Link></StyledTableCell>
               
             </StyledTableRow>
-          ))}
-        </TableBody>
+        </>
+      )
+    })
+}
+</TableBody>
       </Table>
     </TableContainer>
+
+    
+          
+        
     <Form>
         <div>
         
-          <div className='Title-2'>
+          <div className='Title-3'>
             SYARAT & KETENTUAN
           </div>
           <form>
-                <Textarea2>Text...</Textarea2>
+                <Textarea2  value={syarat} onChange={e => setSyarat(e.target.value)} >Text...</Textarea2>
           </form>
         </div>
 
         <div>
-          <div className='Title-2'>
+          <div className='Title-3'>
             NOTE
           </div>
         
           <form>
-                <Textarea2>Text...</Textarea2>
+                <Textarea2 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea2>
           </form>
         </div>
       </Form>
-      <Button>
+      <Button onClick={createNote}>
         UPLOAD
       </Button>
     </div>
+    </>
   );
 }
 
@@ -157,7 +190,7 @@ const Button = styled.button`
   border-radius: 20px;
   background: #19B200;
   outline: none;
-  border: none;
+  border: 1px solid;
   cursor: pointer;
   color: white;
   font-weight: bold;
@@ -167,7 +200,7 @@ const Button = styled.button`
     background-color: #6C63FF;
     color: white;
     border-radius: 20px;
-    border: 2px solid var(--white);
+    border: 1px solid var(--white);
     transition: all 0.3s ease-out;
   }
 `;

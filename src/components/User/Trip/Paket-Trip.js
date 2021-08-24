@@ -1,19 +1,24 @@
-import React from 'react';
 import styled from 'styled-components';
 import './Trip.css';
-import Image from '../../../images/PaketTrip.svg';
+import Image from '../../../images/PaketTrip.jpg';
 import Image2 from '../../../images/PaketTrip2.svg';
 import Image3 from '../../../images/PaketTrip3.svg';
 import PaketWisata from '../../Paket/Paket-wisata';
 import Slider from 'infinite-react-carousel';
+import NavbarUser from '../../../components/NavbarUser/Navbar';
 
-export default function PaketTrip() {
+
+export default function PaketTrip(props) {
+  const dataTrip = props.location.param1
+  console.log(dataTrip)
   return(
       <>
+         <NavbarUser/>
         <div className='Background-user'>
           <Title>
-              Pulau Pahawang
+            {dataTrip.name}
           </Title>
+            
               <Slider className='Slider-cover' dots>
                 <div>
                   <Imgslide src={Image} alt="PaketTrip"/>
@@ -27,23 +32,7 @@ export default function PaketTrip() {
               </Slider>
               
           <p className='Artikel'>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris.
+            {dataTrip.caption}
           </p>
 
           <Content>
@@ -60,57 +49,43 @@ export default function PaketTrip() {
                     HARGA
                   </Paket>
                 </Content>
-                  <PaketWisata Peserta="2" Harga="Rp.400.000"/>
-                  <PaketWisata Peserta="4" Harga="Rp.800.000"/>
-                  <PaketWisata Peserta="6" Harga="Rp.1.100.000"/>
-                  <PaketWisata Peserta="7" Harga="Rp.1.300.000"/>
-                  <PaketWisata Peserta="8" Harga="Rp.1.500.000"/>
-                  <PaketWisata Peserta="9" Harga="Rp.1.600.000"/>
+                  <PaketWisata Peserta={dataTrip.peserta1} Harga={dataTrip.harga1}/>
+                  <PaketWisata Peserta={dataTrip.peserta2} Harga={dataTrip.harga2}/>
+                  <PaketWisata Peserta={dataTrip.peserta3} Harga={dataTrip.harga3}/>
+                  <PaketWisata Peserta={dataTrip.peserta4} Harga={dataTrip.harga4}/>
               </Boxpaket>
             </div>
 
-            <div>
+            <Mainflex>
               <div className='Title-2'>
                 FASILITAS
               </div>
               <p className='Artikel-2'>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
-                et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-                aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
-                dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-                deserunt mollit anim id est laborum.
+                {dataTrip.fasilitas}
               </p>
-            </div>
-          </Content>
+            </Mainflex>
 
-          <div>
+          <Mainflex>
             <div className='Title-2'>
               NOTE :
             </div>
             <Boxnote>
               <MainNote>
-                1. nkasdnkkjandjkandk
-              </MainNote>
-              <MainNote>
-                2. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                3. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                4. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                5. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                6. nkasdnkkjandjkandk
-              </MainNote><MainNote>
-                7. nkasdnkkjandjkandk
+                {dataTrip.note}
               </MainNote>
             </Boxnote>
-          </div>
+          </Mainflex>
+          </Content>
 
         </div>
+        
       </>
   )
 }
+
+const Mainflex = styled.div`
+width: 40%
+`;
 
 const Title = styled.div`
   color: white;
@@ -149,7 +124,9 @@ const Boxnote = styled.div`
   Background-color: white;
   border-radius: 20px;
   padding: 10px;
-  margin-right: 900px; 
+  margin-right: 900px;
+  width:100%; 
+  height: 70% ;
 `;
 
 const MainNote = styled.p`

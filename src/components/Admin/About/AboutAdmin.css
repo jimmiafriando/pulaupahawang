@@ -9,6 +9,13 @@
     min-height: 80vh;
 
   }
+
+  .Background-adminAbout {
+    background: #4D4D4D;
+    padding: 20px 20px;
+    min-height: 50vh;
+
+  }
   
   .Title {
     padding-left: 50px;
@@ -62,8 +69,6 @@
 
   .main-image{
     cursor: pointer;
-    margin-top: 50px;
-    margin-left: 10px;
   }
 
   .main-image2{

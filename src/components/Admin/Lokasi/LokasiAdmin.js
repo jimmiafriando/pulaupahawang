@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import lokasi from '../../../images/Lokasi.svg';
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 import { Link } from 'react-router-dom';
 
 
 export default function Lokasi() {
   return(
     <>
+    <NavbarAdmin/>
       <div className='Background-admin'>
         <Cover>
           <img src={lokasi} alt="lokasi" />
