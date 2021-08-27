@@ -32,7 +32,7 @@ function Navbar() {
   return (
     <>
       <nav className='navbarAdmin'>
-        <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+        <Link to='/AboutAdmin' className='navbar-logo' onClick={closeMobileMenu}>
           <img src="assets/logowhite.png" alt="#"/>
         </Link>
         <div className='menu-icon' onClick={handleClick}>

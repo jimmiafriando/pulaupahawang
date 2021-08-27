@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import firebase, { storage } from '../../../config/firebase';
 import styled from 'styled-components';
 import remove from '../../../images/Remove.svg';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 // import { v4 as uuid } from 'uuid';
 
-export default function PaketTripAdmin(props) {
+export default function PaketPenginapanAdmin() {
   const [images, setImages] = useState([]);
   const [urls, setUrls] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -22,22 +22,6 @@ export default function PaketTripAdmin(props) {
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
 
-  const dataTrip = props.location.param1
-  useEffect(() => {
-    setName(dataTrip.name)
-    setCaption(dataTrip.caption)
-    setPeserta1(dataTrip.peserta1)
-    setPeserta2(dataTrip.peserta2)
-    setPeserta3(dataTrip.peserta3)
-    setPeserta4(dataTrip.peserta4)
-    setHarga1(dataTrip.harga1)
-    setHarga2(dataTrip.harga2)
-    setHarga3(dataTrip.harga3)
-    setHarga4(dataTrip.harga4)
-    setFasilitas(dataTrip.fasilitas)
-    setNote(dataTrip.note)
-  }, [dataTrip.caption, dataTrip.fasilitas, dataTrip.harga1, dataTrip.harga2, dataTrip.harga3, dataTrip.harga4, dataTrip.name, dataTrip.note, dataTrip.peserta1, dataTrip.peserta2, dataTrip.peserta3, dataTrip.peserta4])
-
   const handleChange = (e) => {
     for (let i = 0; i < e.target.files.length; i++) {
       const newImage = e.target.files[i];
@@ -46,12 +30,12 @@ export default function PaketTripAdmin(props) {
     }
   };
 
-  const saveTrip = () => {
+  const savePenginapan = () => {
     const promises = [];
     
     images.forEach((image) => {
       // const id = uuid();
-      const uploadTask = storage.ref(`imagesTrip/${image.name}`).put(image);
+      const uploadTask = storage.ref(`imagesPenginapan/${image.name}`).put(image);
       promises.push(uploadTask);
       uploadTask.on(
         "state_changed",
@@ -66,7 +50,7 @@ export default function PaketTripAdmin(props) {
         },
         async () => {
           await storage
-            .ref("imagesTrip")
+            .ref("imagesPenginapan")
             .child(image.name)
             .getDownloadURL()
             .then((urls) => {
@@ -81,7 +65,7 @@ export default function PaketTripAdmin(props) {
       .catch((err) => console.log(err));
 
 
-    const createRef = firebase.database().ref('Trip/');
+    const createRef = firebase.database().ref('Penginapan/');
     const create = {
       name,
       caption,
@@ -113,7 +97,7 @@ export default function PaketTripAdmin(props) {
   };
 
   const deleteImage = (id) => {
-    const uploadTask = storage.ref(`imagesTrip/`).child(id);
+    const uploadTask = storage.ref(`imagesPenginapan/`).child(id);
     uploadTask.delete().then(function() {
       // File deleted successfully
     }).catch(function(error) {
@@ -121,20 +105,23 @@ export default function PaketTripAdmin(props) {
     });
   };
 
+  console.log("images: ", images);
+  console.log("urls", urls);
+
   return(
       <>
       <NavbarAdmin/>
         <div className='Background-admin'>
           <Title>
-              Trip
+              Penginapan
           </Title>
         
         <MainInput>
-          <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Trip"/>
+          <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Penginapan"/>
         </MainInput>
         <Border>
               <div className='Title-3'>
-                Masukan Foto Wisata
+                Masukan Foto Penginapan
               </div>
               <Progress>
                 <progress value={progress} max="100" />
@@ -167,7 +154,7 @@ export default function PaketTripAdmin(props) {
           <Content>
             <div>
               <div className='Title-3'>
-                PAKET WISATA
+                PAKET PENGINAPAN
               </div>
               <Boxpaket>
                 <Content>
@@ -214,7 +201,7 @@ export default function PaketTripAdmin(props) {
             <form>
                 <Textarea3 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea3>
             </form>
-            <Button onClick={saveTrip}>
+            <Button onClick={savePenginapan}>
               UPLOAD
             </Button>
           </div>
@@ -223,6 +210,13 @@ export default function PaketTripAdmin(props) {
       </>
   )
 }
+
+
+
+// const ImgUp = styled.div`
+// display: flex;
+// margin: 20px 0px;
+// `;
 
 const Progress = styled.div`
 // background: blue;
@@ -425,24 +419,3 @@ const ButtonImg = styled.input`
     transition: all 0.3s ease-out;
   }
 `;
-
-// const ButtonImg2 = styled.button`
-//   margin: 10px 0px;
-//   padding: 10px 30px;
-//   border-radius: 20px;
-//   background: red;
-//   outline: none;
-//   border: none;
-//   cursor: pointer;
-//   color: white;
-//   font-weight: bold;
-//   &:hover {
-//     padding: 10px 30px;
-//     transition: all 0.3s ease-out;
-//     background-color: #F26A6A;
-//     color: white;
-//     border-radius: 20px;
-//     border: 0px solid var(--white);
-//     transition: all 0.3s ease-out;
-//   }
-// `;

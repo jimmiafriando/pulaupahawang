@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase, { storage } from '../../../config/firebase';
 import styled from 'styled-components';
 import remove from '../../../images/Remove.svg';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 // import { v4 as uuid } from 'uuid';
 
-export default function PaketPenginapanAdmin() {
+export default function PaketAdminAdmin(props) {
   const [images, setImages] = useState([]);
   const [urls, setUrls] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -22,6 +22,22 @@ export default function PaketPenginapanAdmin() {
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
 
+  const dataPenginapan = props.location.param1
+  useEffect(() => {
+    setName(dataPenginapan.name)
+    setCaption(dataPenginapan.caption)
+    setPeserta1(dataPenginapan.peserta1)
+    setPeserta2(dataPenginapan.peserta2)
+    setPeserta3(dataPenginapan.peserta3)
+    setPeserta4(dataPenginapan.peserta4)
+    setHarga1(dataPenginapan.harga1)
+    setHarga2(dataPenginapan.harga2)
+    setHarga3(dataPenginapan.harga3)
+    setHarga4(dataPenginapan.harga4)
+    setFasilitas(dataPenginapan.fasilitas)
+    setNote(dataPenginapan.note)
+  }, [dataPenginapan.caption, dataPenginapan.fasilitas, dataPenginapan.harga1, dataPenginapan.harga2, dataPenginapan.harga3, dataPenginapan.harga4, dataPenginapan.name, dataPenginapan.note, dataPenginapan.peserta1, dataPenginapan.peserta2, dataPenginapan.peserta3, dataPenginapan.peserta4])
+
   const handleChange = (e) => {
     for (let i = 0; i < e.target.files.length; i++) {
       const newImage = e.target.files[i];
@@ -33,7 +49,7 @@ export default function PaketPenginapanAdmin() {
   const savePenginapan = () => {
     const promises = [];
     
-    images.map((image) => {
+    images.forEach((image) => {
       // const id = uuid();
       const uploadTask = storage.ref(`imagesPenginapan/${image.name}`).put(image);
       promises.push(uploadTask);
@@ -105,8 +121,10 @@ export default function PaketPenginapanAdmin() {
     });
   };
 
-  console.log("images: ", images);
-  console.log("urls", urls);
+  // const deleteTrip = () => {
+  //   const TripRef = firebase.database().ref('Trip/').child(trip.id);
+  //   TripRef.remove();
+  // };
 
   return(
       <>
@@ -121,7 +139,7 @@ export default function PaketPenginapanAdmin() {
         </MainInput>
         <Border>
               <div className='Title-3'>
-                Masukan Foto Penginapan
+                Masukan Foto Wisata
               </div>
               <Progress>
                 <progress value={progress} max="100" />
@@ -154,7 +172,7 @@ export default function PaketPenginapanAdmin() {
           <Content>
             <div>
               <div className='Title-3'>
-                PAKET PENGINAPAN
+                PAKET WISATA
               </div>
               <Boxpaket>
                 <Content>
@@ -204,19 +222,15 @@ export default function PaketPenginapanAdmin() {
             <Button onClick={savePenginapan}>
               UPLOAD
             </Button>
+            {/* <Button onClick={deleteTrip}>
+              Delete
+            </Button> */}
           </div>
 
         </div>
       </>
   )
 }
-
-
-
-// const ImgUp = styled.div`
-// display: flex;
-// margin: 20px 0px;
-// `;
 
 const Progress = styled.div`
 // background: blue;

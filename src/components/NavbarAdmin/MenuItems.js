@@ -1,12 +1,12 @@
 export const MenuItems = [
   {
     title: 'Trip',
-    path: '/PaketTripAdmin',
+    path: '/TripAdmin',
     cName: 'dropdown-link'
   },
   {
     title: 'Penginapan',
-    path: '/PaketPenginapanAdmin',
+    path: '/PenginapanAdmin',
     cName: 'dropdown-link'
   }
 ];

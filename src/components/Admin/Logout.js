@@ -2,9 +2,15 @@ import React from 'react';
 import images from '../../images/logowhite.png';
 import styled from 'styled-components';
 import NavbarAdmin from '../../components/NavbarAdmin/NavbarAdmin';
+import firebase from '../../config/firebase';
 import { Link } from 'react-router-dom';
 
 export default function AdminLogout() {
+  const handleLogout = () => {
+    firebase.auth().signOut();
+    console.log('succeslog: ')
+  };
+
   return (
     <>
       <NavbarAdmin/>
@@ -15,7 +21,7 @@ export default function AdminLogout() {
             <Title>Hello admin!</Title> 
           <MainButton>
           <Link to='/Admin'>
-          <Button type="submit"> LOGOUT </Button>
+          <Button type="submit" onClick={handleLogout}> LOGOUT </Button>
           </Link>
           </MainButton>
 

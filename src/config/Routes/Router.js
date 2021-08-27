@@ -17,6 +17,8 @@ import NewAdmin from '../../components/Admin/NewAdmin';
 import LokasiAdmin from '../../components/Admin/Lokasi/LokasiAdmin';
 import LokasimapsAdmin from '../../components/Admin/Lokasi/LokasiMapsAdmin';
 import TripAdmin from '../../components/Admin/Trip/TripAdmin';
+import AddTripAdmin from '../../components/Admin/Trip/add-paketTrip';
+import AddPenginapanAdmin from '../../components/Admin/Penginapan/add-paketPenginapan';
 import PaketTripAdmin from '../../components/Admin/Trip/Paket-TripAdmin';
 import PenginapanAdmin from '../../components/Admin/Penginapan/PenginapanAdmin';
 import PaketPenginapanAdmin from '../../components/Admin/Penginapan/Paket-PenginapanAdmin';
@@ -46,8 +48,10 @@ export const Routers = () => {
             <Route path='/LokasiAdmin' component={LokasiAdmin} />
             <Route path='/LokasimapsAdmin' component={LokasimapsAdmin} />
             <Route path='/TripAdmin' component={TripAdmin} />
+            <Route path='/AddTripAdmin' component={AddTripAdmin} />
             <Route path='/PaketTripAdmin' component={PaketTripAdmin} />
             <Route path='/PenginapanAdmin' component={PenginapanAdmin} />
+            <Route path='/AddPenginapanAdmin' component={AddPenginapanAdmin} />
             <Route path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} />
             <Route path='/PemesananAdmin' component={PemesananAdmin} />
             <Route path='/AboutAdmin' component={AboutAdmin} />

@@ -1,62 +1,66 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import images from '../../images/logowhite.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import firebase from '../../config/firebase';
 import NavbarAdmin from '../../components/NavbarAdmin/NavbarAdmin';
 
-class AddAdmin extends Component {
-  state = {
-    email: '',
-    password: ''
+export default function AddAdmin() {
+  const [email, setEmail] = useState('');
+  const [password, setpassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const clearInputs= () => {
+    setEmail('');
+    setpassword('');
   }
 
-  handleChangeText = (e) => {
-    // console.log(e.target.id)
-    this.setState({
-      [e.target.id]:e.target.value,
-    })
+  const clearErrors = () => {
+
+    
+    setEmailError('');
+    setPasswordError('');
   }
 
-  handleRegisterSubmit = () => {
-    const {email, password} = this.state;
-      this.setState({
-        email:'',
-        password:''
-      })
-
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(res => {
-      console.log('success: ', res);
-    // Signed in
-    // var user = userCredential.user;
-    // console.log(user)
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode, errorMessage)
-  });
-  }
-
-  render() {
+  const handleRegister = () => {
+    clearErrors();
+    clearInputs();
+    firebase
+    .auth()
+    .createUserWithEmailAndPassword(email, password)
+    .catch(err => {
+      // eslint-disable-next-line default-case
+      switch(err.code){
+        case "auth/email-already-in-use":
+        case "auth/invalid-email":
+          setEmailError(err.message);
+          break;
+        case "auth/weak-password":
+          setPasswordError(err.message);
+          break;
+      }
+    });
+  };
   return (
     <>
     <NavbarAdmin/>
+    <div  className='error'> <p className='errorMsg'>{passwordError}</p></div>
+    <div  className='error'> <p className='errorMsg'>{emailError}</p></div>
     <div className='Background-admin'>
       <Form>
         <form>
             <Img src={images} alt="#"/>
             <Title>Add new admin</Title> 
           <MainButton>
-              <Input type="email" value={this.state.email} id="email" name="email" placeholder="USERNAME" onChange={this.handleChangeText}/>
+              <Input type="email" autoFocus required value={email} onChange={e => setEmail(e.target.value)} id="email"  placeholder="USERNAME"/>
           </MainButton>
           <MainButton>
-              <Input type="password" value={this.state.password} id="password" name="pwd" placeholder="PASSWORD" onChange={this.handleChangeText}/>
+              <Input type="password" required value={password} onChange={e => setpassword(e.target.value)} id="password"  placeholder="PASSWORD"/>
           </MainButton>
 
           <Link>
-          <Button type="submit" onClick={this.handleRegisterSubmit}> ADD ADMIN </Button>
+          <Button type="submit" onClick={handleRegister}> ADD ADMIN </Button>
           </Link>
           
         </form>
@@ -65,9 +69,6 @@ class AddAdmin extends Component {
     </>
   );
 }
-}
-
-export default AddAdmin;
 
 const Title = styled.div`
   color: white;

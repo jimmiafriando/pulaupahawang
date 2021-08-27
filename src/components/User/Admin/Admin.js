@@ -1,64 +1,74 @@
-import { Component } from 'react';
-import './Admin.css';
+import React, { useState } from 'react';
 import images from '../../../images/logowhite.png';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 import firebase from '../../../config/firebase';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
+import './Admin.css';
 
-class Admin extends Component {
-  state = {
-    email: '',
-    password: ''
+export default function Admin() {
+  const [email, setEmail] = useState('');
+  const [password, setpassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const history = useHistory();
+
+  const clearInputs= () => {
+    setEmail('');
+    setpassword('');
   }
 
-  handleChangeText = (e) => {
-    // console.log(e.target.id)
-    this.setState({
-      [e.target.id]:e.target.value,
-    })
+  const clearErrors = () => {
+    setEmailError('');
+    setPasswordError('');
   }
 
-  handleLoginSubmit = async () => {
-    const {email, password} = this.state;
-    const {history} = this.props;
-      this.setState({
-        email:'',
-        password:''
-      })
-      firebase.auth().signInWithEmailAndPassword(email, password)
-  .then(res => {
-    // Signed in
-    console.log('success: ', res);
-    history.push('/AboutAdmin')
-    // var user = userCredential.user;
-    // console.log(user)
-  })
-  .catch((error) => {
-    var errorCode = error.code;
-    var errorMessage = error.message;
-    console.log(errorCode, errorMessage)
-  });
-    }
+  const handleLogin = () => {
+    clearErrors();
+    clearInputs();
+    firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then( res =>{
+      console.log('succes: ',res)
+      history.push("/AboutAdmin")
+     })
+    .catch(err => {
+      switch(err.code){
+        case "auth/invalid-email":
+        case "auth/user-disabled":
+        case "auth/user-not-found":
+          setEmailError(err.message);
+          break;
+        case "auth/wrong-password":
+          setPasswordError(err.message);
+          break;
+          default:
+        // do nothing
+      }
+    });
+  };
 
-  render() {
   return (
     <>
     <NavbarUser/>
+    <div  className='error'> <p className='errorMsg'>{passwordError}</p></div>
+    <div  className='error'> <p className='errorMsg'>{emailError}</p></div>
     <div className='Background-admin'>
       <Form>
         <form>
             <Img src={images} alt="#"/>
             <Title>Welcome back!</Title> 
           <div>
-          <Input type="email" value={this.state.email} id="email" name="email" placeholder="USERNAME" onChange={this.handleChangeText}/>
+          <Input type="email" autoFocus required value={email} onChange={e => setEmail(e.target.value)} id="email" placeholder="USERNAME"/>
           </div>
           <div>
-          <Input type="password" value={this.state.password} id="password" name="pwd" placeholder="PASSWORD" onChange={this.handleChangeText}/>
+          <Input type="password" required value={password} onChange={e => setpassword(e.target.value)} id="password" placeholder="PASSWORD" />
           </div>
 
           <Link>
-          <Button type="submit" onClick={this.handleLoginSubmit}> LOGIN </Button>
+          <Button type="submit" onClick={handleLogin}> LOGIN </Button>
           </Link>
           
         </form>
@@ -66,10 +76,10 @@ class Admin extends Component {
     </div>
     </>
   );
-}
+// }
 }
 
-export default Admin;
+// export default Admin;
 
 
 const Title = styled.div`
@@ -103,8 +113,9 @@ const Input = styled.input`
   font-size: 11px;
   padding-right: 82px;
   outline: none;
+  border: 2px solid;
   &:focus{
-    border: 4px solid #6C63FF;
+    border: 2px solid #6C63FF;
   }
   &::-webkit-inner-spin-button,
   -webkit-outer-spin-button{

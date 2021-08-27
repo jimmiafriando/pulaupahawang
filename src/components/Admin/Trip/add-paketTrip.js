@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import firebase, { storage } from '../../../config/firebase';
 import styled from 'styled-components';
 import remove from '../../../images/Remove.svg';
@@ -21,22 +21,6 @@ export default function PaketTripAdmin(props) {
   const [harga4, setHarga4] = useState('');
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
-
-  const dataTrip = props.location.param1
-  useEffect(() => {
-    setName(dataTrip.name)
-    setCaption(dataTrip.caption)
-    setPeserta1(dataTrip.peserta1)
-    setPeserta2(dataTrip.peserta2)
-    setPeserta3(dataTrip.peserta3)
-    setPeserta4(dataTrip.peserta4)
-    setHarga1(dataTrip.harga1)
-    setHarga2(dataTrip.harga2)
-    setHarga3(dataTrip.harga3)
-    setHarga4(dataTrip.harga4)
-    setFasilitas(dataTrip.fasilitas)
-    setNote(dataTrip.note)
-  }, [dataTrip.caption, dataTrip.fasilitas, dataTrip.harga1, dataTrip.harga2, dataTrip.harga3, dataTrip.harga4, dataTrip.name, dataTrip.note, dataTrip.peserta1, dataTrip.peserta2, dataTrip.peserta3, dataTrip.peserta4])
 
   const handleChange = (e) => {
     for (let i = 0; i < e.target.files.length; i++) {
@@ -120,6 +104,9 @@ export default function PaketTripAdmin(props) {
       // Uh-oh, an error occurred!
     });
   };
+
+  console.log("images: ", images);
+  console.log("urls", urls);
 
   return(
       <>
@@ -223,6 +210,13 @@ export default function PaketTripAdmin(props) {
       </>
   )
 }
+
+
+
+// const ImgUp = styled.div`
+// display: flex;
+// margin: 20px 0px;
+// `;
 
 const Progress = styled.div`
 // background: blue;
@@ -425,24 +419,3 @@ const ButtonImg = styled.input`
     transition: all 0.3s ease-out;
   }
 `;
-
-// const ButtonImg2 = styled.button`
-//   margin: 10px 0px;
-//   padding: 10px 30px;
-//   border-radius: 20px;
-//   background: red;
-//   outline: none;
-//   border: none;
-//   cursor: pointer;
-//   color: white;
-//   font-weight: bold;
-//   &:hover {
-//     padding: 10px 30px;
-//     transition: all 0.3s ease-out;
-//     background-color: #F26A6A;
-//     color: white;
-//     border-radius: 20px;
-//     border: 0px solid var(--white);
-//     transition: all 0.3s ease-out;
-//   }
-// `;

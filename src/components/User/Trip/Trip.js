@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import './Trip.css'
 import Images from '../../../images/PaketTrip.jpg';
 import CardTripComp from '../../Card/Card';
 import { Link } from 'react-router-dom';
 import firebase from '../../../config/firebase';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
+import './Trip.css'
 
 
 
@@ -34,21 +34,19 @@ export default function Trip() {
       
         <Card>
     {dataTrip.map( (data) => {
-      const newTo = { 
+      const PaketTrip = { 
         pathname: "/PaketTrip", 
         param1: data
         };
       return (
         <>
-          <Link to={newTo} className='line-dec'>
+          <Link to={PaketTrip} className='line-dec'>
             <CardTripComp Title={data.name} Image={Images}/>
           </Link>
         </>
       )
     })
 }
-        
-        
         </Card>
 
       </div>

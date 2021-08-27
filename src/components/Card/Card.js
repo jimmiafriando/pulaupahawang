@@ -30,4 +30,9 @@ width: 180px;
 height: 180px;
 object-fit: cover;
 border-radius:40px;;
+&:hover {
+    transition: all 0.3s ease-out;
+    width: 185px;
+    height: 185px;
+  }
 `;
