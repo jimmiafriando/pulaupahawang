@@ -45,18 +45,22 @@ export default function AddAdmin() {
   return (
     <>
     <NavbarAdmin/>
-    <div  className='error'> <p className='errorMsg'>{passwordError}</p></div>
-    <div  className='error'> <p className='errorMsg'>{emailError}</p></div>
     <div className='Background-admin'>
       <Form>
         <form>
             <Img src={images} alt="#"/>
             <Title>Add new admin</Title> 
           <MainButton>
+            <div>
               <Input type="email" autoFocus required value={email} onChange={e => setEmail(e.target.value)} id="email"  placeholder="USERNAME"/>
+              <p className='errorMsg'>{emailError}</p>
+            </div>
           </MainButton>
           <MainButton>
+            <div>
               <Input type="password" required value={password} onChange={e => setpassword(e.target.value)} id="password"  placeholder="PASSWORD"/>
+              <p className='errorMsg'>{passwordError}</p>
+            </div>
           </MainButton>
 
           <Link>
@@ -102,11 +106,12 @@ align-items: center;
 const Input = styled.input`
   border: 2px solid black;
   border-radius: 20px;
-  margin-bottom: 10px;
+  margin-top: 5px;
   padding: 8px 8px;
   font-size: 11px;
   padding-right: 82px;
   outline: none;
+  border: 2px solid;
   &:focus{
     border: 2px solid #6C63FF;
   }
@@ -122,18 +127,18 @@ const Button = styled.button`
   border-radius: 20px;
   background: white;
   outline: none;
-  border:  1px solid;
+  border:  2px solid;
   cursor: pointer;
   color: black;
   font-weight: bold;
-  margin: 0px 8px;
+  margin: 10px 8px;
   &:hover {
     padding: 10px 90px;
     transition: all 0.3s ease-out;
     background-color: #6C63FF;
     color: white;
     border-radius: 20px;
-    border: 1px solid var(--white);
+    border: 2px solid var(--white);
     transition: all 0.3s ease-out;
   }
 `;

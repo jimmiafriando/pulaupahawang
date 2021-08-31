@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import firebase, { storage } from '../../../config/firebase';
 import styled from 'styled-components';
-import remove from '../../../images/Remove.svg';
+// import remove from '../../../images/Remove.svg';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 // import { v4 as uuid } from 'uuid';
 
@@ -112,15 +112,6 @@ export default function PaketTripAdmin(props) {
     createRef.push(create);
   };
 
-  const deleteImage = (id) => {
-    const uploadTask = storage.ref(`imagesTrip/`).child(id);
-    uploadTask.delete().then(function() {
-      // File deleted successfully
-    }).catch(function(error) {
-      // Uh-oh, an error occurred!
-    });
-  };
-
   return(
       <>
       <NavbarAdmin/>
@@ -153,9 +144,6 @@ export default function PaketTripAdmin(props) {
                     alt="firebase"
                     />
                     ))}
-                  {urls.map((id) => (
-                <img key={id} className='main-image' onClick={() => deleteImage(id)} src={remove} alt="refresh"/>
-                ))}
             </div>
           </Cover>
           </Border>

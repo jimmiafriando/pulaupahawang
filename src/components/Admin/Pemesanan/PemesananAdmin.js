@@ -8,6 +8,9 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 import { Link } from 'react-router-dom';
 import firebase from '../../../config/firebase';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
@@ -31,28 +34,45 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 700,
   },
-});
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    borderRadius: 10,
+    textAlign: 'center', 
+  },
+}));
 
 
 export default function CustomizedTables() {
   const classes = useStyles();
   const [pemesananList, setPemesananList] = useState([]);
-  const [syarat, setSyarat] = useState('Text...');
-  const [note, setNote] = useState('Text...');
+  const [catatanList, setCatatanList] = useState([]);
+  const [syarat, setSyarat] = useState('');
+  const [note, setNote] = useState('');
 
-  const createNote = () => {
-    const createRef = firebase.database().ref('pemesananAdmin/');
-    const create = {
+  const createNote = (catatanList) => {
+    console.log(catatanList)
+    console.log(syarat)
+    console.log(note)
+    console.log(catatanList.id)
+    const updateRef = firebase.database().ref('pemesananAdmin/').child(catatanList.id);
+    const update = {
       syarat,
       note
     };
-    setSyarat('')
-    setNote('')
-    createRef.push(create);
+    console.log(update)
+    updateRef.set(update);
   };
 
   useEffect(()=>{
@@ -65,8 +85,29 @@ export default function CustomizedTables() {
       }
       setPemesananList(pemesananList);
     });
+    const readCatatan = firebase.database().ref('pemesananAdmin/');
+    readCatatan.on('value', (snapshot)=>{
+      const catatan = snapshot.val();
+      const catatanList = [];
+      for (let id in catatan) {
+        catatanList.push({ id,...catatan[id] });
+      }
+      setCatatanList(...catatanList, catatanList);
+      console.log(catatanList)
+      setSyarat(catatanList[0].syarat)
+      setNote(catatanList[0].note)
+    });
   },[]);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <>
       <NavbarAdmin/>
@@ -114,8 +155,6 @@ export default function CustomizedTables() {
     </TableContainer>
 
     
-          
-        
     <Form>
         <div>
         
@@ -137,9 +176,29 @@ export default function CustomizedTables() {
           </form>
         </div>
       </Form>
-      <Button onClick={createNote}>
+      <Button onClick={() => { createNote(catatanList); handleOpen();}}>
         UPLOAD
       </Button>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">UPDATE BERHASIL!!!</h2>
+            <br/>
+            <p id="transition-modal-description">Silahkan Cek dihalaman pemesanan user</p>
+          </div>
+        </Fade>
+      </Modal>
     </div>
     </>
   );

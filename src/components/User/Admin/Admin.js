@@ -53,24 +53,23 @@ export default function Admin() {
   return (
     <>
     <NavbarUser/>
-    <div  className='error'> <p className='errorMsg'>{passwordError}</p></div>
-    <div  className='error'> <p className='errorMsg'>{emailError}</p></div>
     <div className='Background-admin'>
       <Form>
         <form>
             <Img src={images} alt="#"/>
             <Title>Welcome back!</Title> 
           <div>
-          <Input type="email" autoFocus required value={email} onChange={e => setEmail(e.target.value)} id="email" placeholder="USERNAME"/>
+            <Input type="email" autoFocus required value={email} onChange={e => setEmail(e.target.value)} id="email" placeholder="USERNAME"/>
           </div>
+            <p className='errorMsg'>{emailError}</p>
           <div>
-          <Input type="password" required value={password} onChange={e => setpassword(e.target.value)} id="password" placeholder="PASSWORD" />
+            <Input type="password" required value={password} onChange={e => setpassword(e.target.value)} id="password" placeholder="PASSWORD" />
           </div>
+            <p className='errorMsg'>{passwordError}</p>
 
           <Link>
           <Button type="submit" onClick={handleLogin}> LOGIN </Button>
           </Link>
-          
         </form>
       </Form>
     </div>
@@ -108,7 +107,7 @@ const Img = styled.img`
 const Input = styled.input`
   border: 2px solid black;
   border-radius: 20px;
-  margin-bottom: 10px;
+  margin-top: 5px;
   padding: 8px 8px;
   font-size: 11px;
   padding-right: 82px;
@@ -133,7 +132,7 @@ const Button = styled.button`
   cursor: pointer;
   color: black;
   font-weight: bold;
-  margin: 8px 8px;
+  margin: 10px 8px;
   &:hover {
     padding: 10px 90px;
     transition: all 0.3s ease-out;

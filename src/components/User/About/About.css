@@ -58,19 +58,12 @@
   text-align: justify;
 }
 
-.error{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .errorMsg{
   text-align: center;
-  position: fixed;
+  /* position: absolute; */
   color: white;
-  background-color: red;
-  font-size: 18px;
-  width: 40%;
-  top: 14%;
+  /* background-color: red; */
+  font-size: 11px;
+  width: 230px;
   border-radius: 10px;
 }
