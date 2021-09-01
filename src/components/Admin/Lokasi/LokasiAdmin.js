@@ -1,64 +1,199 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import firebase from '../../../config/firebase';
 import styled from 'styled-components';
-import lokasi from '../../../images/Lokasi.svg';
+// import lokasi from '../../../images/Lokasi.svg';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 
+const useStyles = makeStyles((theme) => ({
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+    borderRadius: 10,
+    textAlign: 'center',
+  },
+}));
 
 export default function Lokasi() {
+  const [lokasiList, setlokasiList] = useState('');
+  const [name, setName] = useState('');
+  const [caption, setCaption] = useState('Caption...');
+
+  const saveLokasi = () => {
+      const createRef = firebase.database().ref('lokasi/').child(lokasiList.id);
+      const create = {
+      name,
+      caption,
+    };
+    setName('')
+    setCaption('Caption...')
+    createRef.set(create);
+    };
+
+    useEffect(()=>{
+      const readLokasi = firebase.database().ref('lokasi/');
+      readLokasi.on('value', (snapshot)=>{
+        const lokasi = snapshot.val();
+        const lokasiList = [];
+        for (let id in lokasi) {
+          lokasiList.push({ id,...lokasi[id] });
+        }
+        setlokasiList(...lokasiList, lokasiList);
+        console.log(lokasiList)
+        setName(lokasiList[0].name)
+        setCaption(lokasiList[0].caption)
+      });
+    },[]);
+
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return(
     <>
     <NavbarAdmin/>
       <div className='Background-admin'>
-        <Cover>
-          <img src={lokasi} alt="lokasi" />
-          </Cover>
+      <Title>
+          Lokasi
+      </Title>
+        <Border>
+          <Input value={name} onChange={e => setName(e.target.value)} placeholder='Lokasi'/>
+          <Textarea value={caption} onChange={e => setCaption(e.target.value)}>
+         Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor
+         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+         exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
+         dolor in reprehenderit in  voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+         anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor
+         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+         exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
+         dolor in reprehenderit in  voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+         anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor
+         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
+         exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
+         dolor in reprehenderit in  voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit 
+         anim id est laborum.
+        </Textarea>
 
-          <Link to='/LokasimapsAdmin'>
-            <Button>
-              VIEW
-            </Button>
-          </Link>
-
-        <div className='Title'>
-          Lokasi Pulau Pahawang
-        </div>
-
-        <p className='Artikel'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-        exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-        exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-        exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
-        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-        exercitation ullamco laboris.
-        </p>
+          <Button onClick={() => {saveLokasi(lokasiList); handleOpen();}}>
+              UPDATE
+          </Button>
+        </Border>
+        <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <div className={classes.paper}>
+            <h2 id="transition-modal-title">UPDATE BERHASIL!!!</h2>
+            <br/>
+            <p id="transition-modal-description">Silahkan Cek dihalaman lokasi user</p>
+          </div>
+        </Fade>
+      </Modal>
 
         <div className='Maps'>
-          <Title>
+          <Header>
             Maps
-          </Title>
+          </Header>
           <div>
           BLABALBLBALBABBDABB
           NAPNDPANDPADNA
           MAL;D;AM;DAMD;AMD
           </div>
         </div>
-
+        <Link to='/LokasimapsAdmin'>
+            <Button>
+              VIEW
+            </Button>
+        </Link>
       </div>
     </>
   )
 }
 
-const Cover = styled.div`
-  padding-top: 20px;
-  display: flex;
-  justify-content: center;
-`; 
-
 const Title = styled.div`
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+`;
+
+const Input = styled.input`
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px 10%;
+  width: 30%;
+  outline: none;
+  &:focus{
+    border: 4px solid #6C63FF;
+  }
+  &::-webkit-inner-spin-button,
+  -webkit-outer-spin-button{
+    -webkit-appearance: none; 
+  margin: 0;
+  }
+`;
+
+const Textarea = styled.textarea`
+  margin: 0px 10%;
+  width: 80%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 10px;
+  outline:none;
+  background-color: white;
+  font-size: 16px;
+  resize: none;
+  &:focus{
+    border: 4px solid #6C63FF;
+  }
+`;
+
+const Border = styled.div`
+border: 2px solid white;
+border-radius: 30px;
+padding: 10px 0px;
+margin: 0px 100px
+`;
+
+// const Cover = styled.div`
+//   padding-top: 20px;
+//   display: flex;
+//   justify-content: center;
+// `; 
+
+const Header = styled.div`
   color: black;
   font-size: 30px;
   font-weight: bold;

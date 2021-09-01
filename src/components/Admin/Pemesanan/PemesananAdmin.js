@@ -115,7 +115,8 @@ export default function CustomizedTables() {
       <Title>
           PESANAN PAKET TOUR
       </Title>
-
+      <Border>
+      <MainTable>
       <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
@@ -153,7 +154,7 @@ export default function CustomizedTables() {
 </TableBody>
       </Table>
     </TableContainer>
-
+    </MainTable>
     
     <Form>
         <div>
@@ -199,10 +200,22 @@ export default function CustomizedTables() {
           </div>
         </Fade>
       </Modal>
+      </Border>
     </div>
     </>
   );
 }
+
+const MainTable = styled.div`
+  margin: 10px 50px;
+`;
+
+const Border = styled.div`
+border: 2px solid white;
+border-radius: 30px;
+padding: 10px 0px;
+margin: 0px 100px
+`;
 
 const Textarea2 = styled.textarea`
   margin: 20px 50px;
@@ -238,8 +251,6 @@ const Form = styled.div`
   display: flex;
   justify-content: center;
   `;
-  
-
 
 const Button = styled.button`
   margin: 5px 15%;

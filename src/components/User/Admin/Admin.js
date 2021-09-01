@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import firebase from '../../../config/firebase';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
-import './Admin.css';
 
 export default function Admin() {
   const [email, setEmail] = useState('');
@@ -124,7 +123,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  padding: 10px 90px;
+  padding: 10px 80px;
   border-radius: 20px;
   background: white;
   outline: none;
@@ -132,9 +131,9 @@ const Button = styled.button`
   cursor: pointer;
   color: black;
   font-weight: bold;
-  margin: 10px 8px;
+  margin: 10px 10px;
   &:hover {
-    padding: 10px 90px;
+    padding: 10px 80px;
     transition: all 0.3s ease-out;
     background-color: #6C63FF;
     color: white;

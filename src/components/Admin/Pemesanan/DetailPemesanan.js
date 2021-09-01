@@ -12,7 +12,7 @@ export default function DetailPemesanan(props) {
         <Title>
           DETAIL
         </Title>
-        <div>
+        <Border>
       <Form>
         <Formdata>
         <Dataleft>  
@@ -83,7 +83,7 @@ export default function DetailPemesanan(props) {
             {dataList.catatan}
         </Textarea>
     </form>
-      </div>
+      </Border>
     <Link to='/PemesananAdmin'>
       <Button>
         Accept
@@ -99,12 +99,17 @@ export default function DetailPemesanan(props) {
   )
 }
 
+const Border = styled.div`
+border: 2px solid white;
+border-radius: 30px;
+padding: 10px 0px;
+margin: 0px 100px
+`;
+
 const Button = styled.button`
-  position: relative;
   margin-top: 10px;
+  margin-left: 15%;
   left: 15%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
   padding: 10px 30px;
   border-radius: 20px;
   background: #19B200;
@@ -125,29 +130,26 @@ const Button = styled.button`
 `;
 
 const Button2 = styled.button`
-  position: relative;
-  margin-top: 10px;
-  margin-left: 20px;
-  left: 15%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
+margin-top:10px;
+margin-left: 1%;
+left: 15%;
+padding: 10px 30px;
+border-radius: 20px;
+background: red;
+outline: none;
+border: 1px solid;
+cursor: pointer;
+color: white;
+font-weight: bold;
+&:hover {
   padding: 10px 30px;
-  border-radius: 20px;
-  background: red;
-  outline: none;
-  border: 1px solid;
-  cursor: pointer;
+  transition: all 0.3s ease-out;
+  background-color: #F26A6A;
   color: white;
-  font-weight: bold;
-  &:hover {
-    padding: 10px 30px;
-    transition: all 0.3s ease-out;
-    background-color: #F26A6A;
-    color: white;
-    border-radius: 20px;
-    border: 1px solid var(--white);
-    transition: all 0.3s ease-out;
-  }
+  border-radius: 20px;
+  border: 1px solid var(--white);
+  transition: all 0.3s ease-out;
+}
 `;
 
 const Textarea = styled.div`
@@ -169,10 +171,10 @@ const Checkbox = styled.input`
 `;
 
 const Title = styled.div`
-  color: white;
+  color: black;
   font-size: 25px;
   font-weight: bold;
-  background-color: #6CA7FF;
+  background-color: white;
   text-align:center;
   margin: 20px 400px;
   padding: 3px 0px;

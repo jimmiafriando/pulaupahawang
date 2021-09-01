@@ -176,7 +176,7 @@
     display: block;
   }
 
-  button {
+  .btn {
     display: none;
   }
 }

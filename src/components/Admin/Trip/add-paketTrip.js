@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import firebase, { storage } from '../../../config/firebase';
 import styled from 'styled-components';
-import remove from '../../../images/Remove.svg';
+// import remove from '../../../images/Remove.svg';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
@@ -115,14 +115,14 @@ export default function PaketTripAdmin(props) {
     createRef.push(create);
   };
 
-  const deleteImage = (id) => {
-    const uploadTask = storage.ref(`imagesTrip/`).child(id);
-    uploadTask.delete().then(function() {
-      // File deleted successfully
-    }).catch(function(error) {
-      // Uh-oh, an error occurred!
-    });
-  };
+  // const deleteImage = (id) => {
+  //   const uploadTask = storage.ref(`imagesTrip/`).child(id);
+  //   uploadTask.delete().then(function() {
+  //     // File deleted successfully
+  //   }).catch(function(error) {
+  //     // Uh-oh, an error occurred!
+  //   });
+  // };
 
   console.log("images: ", images);
   console.log("urls", urls);
@@ -145,7 +145,7 @@ export default function PaketTripAdmin(props) {
           <Title>
               Trip
           </Title>
-        
+          <Border>        
         <MainInput>
           <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Trip"/>
         </MainInput>
@@ -170,9 +170,6 @@ export default function PaketTripAdmin(props) {
                     alt="firebase"
                     />
                     ))}
-                  {urls.map((id) => (
-                <img key={id} className='main-image' onClick={() => deleteImage(id)} src={remove} alt="refresh"/>
-                ))}
             </div>
           </Cover>
           </Border>
@@ -183,9 +180,9 @@ export default function PaketTripAdmin(props) {
 
           <Content>
             <div>
-              <div className='Title-3'>
+              <Header>
                 PAKET WISATA
-              </div>
+              </Header>
               <Boxpaket>
                 <Content>
                   <Paket>
@@ -215,54 +212,61 @@ export default function PaketTripAdmin(props) {
             </div>
 
             <div>
-              <div className='Title-3'>
+              <Header>
                 FASILITAS
-              </div>
+              </Header>
               <form>
                 <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} >Text...</Textarea2>
               </form>
             </div>
-          </Content>
 
           <div>
-            <div className='Title-3'>
+            <Header>
               NOTE :
-            </div>
+            </Header>
             <form>
                 <Textarea3 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea3>
             </form>
+          </div>
+          </Content>
+          </Border>
+
             <Button onClick={() => { saveTrip(); handleOpen();}}>
               UPLOAD
             </Button>
-            <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Add Trip Berhasil!!</h2>
-            <br/>
-            <p id="transition-modal-description">Semoga makin banyak pengunjungnya</p>
-          </div>
-        </Fade>
-      </Modal>
-          </div>
-          
 
-        </div>
+          <Modal
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              className={classes.modal}
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={open}>
+                <div className={classes.paper}>
+                  <h2 id="transition-modal-title">Add Trip Berhasil!!</h2>
+                  <br/>
+                  <p id="transition-modal-description">Semoga makin banyak pengunjungnya</p>
+                </div>
+              </Fade>
+            </Modal>
+      </div>
       </>
   )
 }
 
-
+const Header = styled.div`
+color: white;
+font-size: 20px;
+font-weight: bold;
+margin-left: 20%;
+margin-top: 10px;
+`;
 
 // const ImgUp = styled.div`
 // display: flex;
@@ -278,7 +282,7 @@ const Border = styled.div`
 border: 2px solid white;
 border-radius: 30px;
 padding: 10px 0px;
-margin: 0px 100px
+margin: 10px 100px
 `;
 
 const Peserta = styled.input`
@@ -338,6 +342,7 @@ const Content = styled.div`
 `;
 
 const Boxpaket = styled.div`
+  margin-left: 20%;
   Background-color: #105E8A;
   border-radius: 20px;
 `;
@@ -367,12 +372,12 @@ const Input = styled.input`
 `;
 
 const MainInput = styled.div`
-  margin-left: 15%;
+  margin-left: 10%;
   margin-top: 10px;
 `;
 
 const Textarea = styled.textarea`
-  margin: 20px 10%;
+  margin: 10px 10%;
   width: 80%;
   height: 150px;
   padding: 12px 20px;
@@ -389,8 +394,8 @@ const Textarea = styled.textarea`
 `;
 
 const Textarea2 = styled.textarea`
-  margin: 20px 5%;
-  width: 800px;
+  margin: 5px 5%;
+  width: 300px;
   height: 150px;
   padding: 12px 20px;
   box-sizing: border-box;
@@ -406,7 +411,7 @@ const Textarea2 = styled.textarea`
 `;
 
 const Textarea3 = styled.textarea`
-  margin: 20px 5%;
+  margin: 5px 5%;
   width: 400px;
   height: 150px;
   padding: 12px 20px;
@@ -423,13 +428,12 @@ const Textarea3 = styled.textarea`
 `;
 
 const Button = styled.button`
-  margin: 0;
   position: relative;
   top: 50%;
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  margin-top: 40px;
+  margin-top: 20px;
   padding: 10px 30px;
   border-radius: 20px;
   background: #19B200;
