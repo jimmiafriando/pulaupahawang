@@ -25,8 +25,15 @@ import PaketPenginapanAdmin from '../../components/Admin/Penginapan/Paket-Pengin
 import PemesananAdmin from '../../components/Admin/Pemesanan/PemesananAdmin';
 import AboutAdmin from '../../components/Admin/About/AboutAdmin';
 import DetailPemesanan from '../../components/Admin/Pemesanan/DetailPemesanan';
+import { useSelector } from 'react-redux';
+import ProtectedRoute from './ProtectedRoute';
 
 export const Routers = () => {
+  const auth = useSelector(state => state.authReducer.auth)
+  // useEffect(() => {
+  //  console.log("AUTHHH", auth)
+  // },)
+  // const [isAuth, setIsAuth] = useState (false);
     return (
         <Router>
             {/* user */}
@@ -39,23 +46,24 @@ export const Routers = () => {
             <Route path='/Penginapan' component={Penginapan} />
             <Route path='/PaketPenginapan' component={PaketPenginapan} />
             <Route path='/Pemesanan' component={Pemesanan} />
+            <Route path='/Admin' component={Admin} />
           </Switch>
           {/* admin */}
           <Switch>
-            <Route path='/Admin' component={Admin} />
-            <Route path='/AdminLogout' component={AdminLogout} />
-            <Route path='/NewAdmin' component={NewAdmin} />
-            <Route path='/LokasiAdmin' component={LokasiAdmin} />
-            <Route path='/LokasimapsAdmin' component={LokasimapsAdmin} />
-            <Route path='/TripAdmin' component={TripAdmin} />
-            <Route path='/AddTripAdmin' component={AddTripAdmin} />
-            <Route path='/PaketTripAdmin' component={PaketTripAdmin} />
-            <Route path='/PenginapanAdmin' component={PenginapanAdmin} />
-            <Route path='/AddPenginapanAdmin' component={AddPenginapanAdmin} />
-            <Route path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} />
-            <Route path='/PemesananAdmin' component={PemesananAdmin} />
-            <Route path='/AboutAdmin' component={AboutAdmin} />
-            <Route path='/DetailPemesanan' component={DetailPemesanan} />
+            <ProtectedRoute path='/AboutAdmin' component={AboutAdmin} isAuth={auth} />
+            {/* <Route path='/AboutAdmin' component={AboutAdmin} /> */}
+            <ProtectedRoute path='/LokasiAdmin' component={LokasiAdmin} isAuth={auth} />
+            <ProtectedRoute path='/AdminLogout' component={AdminLogout} isAuth={auth} />
+            <ProtectedRoute path='/NewAdmin' component={NewAdmin} isAuth={auth} />
+            <ProtectedRoute path='/LokasimapsAdmin' component={LokasimapsAdmin} isAuth={auth} />
+            <ProtectedRoute path='/TripAdmin' component={TripAdmin} isAuth={auth} />
+            <ProtectedRoute path='/AddTripAdmin' component={AddTripAdmin} isAuth={auth} />
+            <ProtectedRoute path='/PaketTripAdmin' component={PaketTripAdmin} isAuth={auth} />
+            <ProtectedRoute path='/PenginapanAdmin' component={PenginapanAdmin} isAuth={auth} />
+            <ProtectedRoute path='/AddPenginapanAdmin' component={AddPenginapanAdmin} isAuth={auth} />
+            <ProtectedRoute path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} isAuth={auth} />
+            <ProtectedRoute path='/PemesananAdmin' component={PemesananAdmin} isAuth={auth} />
+            <ProtectedRoute path='/DetailPemesanan' component={DetailPemesanan} isAuth={auth} />
             </Switch>
           </Router>
     )

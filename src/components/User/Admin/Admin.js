@@ -5,8 +5,11 @@ import { Link } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
 import firebase from '../../../config/firebase';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
+import {connect, useDispatch} from 'react-redux';
+import { setAuth } from '../../../config/redux/action/AuthAction';
 
-export default function Admin() {
+const Admin = () => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -31,6 +34,7 @@ export default function Admin() {
     .signInWithEmailAndPassword(email, password)
     .then( res =>{
       console.log('succes: ',res)
+      dispatch(setAuth(true))
       history.push("/AboutAdmin")
      })
     .catch(err => {
@@ -77,7 +81,11 @@ export default function Admin() {
 // }
 }
 
-// export default Admin;
+const mapStateToProps = state => ({
+  auth: state.authReducer.auth
+})
+
+export default connect(mapStateToProps, null)(Admin);
 
 
 const Title = styled.div`

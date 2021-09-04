@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import firebase, { storage } from '../../../config/firebase';
+import firebase from '../../../config/firebase';
 import styled from 'styled-components';
-// import remove from '../../../images/Remove.svg';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-// import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -25,9 +24,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default function PaketTripAdmin(props) {
-  const [images, setImages] = useState([]);
-  const [urls, setUrls] = useState([]);
-  const [progress, setProgress] = useState(0);
+  const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState([]);
   const [name, setName] = useState('');
   const [caption, setCaption] = useState('Caption...');
   const [peserta1, setPeserta1] = useState('');
@@ -42,47 +40,19 @@ export default function PaketTripAdmin(props) {
   const [note, setNote] = useState('text...');
 
   const handleChange = (e) => {
-    for (let i = 0; i < e.target.files.length; i++) {
-      const newImage = e.target.files[i];
-      newImage["id"] = Math.random();
-      setImages((prevState) => [...prevState, newImage]);
-    }
-  };
+    setFile(e.target.files[0]);
+};
 
-  const saveTrip = () => {
-    const promises = [];
-    
-    images.forEach((image) => {
-      // const id = uuid();
-      const uploadTask = storage.ref(`imagesTrip/${image.name}`).put(image);
-      promises.push(uploadTask);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgress(progress);
-        },
-        (error) => {
-          console.log(error);
-        },
-        async () => {
-          await storage
-            .ref("imagesTrip")
-            .child(image.name)
-            .getDownloadURL()
-            .then((urls) => {
-              setUrls((prevState) => [...prevState, urls]);
-            });
-        }
-      );
+  const saveTrip = async () => {
+    const id = uuid();
+    const storageRef = firebase.storage().ref('imagesTrip').child(id);
+    const imageRef = firebase.database().ref('Trip/').child('images').child(id);
+    await storageRef.put(file);
+    storageRef.getDownloadURL().then((url) => {
+      imageRef.set(url);
+      const newState = [...imageUrl, { id, url }];
+      setImageUrl(newState);
     });
-
-    Promise.all(promises)
-      .then(() => alert("All images uploaded"))
-      .catch((err) => console.log(err));
-
 
     const createRef = firebase.database().ref('Trip/');
     const create = {
@@ -115,18 +85,6 @@ export default function PaketTripAdmin(props) {
     createRef.push(create);
   };
 
-  // const deleteImage = (id) => {
-  //   const uploadTask = storage.ref(`imagesTrip/`).child(id);
-  //   uploadTask.delete().then(function() {
-  //     // File deleted successfully
-  //   }).catch(function(error) {
-  //     // Uh-oh, an error occurred!
-  //   });
-  // };
-
-  console.log("images: ", images);
-  console.log("urls", urls);
-
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -153,23 +111,20 @@ export default function PaketTripAdmin(props) {
               <div className='Title-3'>
                 Masukan Foto Wisata
               </div>
-              <Progress>
-                <progress value={progress} max="100" />
-              </Progress>
               <div>
                 <ButtonImg type="file" multiple onChange={handleChange} />
               </div>
 
           <Cover>
             <div>
-                  {urls.map((url, i) => (
-                <img
-                    key={i}
-                    style={{ width: "350px" }}
-                    src={url || "http://via.placeholder.com/300"}
-                    alt="firebase"
-                    />
-                    ))}
+            {imageUrl ? imageUrl.map(({ id, url }) => {
+            return (
+              <div key={id}>
+                <img src={url} alt="" />
+              </div>
+            );
+          })
+        : ''}
             </div>
           </Cover>
           </Border>
@@ -273,10 +228,10 @@ margin-top: 10px;
 // margin: 20px 0px;
 // `;
 
-const Progress = styled.div`
-// background: blue;
-margin-left: 50px;
-`;
+// const Progress = styled.div`
+// // background: blue;
+// margin-left: 50px;
+// `;
 
 const Border = styled.div`
 border: 2px solid white;

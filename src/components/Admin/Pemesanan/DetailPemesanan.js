@@ -55,19 +55,9 @@ export default function DetailPemesanan(props) {
           </div>
           <div>
             <Label>Waktu Liburan</Label>
-            <label>
-              <Checkbox/> 1 hari
-            </label>
-          </div>
-          <div>
-            <label>
-              <Checkbox type="checkbox" checked="checked" /> 2 hari 1 malam
-            </label>
-          </div>
-          <div>
-            <label>
-              <Checkbox /> 3 hari 2 malam
-            </label>
+            <Data>
+              {dataList.waktu}
+            </Data>
           </div>
           <div>
           <Label>Anak-anak (2th-5th) :</Label>
@@ -161,13 +151,6 @@ const Textarea = styled.div`
   border: 2px solid black;
   border-radius: 10px;
   background: white;
-`;
-
-const Checkbox = styled.input`
-  margin:5px 0px;
-  margin-left: 10px;
-  height: 15px;
-  width: 15px;
 `;
 
 const Title = styled.div`

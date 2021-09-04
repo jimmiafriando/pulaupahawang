@@ -145,19 +145,12 @@ return (
           </div>
           <div>
             <Label>Waktu Liburan</Label>
-            <label>
-              <Checkbox type="checkbox" /> 1 hari
-            </label>
-          </div>
-          <div>
-            <label>
-              <Checkbox type="checkbox" /> 2 hari 1 malam
-            </label>
-          </div>
-          <div>
-            <label>
-              <Checkbox type="checkbox" /> 3 hari 2 malam
-            </label>
+            <Select value={waktu} onChange={e => setWaktu(e.target.value)}>
+              <option>--</option>
+              <option>1 hari</option>
+              <option>2 hari 1 malam</option>
+              <option>3 hari 2 malam</option>
+            </Select>
           </div>
           <div>
           <Label>Anak-anak (2th-5th) :</Label>
@@ -244,13 +237,6 @@ const Textarea = styled.textarea`
   &:focus{
     border: 4px solid #6C63FF;
   }
-`;
-
-const Checkbox = styled.input`
-  margin:5px 0px;
-  margin-left: 10px;
-  height: 15px;
-  width: 15px;
 `;
 
 const Title = styled.div`

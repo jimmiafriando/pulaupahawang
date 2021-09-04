@@ -6,4 +6,4 @@ import firebase from './config/firebase';
 
 console.log('test-firebase ==> ',firebase);
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));

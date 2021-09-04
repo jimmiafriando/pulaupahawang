@@ -3,13 +3,26 @@ import firebase from '../../../config/firebase';
 import './About.css';
 import styled from 'styled-components';
 import cover from '../../../images/About.png';
-import images from '../../../images/About2.svg';
+// import images from '../../../images/About2.svg';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
+
 
 export default function About() {
   const [AboutList, setAboutList] = useState();
+  const [imageUrl, setImageUrl] = useState([]);
 
   useEffect(()=>{
+    const imageRef = firebase.database().ref('imagesDashboard');
+    imageRef.on('value', (snapshot) => {
+      const imageUrls = snapshot.val();
+      const urls = [];
+      for (let id in imageUrls) {
+        urls.push({ id, url: imageUrls[id] });
+      }
+      const newState = [...imageUrl, ...urls];
+      setImageUrl(newState);
+    },[]);
+
     const readAbout = firebase.database().ref('Dashboard/');
     readAbout.on('value', (snapshot)=>{
       const About = snapshot.val();
@@ -20,6 +33,7 @@ export default function About() {
       setAboutList(AboutList);
       console.log('about', AboutList)
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   return (
     <>
@@ -48,7 +62,14 @@ export default function About() {
         </p>
 
         <Images>
-          <img src={images} alt="images" />
+        {imageUrl ? imageUrl.map(({ id, url }) => {
+            return (
+              <div key={id}>
+                <Image src={url} alt="" />
+              </div>
+            );
+          })
+        : ''}
         </Images>
       </div>
 
@@ -111,6 +132,13 @@ export default function About() {
     </>
   );
 }
+const Image = styled.img`
+margin: 0px 10px;
+width: 350px;
+height: 250px;
+object-fit: cover;
+border-radius:40px;
+`;
 
 const Cover = styled.div`
   display: flex;
