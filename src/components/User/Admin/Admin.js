@@ -131,7 +131,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  padding: 10px 80px;
+  padding: 8px 80px;
   border-radius: 20px;
   background: white;
   outline: none;
@@ -139,9 +139,10 @@ const Button = styled.button`
   cursor: pointer;
   color: black;
   font-weight: bold;
-  margin: 10px 10px;
+  margin: 10px 0px;
+  margin-left: 15px;
   &:hover {
-    padding: 10px 80px;
+    padding: 8x 80px;
     transition: all 0.3s ease-out;
     background-color: #6C63FF;
     color: white;

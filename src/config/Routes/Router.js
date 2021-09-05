@@ -58,12 +58,12 @@ export const Routers = () => {
             <ProtectedRoute path='/LokasimapsAdmin' component={LokasimapsAdmin} isAuth={auth} />
             <ProtectedRoute path='/TripAdmin' component={TripAdmin} isAuth={auth} />
             <ProtectedRoute path='/AddTripAdmin' component={AddTripAdmin} isAuth={auth} />
-            <ProtectedRoute path='/PaketTripAdmin' component={PaketTripAdmin} isAuth={auth} />
+            <Route path='/PaketTripAdmin' component={PaketTripAdmin} isAuth={auth} />
             <ProtectedRoute path='/PenginapanAdmin' component={PenginapanAdmin} isAuth={auth} />
             <ProtectedRoute path='/AddPenginapanAdmin' component={AddPenginapanAdmin} isAuth={auth} />
-            <ProtectedRoute path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} isAuth={auth} />
+            <Route path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} isAuth={auth} />
             <ProtectedRoute path='/PemesananAdmin' component={PemesananAdmin} isAuth={auth} />
-            <ProtectedRoute path='/DetailPemesanan' component={DetailPemesanan} isAuth={auth} />
+            <Route path='/DetailPemesanan' component={DetailPemesanan} isAuth={auth} />
             </Switch>
           </Router>
     )

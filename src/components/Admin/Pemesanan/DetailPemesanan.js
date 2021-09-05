@@ -33,7 +33,7 @@ export default function DetailPemesanan(props) {
               {dataList.penginapan}
             </Select>
           </div>
-          <div>
+          <div> 
           <Label>Dewasa :</Label>
           <Data>
             {dataList.dewasa}
