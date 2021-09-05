@@ -21,3 +21,9 @@
     padding: 20px 0px;
     margin: 0px 380px; 
 }
+
+.leaflet-container{
+  height: 400px;
+  width: 80%;
+  z-index: 1;
+}
