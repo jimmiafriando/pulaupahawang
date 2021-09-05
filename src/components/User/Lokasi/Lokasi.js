@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Lokasi.css';
 import styled from 'styled-components';
 import lokasi from '../../../images/Lokasi.svg';
 import { Link } from 'react-router-dom';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
+import firebase from '../../../config/firebase';
 
 
 export default function Lokasi() {
+  const [LokasiList, setLokasiList] = useState();
+
+  useEffect(()=>{
+  const readLokasi = firebase.database().ref('lokasi/');
+    readLokasi.on('value', (snapshot)=>{
+      const Lokasi = snapshot.val();
+      const LokasiList = [];
+      for (let id in Lokasi) {
+        LokasiList.push(Lokasi[id]);
+      }
+      setLokasiList(LokasiList);
+      console.log('Lokasi', LokasiList)
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);
   return(
     <>
       <NavbarUser/>
+      {LokasiList ? LokasiList.map((data) => 
       <div className='Background-user'>
         <Cover>
           <img src={lokasi} alt="lokasi" />
@@ -22,11 +39,13 @@ export default function Lokasi() {
           </Link>
 
         <div className='Title'>
-          Lokasi Pulau Pahawang
+          {data.name}
+          {/* Lokasi Pulau Pahawang */}
         </div>
 
         <p className='Artikel'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
+          {data.caption}
+        {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
         exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
@@ -34,7 +53,7 @@ export default function Lokasi() {
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
         exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-        exercitation ullamco laboris.
+        exercitation ullamco laboris. */}
         </p>
 
         <div className='Maps'>
@@ -47,6 +66,7 @@ export default function Lokasi() {
         </div>
 
       </div>
+          ): ''}
     </>
   )
 }
