@@ -415,7 +415,7 @@ const Textarea2 = styled.textarea`
 
 const Textarea3 = styled.textarea`
   margin: 5px 5%;
-  width: 400px;
+  width: 300px;
   height: 150px;
   padding: 12px 20px;
   box-sizing: border-box;

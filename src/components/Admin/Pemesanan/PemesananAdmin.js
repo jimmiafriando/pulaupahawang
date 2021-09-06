@@ -159,18 +159,18 @@ export default function CustomizedTables() {
     <Form>
         <div>
         
-          <div className='Title-3'>
+          <Title2>
             SYARAT & KETENTUAN
-          </div>
+          </Title2>
           <form>
                 <Textarea2  value={syarat} onChange={e => setSyarat(e.target.value)} >Text...</Textarea2>
           </form>
         </div>
 
         <div>
-          <div className='Title-3'>
+          <Title2>
             NOTE
-          </div>
+          </Title2>
         
           <form>
                 <Textarea2 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea2>
@@ -232,6 +232,19 @@ const Textarea2 = styled.textarea`
   &:focus{
     border: 4px solid #6C63FF;
   }
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 300px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 200px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 100px;
+  }
 `;
 
 const Title = styled.div`
@@ -244,6 +257,47 @@ const Title = styled.div`
   margin-bottom: 20px;
   padding: 3px 0px;
   border-radius: 10px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    font-size: 20px;
+    margin: 0px 300px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    font-size: 17px;
+    margin: 0px 250px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    font-size: 17px;
+    margin: 0px 150px;
+  }
+`;
+
+const Title2 = styled.div`
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 50px;
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    font-size: 20px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    font-size: 15px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    font-size: 10px;
+  }
 `;
 
 const Form = styled.div`

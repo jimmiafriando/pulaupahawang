@@ -151,7 +151,7 @@ export default function About() {
         exercitation ullamco laboris.
         </Textarea>
 
-        <Border>
+        {/* <Border> */}
               <div className='Title-3'>
                 Masukan Foto Wisata
               </div>
@@ -170,7 +170,7 @@ export default function About() {
           })
         : ''}
           </Cover>
-        </Border>
+        {/* </Border> */}
 
         <Title2>
           Content 1
@@ -257,10 +257,26 @@ height: 3%;
 
 const Image = styled.img`
 margin: 0px 10px;
-width: 300px;
+width: 280px;
 height: 200px;
 object-fit: cover;
 border-radius:40px;
+
+// tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 230px;
+    height: 130px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 180px;
+    height: 100px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 120px;
+    height: 80px;
+  }
 `;
 
 const Title2 = styled.div`
@@ -283,6 +299,19 @@ border: 2px solid white;
 border-radius: 30px;
 padding: 10px 0px;
 margin: 0px 100px
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 80%
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 100%
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 100%
+  }
 `;
 
 const Button = styled.button`

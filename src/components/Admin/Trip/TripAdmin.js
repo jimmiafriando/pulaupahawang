@@ -89,6 +89,21 @@ const Addimage = styled.img`
     height: 175px;
     width: 185px;
   }
+    // tab-land // tablet landscape (900px - 1200px)
+    @media (min-width:901px) and (max-width:1200px) {
+      height: 130px;
+      width: 140px;
+    }
+    // tab-port // tablet portrait
+    @media (min-width:601px) and (max-width:900px) {
+      height: 100px;
+      width: 120px;
+    }
+    // phone
+    @media (min-width:0px) and (max-width:600px) {
+      height: 80px;
+      width: 90px;
+    }
 `;
 
 const Title = styled.div`
@@ -100,6 +115,24 @@ const Title = styled.div`
   margin: 0px 400px;
   padding: 3px 0px;
   border-radius: 10px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+    @media (min-width:901px) and (max-width:1200px) {
+      width: 400px;
+      font-size: 20px;
+    }
+    // tab-port // tablet portrait
+    @media (min-width:601px) and (max-width:900px) {
+      width: 300px;
+      font-size: 17px;
+      margin: 0px 100px;
+    }
+    // phone
+    @media (min-width:0px) and (max-width:600px) {
+      width: 250px;
+      font-size: 17px;
+      margin: 0px 150px;
+    }
 `;
 
 const Card = styled.div`

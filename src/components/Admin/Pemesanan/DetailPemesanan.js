@@ -162,6 +162,25 @@ const Title = styled.div`
   margin: 20px 400px;
   padding: 3px 0px;
   border-radius: 10px;
+  
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    font-size: 20px;
+    margin: 0px 300px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    font-size: 17px;
+    margin: 0px 250px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    font-size: 17px;
+    margin: 0px 150px;
+  }
 `;
 
 const Form = styled.div`

@@ -119,16 +119,14 @@ export default function Lokasi() {
         </Fade>
       </Modal>
 
-        <div className='Maps'>
+      <Maps>
           <Header>
             Maps
           </Header>
-          <div>
-          BLABALBLBALBABBDABB
-          NAPNDPANDPADNA
-          MAL;D;AM;DAMD;AMD
-          </div>
-        </div>
+          <a className="nav-links" href="https://www.google.com/maps/place/Pahawang+Lampung/@-5.6764277,105.2197723,14z/data=!4m5!3m4!1s0x2e41254c9ea15fff:0xf8ac19b08a31f54a!8m2!3d-5.6752009!4d105.226013" target="_blank" rel="noreferrer">
+          Pahawang Island, Pardasuka, Pringsewu Regency, Lampung 35453
+          </a>
+        </Maps>
         <Link to='/LokasimapsAdmin'>
             <Button>
               VIEW
@@ -138,6 +136,22 @@ export default function Lokasi() {
     </>
   )
 }
+
+const Maps = styled.div`
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 30px;
+  margin: 0px 200px;
+  margin-top: 20px;
+  padding: 10px 0px;
+  text-align: center;
+
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+  margin: 0px 50px;
+  width: 300px;
+  }
+`; 
 
 const Title = styled.div`
     color: white;

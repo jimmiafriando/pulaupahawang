@@ -21,15 +21,15 @@ export default function Lokasi() {
             />
               <Marker position={[-5.6764277,105.2197723]} icon={new Icon({iconUrl: markerIconPng, iconSize: [25, 41], iconAnchor: [12, 41]})}>
                 <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
+                  Lokasi penjemputan <br /> Pulau Pahawang.
                 </Popup>
               </Marker>
           </MapContainer>
         </Cover>
 
-        <p className='Lokasi-maps'>
+        <Title>
         Pulau Pahawang Kabupaten Pesawaran Lampung
-        </p>
+        </Title>
 
       </div>
     </>
@@ -42,3 +42,25 @@ const Cover = styled.div`
   display: flex;
   justify-content: center;
 `; 
+
+const Title = styled.p`
+  text-align: center;
+  color: white;
+  font-size: 30px;
+  font-weight: bold;
+  // padding: 20px 0px;
+  // margin: 0px 380px; 
+
+    // tab-land // tablet landscape (900px - 1200px)
+    @media (min-width:901px) and (max-width:1200px) {
+      font-size: 25px;
+    }
+    // tab-port // tablet portrait
+    @media (min-width:601px) and (max-width:900px) {
+      font-size: 20px;
+    }
+    // phone
+    @media (min-width:0px) and (max-width:600px) {
+      font-size: 20px;
+    }
+`;

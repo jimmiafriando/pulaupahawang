@@ -35,4 +35,20 @@ border-radius:40px;;
     width: 185px;
     height: 185px;
   }
+
+  // tab-land // tablet landscape (900px - 1200px)
+    @media (min-width:901px) and (max-width:1200px) {
+        width: 150px;
+        height: 150px;
+    }
+    // tab-port // tablet portrait
+    @media (min-width:601px) and (max-width:900px) {
+        width: 140px;
+        height: 140px;
+    }
+    // phone
+    @media (min-width:0px) and (max-width:600px) {
+        width: 100px;
+        height: 100px;
+    }
 `;

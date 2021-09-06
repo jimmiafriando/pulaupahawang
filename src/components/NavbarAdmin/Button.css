@@ -2,6 +2,18 @@
   --primary: #6C63FF;
 }
 
+.img{
+  cursor: pointer;
+  height: 40px;
+  width: 40px;
+}
+
+.img:hover{
+  transition: all 0.3s ease-out;
+  height: 45px;
+  width: 45px;
+}
+
 .btn {
   padding: 8px 20px;
   border-radius: 4px;

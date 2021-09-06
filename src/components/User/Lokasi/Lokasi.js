@@ -29,7 +29,7 @@ export default function Lokasi() {
       {LokasiList ? LokasiList.map((data) => 
       <div className='Background-user'>
         <Cover>
-          <img src={lokasi} alt="lokasi" />
+          <Coverimg src={lokasi} alt="lokasi" />
           </Cover>
 
           <Link to='/Lokasimaps'>
@@ -38,12 +38,12 @@ export default function Lokasi() {
             </Button>
           </Link>
 
-        <div className='Title'>
+        <Title2>
           {data.name}
           {/* Lokasi Pulau Pahawang */}
-        </div>
+        </Title2>
 
-        <p className='Artikel'>
+        <Artikel>
           {data.caption}
         {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
@@ -54,17 +54,17 @@ export default function Lokasi() {
         exercitation ullamco laboris .Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
         exercitation ullamco laboris. */}
-        </p>
+        </Artikel>
 
-        <div className='Maps'>
+        <Maps>
           <Title>
             Maps
           </Title>
-          <a href="https://www.google.com/maps/place/Pahawang+Lampung/@-5.6764277,105.2197723,14z/data=!4m5!3m4!1s0x2e41254c9ea15fff:0xf8ac19b08a31f54a!8m2!3d-5.6752009!4d105.226013" target="_blank" rel="noreferrer">
+          <a className="nav-links" href="https://www.google.com/maps/place/Pahawang+Lampung/@-5.6764277,105.2197723,14z/data=!4m5!3m4!1s0x2e41254c9ea15fff:0xf8ac19b08a31f54a!8m2!3d-5.6752009!4d105.226013" target="_blank" rel="noreferrer">
           Pahawang Island, Pardasuka, Pringsewu Regency, Lampung 35453
           </a>
-        </div>
-
+        </Maps>
+ 
       </div>
           ): ''}
     </>
@@ -77,11 +77,101 @@ const Cover = styled.div`
   justify-content: center;
 `; 
 
+const Maps = styled.div`
+  box-sizing: border-box;
+  background-color: white;
+  border-radius: 30px;
+  margin: 0px 200px;
+  margin-top: 20px;
+  padding: 10px 0px;
+  text-align: center;
+
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+  margin: 0px 50px;
+  width: 300px;
+  }
+`; 
+
+const Coverimg = styled.img`
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 70%;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 65%;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 50%;
+  }
+`;
+
 const Title = styled.div`
   color: black;
   font-size: 30px;
   font-weight: bold;
   padding-bottom: 10px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    font-size: 25px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    font-size: 20px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    font-size: 20px;
+  }
+`;
+
+const Title2 = styled.div`
+  padding-left: 50px;
+  color: white;
+  font-size: 50px;
+  font-weight: bold;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    font-size: 40px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    font-size: 30px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    font-size: 25px;
+  }
+`;
+
+const Artikel= styled.p`
+  padding: 0px 40px;
+  padding-top: 10px;
+  color: white;
+  font-size: 20px;
+  text-align: justify;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    font-size: 15px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    font-size: 15px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    font-size: 15px;
+  }
 `;
 
 const Button = styled.button`

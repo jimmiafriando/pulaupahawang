@@ -111,7 +111,8 @@ return (
             <Input value={number} onChange={e => setNumber(e.target.value)} type="number" id="#" name="#" placeholder="Telephone / Whatsapp"/>
           </div>
           <div>
-            <Label>Tujuan :</Label>
+            {/* <Label>Tujuan :</Label> */}
+            <Label>Trip : </Label>
             <Select value={wisata} onChange={e => setWisata(e.target.value)}>
               <option>--</option>
               <option >Pulau Pahawang</option>
@@ -120,6 +121,7 @@ return (
             </Select>
           </div>
           <div>
+            <Label>Penginapan :</Label>
             <Select value={penginapan} onChange={e => setPenginapan(e.target.value)}>
               <option>--</option>
               <option>Andreas Resort</option>
@@ -248,6 +250,25 @@ const Title = styled.div`
   margin: 0px 400px;
   padding: 3px 0px;
   border-radius: 10px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    font-size: 20px;
+    margin: 0px 300px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    font-size: 17px;
+    margin: 0px 250px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    font-size: 17px;
+    margin: 0px 150px;
+  }
 `;
 
 const Form = styled.div`
@@ -303,6 +324,12 @@ const Label2 = styled.p`
   font-size: 20px;
   padding-left: 100px;
   text-align: justify;
+
+    // phone
+    @media (min-width:0px) and (max-width:600px) {
+      width: 80%;
+      font-size: 17px;
+    }
 `;
 
 const Select = styled.select`
