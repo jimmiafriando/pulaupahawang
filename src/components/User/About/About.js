@@ -256,8 +256,8 @@ border-radius:40px;
   }
   // phone
   @media (min-width:0px) and (max-width:600px) {
-    width: 120px;
-    height: 80px;
+    width: 90px;
+    height: 50px;
   }
 `;
 

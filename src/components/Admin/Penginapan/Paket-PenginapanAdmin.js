@@ -175,14 +175,14 @@ export default function PaketAdminAdmin(props) {
                 PAKET WISATA
               </Header>
               <Boxpaket>
-                <Content>
+                <Content3>
                   <Paket>
                     PESERTA
                   </Paket>
                   <Paket>
                     HARGA
                   </Paket>
-                </Content>
+                </Content3>
                 <div>
                   <Peserta value={peserta1} onChange={e => setPeserta1(e.target.value)} type="number"  placeholder="2"/>
                   <Harga value={harga1} onChange={e => setHarga1(e.target.value)} type="number"  placeholder="Rp.500.000"/>
@@ -201,7 +201,7 @@ export default function PaketAdminAdmin(props) {
                 </div>
               </Boxpaket>
             </div>
-
+          <Content2>
             <div>
               <Header>
                 FASILITAS
@@ -218,6 +218,7 @@ export default function PaketAdminAdmin(props) {
                 <Textarea3 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea3>
             </form>
           </div>
+          </Content2>
           </Content>
 
             </Border>
@@ -238,6 +239,19 @@ font-size: 20px;
 font-weight: bold;
 margin-left: 20%;
 margin-top: 10px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    font-size: 20px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    font-size: 15px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    font-size: 15px;
+  }
 `;
 
 const Progress = styled.div`
@@ -249,7 +263,25 @@ const Border = styled.div`
 border: 2px solid white;
 border-radius: 30px;
 padding: 10px 0px;
-margin: 10px 100px
+margin: 10px 100px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+@media (min-width:901px) and (max-width:1200px) {
+  margin: 0px 0px;
+
+}
+// tab-port // tablet portrait
+@media (min-width:601px) and (max-width:900px) {
+  width: 100%;
+  margin: 0px 0px;
+  border: none;
+}
+// phone
+@media (min-width:0px) and (max-width:600px) {
+  width: 100%;
+  border: none;
+  margin: 0px 0px;
+}
 `;
 
 const Peserta = styled.input`
@@ -295,6 +327,25 @@ const Title = styled.div`
   margin: 0px 400px;
   padding: 3px 0px;
   border-radius: 10px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    font-size: 20px;
+    margin: 0px 300px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    font-size: 17px;
+    margin: 0px 250px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 150px;
+    font-size: 17px;
+    margin: 0px 100px;
+  }
 `;
 
 const Cover = styled.div`
@@ -306,19 +357,83 @@ const Cover = styled.div`
 
 const Content = styled.div`
   display: flex;
+  
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    display: contents;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    display: contents;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    display: contents;
+  } 
+`;
+
+const Content2 = styled.div`
+  display: flex;
+  
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    display: flex;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    display: flex;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    display: flex;
+  } 
+`;
+
+const Content3 = styled.div`
+  display: flex;
 `;
 
 const Boxpaket = styled.div`
   margin-left: 20%;
   Background-color: #105E8A;
   border-radius: 20px;
+
+    // tab-land // tablet landscape (900px - 1200px)
+    @media (min-width:901px) and (max-width:1200px) {
+      width: 50%;
+      margin-left: 10%;
+    }
+    // tab-port // tablet portrait
+    @media (min-width:601px) and (max-width:900px) {
+      width: 60%;
+      margin-left: 10%;
+    }
+    // phone
+    @media (min-width:0px) and (max-width:600px) {
+      width: 80%;
+      margin-left: 10%;
+    } 
 `;
 
 const Paket = styled.div`
-  color: white;
-  font-size: 20px;
-  padding: 10px 40px;
-  text-align: center;
+color: white;
+font-size: 20px;
+padding: 10px 40px;
+text-align: center;
+
+// tab-land // tablet landscape (900px - 1200px)
+    @media (min-width:901px) and (max-width:1200px) {
+      font-size: 15px;
+    }
+    // tab-port // tablet portrait
+    @media (min-width:601px) and (max-width:900px) {
+      font-size: 15px;
+    }
+    // phone
+    @media (min-width:0px) and (max-width:600px) {
+      font-size: 10px;
+
+    }
 `;
 
 const Input = styled.input`
@@ -375,6 +490,22 @@ const Textarea2 = styled.textarea`
   &:focus{
     border: 4px solid #6C63FF;
   }
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 300px;
+    margin: 5px 70px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    margin: 5px 10px;
+    width: 250px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    margin: 5px 0px;
+    width: 200px;
+  }
 `;
 
 const Textarea3 = styled.textarea`
@@ -392,7 +523,21 @@ const Textarea3 = styled.textarea`
   &:focus{
     border: 4px solid #6C63FF;
   }
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 300px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 150px;
+  }
 `;
+
 
 const Button = styled.button`
   position: relative;

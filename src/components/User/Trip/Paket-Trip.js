@@ -257,7 +257,7 @@ const Boxpaket = styled.div`
       }
       // phone
       @media (min-width:0px) and (max-width:600px) {
-        width: 50%;
+        width: 70%;
       }
 `;
 

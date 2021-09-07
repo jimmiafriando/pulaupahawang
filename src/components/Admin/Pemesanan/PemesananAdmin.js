@@ -214,7 +214,26 @@ const Border = styled.div`
 border: 2px solid white;
 border-radius: 30px;
 padding: 10px 0px;
-margin: 0px 100px
+margin: 10px 100px;
+
+// tab-land // tablet landscape (900px - 1200px)
+@media (min-width:901px) and (max-width:1200px) {
+  width: 100%;
+  margin: 0px 0px;
+
+}
+// tab-port // tablet portrait
+@media (min-width:601px) and (max-width:900px) {
+  width: 100%;
+  margin: 0px 0px;
+  border: none;
+}
+// phone
+@media (min-width:0px) and (max-width:600px) {
+  width: 100%;
+  border: none;
+  margin: 0px 0px;
+}
 `;
 
 const Textarea2 = styled.textarea`
@@ -243,7 +262,8 @@ const Textarea2 = styled.textarea`
   }
   // phone
   @media (min-width:0px) and (max-width:600px) {
-    width: 100px;
+  margin: 20px 10px;
+    width: 200px;
   }
 `;
 
