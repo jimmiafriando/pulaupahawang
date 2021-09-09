@@ -207,6 +207,7 @@ const Imgslide = styled.img`
 
 const Content = styled.div`
   display: flex;
+  margin: 0px 150px;
   
   // tab-land // tablet landscape (900px - 1200px)
   @media (min-width:901px) and (max-width:1200px) {
@@ -287,19 +288,18 @@ const Boxnote = styled.div`
   border-radius: 20px;
   padding: 10px;
   width: 100%; 
-  height: 85% ;
   
   // tab-land // tablet landscape (900px - 1200px)
   @media (min-width:901px) and (max-width:1200px) {
-    height: 70% ;
+    height: 50% ;
   }
   // tab-port // tablet portrait
   @media (min-width:601px) and (max-width:900px) {
-    height: 80% ;
+    height: 50% ;
   }
   // phone
   @media (min-width:0px) and (max-width:600px) {
-    height: 90% ;
+    height: 50% ;
   }
 `;
 

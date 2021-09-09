@@ -33,7 +33,7 @@ export default function Penginapan() {
         <Card>
         {dataPenginapan.map( (data) => {
       const penginapan = { 
-        pathname: "/PaketTrip", 
+        pathname: "/PaketPenginapan", 
         param1: data
         };
       return (

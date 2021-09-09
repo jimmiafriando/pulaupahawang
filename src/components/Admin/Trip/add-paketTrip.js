@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import CurrencyFormat from 'react-currency-format';
 import { v4 as uuid } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,7 @@ export default function PaketTripAdmin(props) {
   const [harga4, setHarga4] = useState('');
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
+  
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
@@ -82,6 +84,7 @@ export default function PaketTripAdmin(props) {
     setFasilitas('text...')
     setNote('text...')
 
+    console.log(create);
     createRef.push(create);
   };
 
@@ -149,19 +152,19 @@ export default function PaketTripAdmin(props) {
                 </Content3>
                 <div>
                   <Peserta value={peserta1} onChange={e => setPeserta1(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga1} onChange={e => setHarga1(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <CurrencyFormat className='harga' value={harga1} onChange={e => setHarga1(e.target.value)} displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'} />
                 </div>
                 <div>
                   <Peserta value={peserta2} onChange={e => setPeserta2(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga2} onChange={e => setHarga2(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <CurrencyFormat className='harga' value={harga2} onChange={e => setHarga2(e.target.value)} displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'} />
                 </div>
                 <div>
                   <Peserta value={peserta3} onChange={e => setPeserta3(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga3} onChange={e => setHarga3(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <CurrencyFormat className='harga' value={harga3} onChange={e => setHarga3(e.target.value)} displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'} />
                 </div>
                 <div>
                   <Peserta value={peserta4} onChange={e => setPeserta4(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga4} onChange={e => setHarga4(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <CurrencyFormat className='harga' value={harga4} onChange={e => setHarga4(e.target.value)} displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'} />
                 </div>
               </Boxpaket>
             </div>
@@ -276,22 +279,22 @@ margin: 0;
 }
 `;
 
-const Harga = styled.input`
-border: 2px solid black;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin: 5px 20px;
-  width: 30%;
-  outline: none;
-  &:focus{
-    border: 2px solid #6C63FF;
-  }
-  &::-webkit-inner-spin-button,
-  -webkit-outer-spin-button{
-    -webkit-appearance: none; 
-  margin: 0;
-  }
-`;
+// const Harga = styled.input`
+// border: 2px solid black;
+//   border-radius: 10px;
+//   padding: 5px 10px;
+//   margin: 5px 20px;
+//   width: 30%;
+//   outline: none;
+//   &:focus{
+//     border: 2px solid #6C63FF;
+//   }
+//   &::-webkit-inner-spin-button,
+//   -webkit-outer-spin-button{
+//     -webkit-appearance: none; 
+//   margin: 0;
+//   }
+// `;
 
 const Title = styled.div`
   color: white;

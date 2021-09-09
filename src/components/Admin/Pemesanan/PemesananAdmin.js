@@ -93,7 +93,7 @@ export default function CustomizedTables() {
         catatanList.push({ id,...catatan[id] });
       }
       setCatatanList(...catatanList, catatanList);
-      console.log(catatanList)
+      console.log('pemesanan', catatanList)
       setSyarat(catatanList[0].syarat)
       setNote(catatanList[0].note)
     });
@@ -238,7 +238,7 @@ margin: 10px 100px;
 
 const Textarea2 = styled.textarea`
   margin: 20px 50px;
-  width: 500px;
+  width: 400px;
   height: 150px;
   padding: 12px 20px;
   box-sizing: border-box;
