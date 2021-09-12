@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import firebase, { storage } from '../../../config/firebase';
+import firebase from '../../../config/firebase';
 import styled from 'styled-components';
-// import remove from '../../../images/Remove.svg';
+import remove from '../../../images/delete.png';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
-// import { v4 as uuid } from 'uuid';
+import CurrencyFormat from 'react-currency-format';
+import { v4 as uuid } from 'uuid';
 
-export default function PaketTripAdmin(props) {
-  const [images, setImages] = useState([]);
-  const [urls, setUrls] = useState([]);
-  const [progress, setProgress] = useState(0);
+export default function PaketTripAdmin({match}) {
+  // eslint-disable-next-line no-unused-vars
+  const [_, setImages] = useState({});
+  const [imageUrl, setImageUrl] = useState('');
   const [name, setName] = useState('');
   const [caption, setCaption] = useState('Caption...');
   const [peserta1, setPeserta1] = useState('');
@@ -21,8 +22,66 @@ export default function PaketTripAdmin(props) {
   const [harga4, setHarga4] = useState('');
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
+  const [dataTrip, setDataTrip] = useState({})
+  const [updateTrip] = useState([]);
+  const [file, setFile] = useState(null);
 
-  const dataTrip = props.location.param1
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+};
+
+  const update = async () => {
+    const id = uuid();
+    const storageRef = firebase.storage().ref('imagesTrip').child(id);
+    await storageRef.put(file);
+    const downloadUrl = await storageRef.getDownloadURL(); 
+    const newState = [...imageUrl, { id, url: downloadUrl }];
+    setImageUrl(newState);
+
+    const batchId = match.params.id;
+    const updateRef = firebase.database().ref('Trip').child(batchId);
+    const update = {
+      name,
+      caption,
+      peserta1,
+      peserta2,
+      peserta3,
+      peserta4,
+      harga1,
+      harga2,
+      harga3,
+      harga4,
+      fasilitas,
+      note,
+      image: {
+        [id] : downloadUrl
+      }
+    };
+    console.log(update)
+    updateRef.set(update);
+  };
+
+  useEffect(() => {
+    const id = match.params.id;
+    console.log(id);
+    const readTrip = firebase.database().ref('Trip').child(id);
+    readTrip.on('value', snapshot=>{
+      const dataTrip = snapshot.val();
+      setDataTrip(dataTrip);
+      console.log('trip', dataTrip);
+    })
+
+    const imageRef = firebase.database().ref('Trip').child(id);
+    imageRef.on('value', (snapshot) => {
+      const val = snapshot.val()
+      const images = [];
+      const ids = !!val.image ? Object.keys(val.image) : []
+      ids.forEach((e) => images.push({id: e, url: val.image[e]}))
+      setImageUrl(images);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   useEffect(() => {
     setName(dataTrip.name)
     setCaption(dataTrip.caption)
@@ -36,80 +95,15 @@ export default function PaketTripAdmin(props) {
     setHarga4(dataTrip.harga4)
     setFasilitas(dataTrip.fasilitas)
     setNote(dataTrip.note)
-  }, [dataTrip.caption, dataTrip.fasilitas, dataTrip.harga1, dataTrip.harga2, dataTrip.harga3, dataTrip.harga4, dataTrip.name, dataTrip.note, dataTrip.peserta1, dataTrip.peserta2, dataTrip.peserta3, dataTrip.peserta4])
+  }, [dataTrip])
 
-  const handleChange = (e) => {
-    for (let i = 0; i < e.target.files.length; i++) {
-      const newImage = e.target.files[i];
-      newImage["id"] = Math.random();
-      setImages((prevState) => [...prevState, newImage]);
-    }
-  };
-
-  const saveTrip = () => {
-    const promises = [];
-    
-    images.forEach((image) => {
-      // const id = uuid();
-      const uploadTask = storage.ref(`imagesTrip/${image.name}`).put(image);
-      promises.push(uploadTask);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgress(progress);
-        },
-        (error) => {
-          console.log(error);
-        },
-        async () => {
-          await storage
-            .ref("imagesTrip")
-            .child(image.name)
-            .getDownloadURL()
-            .then((urls) => {
-              setUrls((prevState) => [...prevState, urls]);
-            });
-        }
-      );
+  const deleteImage = (id) => {
+    const batchId = match.params.id;
+    const storageRef = firebase.storage().ref('imagesTrip').child(id);
+    const imageRef = firebase.database().ref(`Trip/${batchId}/image`).child(id);
+    storageRef.delete().then(() => {
+      imageRef.remove();  
     });
-
-    Promise.all(promises)
-      .then(() => alert("All images uploaded"))
-      .catch((err) => console.log(err));
-
-
-    const createRef = firebase.database().ref('Trip/');
-    const create = {
-      name,
-      caption,
-      peserta1,
-      peserta2,
-      peserta3,
-      peserta4,
-      harga1,
-      harga2,
-      harga3,
-      harga4,
-      fasilitas,
-      note
-    };
-    setName('')
-    setCaption('Caption...')
-    setPeserta1('')
-    setPeserta2('')
-    setPeserta3('')
-    setPeserta4('')
-    setHarga1('')
-    setHarga2('')
-    setHarga3('')
-    setHarga4('')
-    setFasilitas('text...')
-    setNote('text...')
-
-    createRef.push(create);
   };
 
   return(
@@ -127,28 +121,26 @@ export default function PaketTripAdmin(props) {
               <div className='Title-3'>
                 Masukan Foto Wisata
               </div>
-              <Progress>
-                <progress value={progress} max="100" />
-              </Progress>
               <div>
-                <ButtonImg type="file" multiple onChange={handleChange} />
+                <ButtonImg type="file" onChange={handleChange}/>
               </div>
-            </Border>
           <Cover>
             <div>
-                  {urls.map((url, i) => (
-                <img
-                    key={i}
-                    style={{ width: "350px" }}
-                    src={url || "http://via.placeholder.com/300"}
-                    alt="firebase"
-                    />
-                    ))}
+            {imageUrl ? imageUrl.map(({ id, url }) => {
+            return (
+              <div key={id}>
+                <Imgdelete src={remove} onClick={() => deleteImage(id)} alt=""/>
+                <Image src={url} alt="" />
+              </div>
+            );
+          })
+        : ''}
             </div>
           </Cover>
+            </Border>
 
           <form>
-            <Textarea value={caption} onChange={e => setCaption(e.target.value)}>Caption...</Textarea>
+            <Textarea value={caption} onChange={e => setCaption(e.target.value)} maxLength='900'>Caption...</Textarea>
           </form>
 
           <Content>
@@ -166,20 +158,20 @@ export default function PaketTripAdmin(props) {
                   </Paket>
                 </Content3>
                 <div>
-                  <Peserta value={peserta1} onChange={e => setPeserta1(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga1} onChange={e => setHarga1(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta1} onChange={e => setPeserta1(e.target.value)} placeholder="2" maxLength='1'/>
+                  <CurrencyFormat className='harga' value={harga1} onChange={e => setHarga1(e.target.value)} displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'}/>
                 </div>
                 <div>
-                  <Peserta value={peserta2} onChange={e => setPeserta2(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga2} onChange={e => setHarga2(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta2} onChange={e => setPeserta2(e.target.value)} placeholder="2" maxLength='1'/>
+                  <CurrencyFormat className='harga' value={harga2} onChange={e => setHarga2(e.target.value)}  displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'}/>
                 </div>
                 <div>
-                  <Peserta value={peserta3} onChange={e => setPeserta3(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga3} onChange={e => setHarga3(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta3} onChange={e => setPeserta3(e.target.value)} placeholder="2" maxLength='1'/>
+                  <CurrencyFormat className='harga' value={harga3} onChange={e => setHarga3(e.target.value)}  displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'}/>
                 </div>
                 <div>
-                  <Peserta value={peserta4} onChange={e => setPeserta4(e.target.value)} type="number"  placeholder="2"/>
-                  <Harga value={harga4} onChange={e => setHarga4(e.target.value)} type="number"  placeholder="Rp.500.000"/>
+                  <Peserta value={peserta4} onChange={e => setPeserta4(e.target.value)} type="number"  placeholder="2" maxLength='1'/>
+                  <CurrencyFormat className='harga' value={harga4} onChange={e => setHarga4(e.target.value)}  displayType='number' placeholder="Rp.500.000" thousandSeparator={true} prefix={'Rp'}/>
                 </div>
               </Boxpaket>
             </div>
@@ -190,7 +182,7 @@ export default function PaketTripAdmin(props) {
                 FASILITAS :
               </Header>
               <form>
-                <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} >Text...</Textarea2>
+                <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} maxLength='345' >Text...</Textarea2>
               </form>
             </div>
             
@@ -199,7 +191,7 @@ export default function PaketTripAdmin(props) {
               NOTE :
             </Header>
             <form>
-                <Textarea3 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea3>
+                <Textarea3 value={note} onChange={e => setNote(e.target.value)} maxLength='220' >Text...</Textarea3>
             </form>
             </div>
             </Content2>
@@ -207,14 +199,49 @@ export default function PaketTripAdmin(props) {
           </Border>
 
           <div>
-            <Button onClick={saveTrip}>
-              UPLOAD
+            <Button onClick={() => { update(updateTrip)}}>
+              UPDATE
             </Button>
           </div>
         </div>
       </>
   )
 }
+
+const Imgdelete = styled.img`
+cursor: pointer;
+position: absolute;
+padding-left: 10px;
+height: 3%;
+&:hover {
+  transition: all 0.3s ease-out;
+  height:4%;
+}
+`;
+
+const Image = styled.img`
+margin: 0px 10px;
+width: 250px;
+height: 200px;
+object-fit: cover;
+border-radius:40px;
+
+// tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 200px;
+    height: 130px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 150px;
+    height: 100px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 120px;
+    height: 80px;
+  }
+`;
 
 const Header = styled.div`
 color: white;
@@ -263,10 +290,10 @@ margin: 10px 100px;
 }
 `;
 
-const Progress = styled.div`
-// background: blue;
-margin-left: 50px;
-`;
+// const Progress = styled.div`
+// // background: blue;
+// margin-left: 50px;
+// `;
 
 const Peserta = styled.input`
 border: 2px solid black;
@@ -285,22 +312,22 @@ margin: 0;
 }
 `;
 
-const Harga = styled.input`
-border: 2px solid black;
-  border-radius: 10px;
-  padding: 5px 10px;
-  margin: 5px 20px;
-  width: 30%;
-  outline: none;
-  &:focus{
-    border: 2px solid #6C63FF;
-  }
-  &::-webkit-inner-spin-button,
-  -webkit-outer-spin-button{
-    -webkit-appearance: none; 
-  margin: 0;
-  }
-`;
+// const Harga = styled.input`
+// border: 2px solid black;
+//   border-radius: 10px;
+//   padding: 5px 10px;
+//   margin: 5px 20px;
+//   width: 30%;
+//   outline: none;
+//   &:focus{
+//     border: 2px solid #6C63FF;
+//   }
+//   &::-webkit-inner-spin-button,
+//   -webkit-outer-spin-button{
+//     -webkit-appearance: none; 
+//   margin: 0;
+//   }
+// `;
 
 const Title = styled.div`
   color: white;

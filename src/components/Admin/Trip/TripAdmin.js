@@ -41,14 +41,14 @@ export default function TripAdmin() {
       
         <Card>
     {dataTrip.map((data) => {
-      const PaketTrip = { 
-        pathname: "/PaketTripAdmin", 
-        param1: data
-        };
+      // const PaketTrip = { 
+      //   pathname: "/PaketTripAdmin", 
+      //   param1: data
+      //   };
       return (
         <div> 
             <Image onClick = {() => { deleteTrip(data.id);} } src={remove}/>
-          <Link to={PaketTrip} className='line-dec'>
+          <Link to={`/trip-admin/${data.id}`} className='line-dec'>
             <CardTripComp Title={data.name} Image={Images}/>
           </Link>
         </div>

@@ -50,19 +50,19 @@ export const Routers = () => {
           </Switch>
           {/* admin */}
           <Switch>
-            <ProtectedRoute path='/AboutAdmin' component={AboutAdmin} isAuth={auth} />
+            <Route path='/AboutAdmin' component={AboutAdmin} isAuth={auth} />
             {/* <Route path='/AboutAdmin' component={AboutAdmin} /> */}
-            <ProtectedRoute path='/LokasiAdmin' component={LokasiAdmin} isAuth={auth} />
+            <Route path='/LokasiAdmin' component={LokasiAdmin} isAuth={auth} />
             <ProtectedRoute path='/AdminLogout' component={AdminLogout} isAuth={auth} />
-            <ProtectedRoute path='/NewAdmin' component={NewAdmin} isAuth={auth} />
-            <ProtectedRoute path='/LokasimapsAdmin' component={LokasimapsAdmin} isAuth={auth} />
-            <ProtectedRoute path='/TripAdmin' component={TripAdmin} isAuth={auth} />
-            <ProtectedRoute path='/AddTripAdmin' component={AddTripAdmin} isAuth={auth} />
-            <Route path='/PaketTripAdmin' component={PaketTripAdmin} isAuth={auth} />
-            <ProtectedRoute path='/PenginapanAdmin' component={PenginapanAdmin} isAuth={auth} />
-            <ProtectedRoute path='/AddPenginapanAdmin' component={AddPenginapanAdmin} isAuth={auth} />
+            <Route path='/NewAdmin' component={NewAdmin} isAuth={auth} />
+            <Route path='/LokasimapsAdmin' component={LokasimapsAdmin} isAuth={auth} />
+            <Route path='/TripAdmin' exact component={TripAdmin} isAuth={auth} />
+            <Route path='/trip-admin/:id' component={PaketTripAdmin} isAuth={auth} />
+            <Route path='/AddTripAdmin' component={AddTripAdmin} isAuth={auth} />
+            <Route path='/PenginapanAdmin' component={PenginapanAdmin} isAuth={auth} />
+            <Route path='/AddPenginapanAdmin' component={AddPenginapanAdmin} isAuth={auth} />
             <Route path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} isAuth={auth} />
-            <ProtectedRoute path='/PemesananAdmin' component={PemesananAdmin} isAuth={auth} />
+            <Route path='/PemesananAdmin' component={PemesananAdmin} isAuth={auth} />
             <Route path='/DetailPemesanan' component={DetailPemesanan} isAuth={auth} />
             </Switch>
           </Router>

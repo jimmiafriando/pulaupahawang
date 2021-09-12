@@ -48,13 +48,10 @@ export default function PaketTripAdmin(props) {
   const saveTrip = async () => {
     const id = uuid();
     const storageRef = firebase.storage().ref('imagesTrip').child(id);
-    const imageRef = firebase.database().ref('Trip/').child('images').child(id);
     await storageRef.put(file);
-    storageRef.getDownloadURL().then((url) => {
-      imageRef.set(url);
-      const newState = [...imageUrl, { id, url }];
-      setImageUrl(newState);
-    });
+    const downloadUrl = await storageRef.getDownloadURL(); 
+    const newState = [...imageUrl, { id, url: downloadUrl }];
+    setImageUrl(newState);
 
     const createRef = firebase.database().ref('Trip/');
     const create = {
@@ -69,7 +66,10 @@ export default function PaketTripAdmin(props) {
       harga3,
       harga4,
       fasilitas,
-      note
+      note,
+      image: {
+        [id] : downloadUrl
+      }
     };
     setName('')
     setCaption('Caption...')
@@ -133,7 +133,7 @@ export default function PaketTripAdmin(props) {
           </Border>
 
           <form>
-            <Textarea value={caption} onChange={e => setCaption(e.target.value)}>Caption...</Textarea>
+            <Textarea value={caption} onChange={e => setCaption(e.target.value)} maxLength='900' >Caption...</Textarea>
           </form>
 
           <Content>
@@ -175,7 +175,7 @@ export default function PaketTripAdmin(props) {
                 FASILITAS
               </Header>
               <form>
-                <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} >Text...</Textarea2>
+                <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} maxLength='220' >Text...</Textarea2>
               </form>
             </div>
 
@@ -184,7 +184,7 @@ export default function PaketTripAdmin(props) {
               NOTE :
             </Header>
             <form>
-                <Textarea3 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea3>
+                <Textarea3 value={note} onChange={e => setNote(e.target.value)} maxLength='220' >Text...</Textarea3>
             </form>
           </div>
           </Content2>

@@ -75,7 +75,7 @@ export default function Lokasi() {
       </Title>
         <Border>
           <Input value={name} onChange={e => setName(e.target.value)} placeholder='Lokasi'/>
-          <Textarea value={caption} onChange={e => setCaption(e.target.value)}>
+          <Textarea value={caption} onChange={e => setCaption(e.target.value)} maxLength='690'>
          Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor
          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 

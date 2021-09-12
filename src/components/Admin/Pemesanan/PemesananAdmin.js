@@ -62,10 +62,6 @@ export default function CustomizedTables() {
   const [note, setNote] = useState('');
 
   const createNote = (catatanList) => {
-    console.log(catatanList)
-    console.log(syarat)
-    console.log(note)
-    console.log(catatanList.id)
     const updateRef = firebase.database().ref('pemesananAdmin/').child(catatanList.id);
     const update = {
       syarat,
@@ -85,6 +81,7 @@ export default function CustomizedTables() {
       }
       setPemesananList(pemesananList);
     });
+    
     const readCatatan = firebase.database().ref('pemesananAdmin/');
     readCatatan.on('value', (snapshot)=>{
       const catatan = snapshot.val();
@@ -163,7 +160,7 @@ export default function CustomizedTables() {
             SYARAT & KETENTUAN
           </Title2>
           <form>
-                <Textarea2  value={syarat} onChange={e => setSyarat(e.target.value)} >Text...</Textarea2>
+                <Textarea2  value={syarat} onChange={e => setSyarat(e.target.value)} maxLength='250' >Text...</Textarea2>
           </form>
         </div>
 
@@ -173,7 +170,7 @@ export default function CustomizedTables() {
           </Title2>
         
           <form>
-                <Textarea2 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea2>
+                <Textarea2 value={note} onChange={e => setNote(e.target.value)} maxLength='460'>Text...</Textarea2>
           </form>
         </div>
       </Form>

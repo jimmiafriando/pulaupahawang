@@ -139,7 +139,7 @@ export default function About() {
        <Border>
         <Input value={name} onChange={e => setName(e.target.value)} placeholder='pulau pahawang'/>
 
-        <Textarea value={caption} onChange={e => setCaption(e.target.value)} >
+        <Textarea value={caption} onChange={e => setCaption(e.target.value)} maxLength='690' >
         Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
         incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
         exercitation ullamco laboris. Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor 
@@ -176,7 +176,7 @@ export default function About() {
           Content 1
         </Title2>
         <Input value={header} onChange={e => setHeader(e.target.value)} placeholder='Header'/>
-          <Textarea value={content} onChange={e => setContent(e.target.value)}>
+          <Textarea value={content} onChange={e => setContent(e.target.value)} maxLength='450'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
           et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
           aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
@@ -185,7 +185,7 @@ export default function About() {
           </Textarea>
 
         <Input value={header2} onChange={e => setHeader2(e.target.value)} placeholder='Header'/>
-          <Textarea value={content2} onChange={e => setContent2(e.target.value)}>
+          <Textarea value={content2} onChange={e => setContent2(e.target.value)} maxLength='450'>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
           et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
           aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
@@ -197,7 +197,7 @@ export default function About() {
           Content 2
         </Title2>
       <Input value={header3} onChange={e => setHeader3(e.target.value)} placeholder='Header'/>
-        <Textarea value={content3} onChange={e => setContent3(e.target.value)}>
+        <Textarea value={content3} onChange={e => setContent3(e.target.value)} maxLength='450'>
          Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor
          incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
          exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
