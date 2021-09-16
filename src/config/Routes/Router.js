@@ -41,8 +41,8 @@ export const Routers = () => {
             <Route path='/' exact component={About} />
             <Route path='/Lokasi' component={Lokasi} />
             <Route path='/Lokasimaps' component={Lokasimaps} />
-            <Route path='/Trip' component={Trip} />
-            <Route path='/PaketTrip' component={PaketTrip} />
+            <Route path='/Trip' exact component={Trip} />
+            <Route path='/trip/:id' component={PaketTrip} />
             <Route path='/Penginapan' component={Penginapan} />
             <Route path='/PaketPenginapan' component={PaketPenginapan} />
             <Route path='/Pemesanan' component={Pemesanan} />
@@ -59,11 +59,11 @@ export const Routers = () => {
             <Route path='/TripAdmin' exact component={TripAdmin} isAuth={auth} />
             <Route path='/trip-admin/:id' component={PaketTripAdmin} isAuth={auth} />
             <Route path='/AddTripAdmin' component={AddTripAdmin} isAuth={auth} />
-            <Route path='/PenginapanAdmin' component={PenginapanAdmin} isAuth={auth} />
+            <Route path='/PenginapanAdmin' exact component={PenginapanAdmin} isAuth={auth} />
+            <Route path='/penginapan-admin/:id' component={PaketPenginapanAdmin} isAuth={auth} />
             <Route path='/AddPenginapanAdmin' component={AddPenginapanAdmin} isAuth={auth} />
-            <Route path='/PaketPenginapanAdmin' component={PaketPenginapanAdmin} isAuth={auth} />
-            <Route path='/PemesananAdmin' component={PemesananAdmin} isAuth={auth} />
-            <Route path='/DetailPemesanan' component={DetailPemesanan} isAuth={auth} />
+            <Route path='/PemesananAdmin' exact component={PemesananAdmin} isAuth={auth} />
+            <Route path='/pemesanan-admin/:id' component={DetailPemesanan} isAuth={auth} />
             </Switch>
           </Router>
     )

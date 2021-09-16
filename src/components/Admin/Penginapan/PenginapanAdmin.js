@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import firebase from '../../../config/firebase';
-import remove from '../../../images/delete.png';
 import styled from 'styled-components';
-import Images2 from '../../../images/Penginapan-2.svg';
-import CardPenginapanComp from '../../Card/Card';
+import Images from '../../../images/Penginapan.svg';
+import firebase from '../../../config/firebase';
 import plus from '../../../images/plus.png';
-import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
+import remove from '../../../images/delete.png';
+import CardTripComp from '../../Card/Card';
+import '../About/AboutAdmin.css'
 import { Link } from 'react-router-dom';
+import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 
-export default function Penginapan() {
-  const [dataPenginapan, setDataPenginapan] = useState([]);
+export default function PenginapanAdmin() {
+  const [dataPenginapan, setDataPengipan] = useState([]);
   
   useEffect(()=>{
-    const readTrip = firebase.database().ref('Penginapan/');
+    const readTrip = firebase.database().ref('Penginapan');
     readTrip.on('value', (snapshot)=>{
-      const trip = snapshot.val();
+      const penginapan = snapshot.val();
       const dataPenginapan = [];
-      for (let id in trip) {
-        dataPenginapan.push({id,...trip[id]} );
+      for (let id in penginapan) {
+        dataPenginapan.push({id,...penginapan[id]} );
       }
-      setDataPenginapan(dataPenginapan);
-      // console.log('bangsat', dataPenginapan[0].id)
+      setDataPengipan(dataPenginapan);
     });
   },[]);
 
-  const deleteTrip = (id) => {
-    console.log(+id)
+  const deletePenginapan = (id) => {
     const tripRef = firebase.database().ref('Penginapan').child(id).remove()
     console.log(tripRef.remove)
   };
@@ -35,20 +34,16 @@ export default function Penginapan() {
     <NavbarAdmin/>
       <div className='Background-admin'>
         <Title>
-          PILIHAN PAKET WISATA TRIP
+          PILIHAN PAKET PENGINAPAN
         </Title>
       
         <Card>
     {dataPenginapan.map((data) => {
-      const PaketTrip = { 
-        pathname: "/PaketPenginapanAdmin", 
-        param1: data
-        };
       return (
         <div> 
-            <Image onClick = {() => { deleteTrip(data.id);} } src={remove}/>
-          <Link to={PaketTrip} className='line-dec'>
-            <CardPenginapanComp Title={data.name} Image={Images2}/>
+            <Image onClick = {() => { deletePenginapan(data.id);} } src={remove}/>
+          <Link to={`/penginapan-admin/${data.id}`} className='line-dec'>
+            <CardTripComp Title={data.name} Image={Images}/>
           </Link>
         </div>
       )
@@ -130,17 +125,12 @@ const Title = styled.div`
     @media (min-width:0px) and (max-width:600px) {
       width: 250px;
       font-size: 17px;
-      margin: 0px 100px;
+      margin: 0px 150px;
     }
 `;
 
 const Card = styled.div`
   display:flex;
   margin: 20px 80px;
-
-  // phone
-  @media (min-width:0px) and (max-width:600px) {
-    margin: 20px 10px;
-  }
 `;
 

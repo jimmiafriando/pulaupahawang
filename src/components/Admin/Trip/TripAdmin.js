@@ -21,7 +21,6 @@ export default function TripAdmin() {
         dataTrip.push({id,...trip[id]} );
       }
       setDataTrip(dataTrip);
-      // console.log('bangsat', dataTrip[0].id)
     });
   },[]);
 
@@ -41,10 +40,6 @@ export default function TripAdmin() {
       
         <Card>
     {dataTrip.map((data) => {
-      // const PaketTrip = { 
-      //   pathname: "/PaketTripAdmin", 
-      //   param1: data
-      //   };
       return (
         <div> 
             <Image onClick = {() => { deleteTrip(data.id);} } src={remove}/>

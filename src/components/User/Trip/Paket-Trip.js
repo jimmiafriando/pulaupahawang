@@ -1,3 +1,5 @@
+import React, { useEffect, useState } from 'react';
+import firebase from '../../../config/firebase';
 import styled from 'styled-components';
 import './Trip.css';
 import Image from '../../../images/PaketTrip.jpg';
@@ -8,9 +10,31 @@ import Slider from 'infinite-react-carousel';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
 
 
-export default function PaketTrip(props) {
-  const dataTrip = props.location.param1
-  console.log(dataTrip)
+export default function PaketTrip({match}) {
+  const [dataTrip, setDataTrip] = useState({})
+  // eslint-disable-next-line no-unused-vars
+  const [_, setImageUrl] = useState('');
+
+  useEffect(() => {
+    const id = match.params.id;
+    console.log(id);
+    const readTrip = firebase.database().ref('Trip').child(id);
+    readTrip.on('value', snapshot=>{
+      const dataTrip = snapshot.val();
+      setDataTrip(dataTrip);
+      console.log('trip', dataTrip);
+    })
+
+    const imageRef = firebase.database().ref('Trip').child(id);
+    imageRef.on('value', (snapshot) => {
+      const val = snapshot.val()
+      const images = [];
+      const ids = !!val.image ? Object.keys(val.image) : []
+      ids.forEach((e) => images.push({id: e, url: val.image[e]}))
+      setImageUrl(images);
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return(
       <>
          <NavbarUser/>

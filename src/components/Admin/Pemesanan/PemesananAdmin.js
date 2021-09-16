@@ -128,26 +128,20 @@ export default function CustomizedTables() {
         </TableHead>
         <TableBody>
 
-      {pemesananList.map( (dataList) => {
-      const newTo = { 
-        pathname: "/DetailPemesanan", 
-        param1: dataList
-        };
+        {pemesananList.map((data) => {
       return (
-        <>
-          <StyledTableRow key={dataList.id}>
-              <StyledTableCell component="th" scope="row">{dataList.name}</StyledTableCell>
-              <StyledTableCell align="right">{dataList.wisata}</StyledTableCell>
-              <StyledTableCell align="right">{dataList.penginapan}</StyledTableCell>
-              <StyledTableCell align="right">{dataList.tanggal}</StyledTableCell>
+        <StyledTableRow key={data.id}>
+              <StyledTableCell component="th" scope="row">{data.name}</StyledTableCell>
+              <StyledTableCell align="right">{data.wisata}</StyledTableCell>
+              <StyledTableCell align="right">{data.penginapan}</StyledTableCell>
+              <StyledTableCell align="right">{data.tanggal}</StyledTableCell>
               <StyledTableCell align="right">Waiting</StyledTableCell>
-              <StyledTableCell align="right"><Link className='line-dec' to={newTo}>Detail</Link></StyledTableCell>
-              
-            </StyledTableRow>
-        </>
+              <StyledTableCell align="right"><Link className='line-dec' to={`/pemesanan-admin/${data.id}`}>Detail</Link></StyledTableCell>
+        </StyledTableRow>
       )
     })
 }
+
 </TableBody>
       </Table>
     </TableContainer>

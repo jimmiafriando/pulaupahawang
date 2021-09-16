@@ -1,10 +1,23 @@
+import React, { useEffect, useState } from 'react';
+import firebase from '../../../config/firebase';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 
-export default function DetailPemesanan(props) {
-  const dataList = props.location.param1
-  
+export default function DetailPemesanan({match}) {
+  const [dataList, setDataList] = useState({})
+
+  useEffect(() => {
+    const id = match.params.id;
+    console.log(id);
+    const readTrip = firebase.database().ref('pemesanan').child(id);
+    readTrip.on('value', snapshot=>{
+      const dataList = snapshot.val();
+      setDataList(dataList);
+      console.log('trip', dataList);
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <>
     <NavbarAdmin/>
@@ -74,6 +87,15 @@ export default function DetailPemesanan(props) {
         </Textarea>
     </form>
       </Border>
+      
+    <Border>
+    <div className='Title-3'>
+      Masukan Foto Bukti Pembayaran
+    </div>
+    <div>
+      <ButtonImg type="file" />
+    </div>
+
     <Link to='/PemesananAdmin'>
       <Button>
         Accept
@@ -84,6 +106,7 @@ export default function DetailPemesanan(props) {
         Reject
       </Button2>
     </Link>
+    </Border>
       </div>
     </>
   )
@@ -277,4 +300,26 @@ const Select = styled.div`
 @media (min-width:0px) and (max-width:600px) {
   width: 60%;
 }
+`;
+
+const ButtonImg = styled.input`
+  margin: 10px 10px;
+  margin-left: 50px;
+  padding: 10px 10px;
+  border-radius: 20px;
+  background: #19B200;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  &:hover {
+    padding: 10px 10px;
+    transition: all 0.3s ease-out;
+    background-color: #6C63FF;
+    color: white;
+    border-radius: 20px;
+    border: 0px solid var(--white);
+    transition: all 0.3s ease-out;
+  }
 `;

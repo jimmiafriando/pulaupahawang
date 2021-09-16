@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import firebase, { storage } from '../../../config/firebase';
+import firebase from '../../../config/firebase';
 import styled from 'styled-components';
-import remove from '../../../images/Remove.svg';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import CurrencyFormat from 'react-currency-format';
-// import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -25,11 +24,9 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center', 
   },
 }));
-
-export default function PaketPenginapanAdmin() {
-  const [images, setImages] = useState([]);
-  const [urls, setUrls] = useState([]);
-  const [progress, setProgress] = useState(0);
+export default function PaketTripAdmin(props) {
+  const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState([]);
   const [name, setName] = useState('');
   const [caption, setCaption] = useState('Caption...');
   const [peserta1, setPeserta1] = useState('');
@@ -42,51 +39,21 @@ export default function PaketPenginapanAdmin() {
   const [harga4, setHarga4] = useState('');
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
+  
 
   const handleChange = (e) => {
-    for (let i = 0; i < e.target.files.length; i++) {
-      const newImage = e.target.files[i];
-      newImage["id"] = Math.random();
-      setImages((prevState) => [...prevState, newImage]);
-    }
-  };
+    setFile(e.target.files[0]);
+};
 
-  const savePenginapan = () => {
-    const promises = [];
-    
-    images.forEach((image) => {
-      // const id = uuid();
-      const uploadTask = storage.ref(`imagesPenginapan/${image.name}`).put(image);
-      promises.push(uploadTask);
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgress(progress);
-        },
-        (error) => {
-          console.log(error);
-        },
-        async () => {
-          await storage
-            .ref("imagesPenginapan")
-            .child(image.name)
-            .getDownloadURL()
-            .then((urls) => {
-              setUrls((prevState) => [...prevState, urls]);
-            });
-        }
-      );
-    });
+  const saveTrip = async () => {
+    const id = uuid();
+    const storageRef = firebase.storage().ref('imagesPenginapan').child(id);
+    await storageRef.put(file);
+    const downloadUrl = await storageRef.getDownloadURL(); 
+    const newState = [...imageUrl, { id, url: downloadUrl }];
+    setImageUrl(newState);
 
-    Promise.all(promises)
-      .then(() => alert("All images uploaded"))
-      .catch((err) => console.log(err));
-
-
-    const createRef = firebase.database().ref('Penginapan/');
+    const createRef = firebase.database().ref('Penginapan');
     const create = {
       name,
       caption,
@@ -99,7 +66,10 @@ export default function PaketPenginapanAdmin() {
       harga3,
       harga4,
       fasilitas,
-      note
+      note,
+      image: {
+        [id] : downloadUrl
+      }
     };
     setName('')
     setCaption('Caption...')
@@ -114,20 +84,9 @@ export default function PaketPenginapanAdmin() {
     setFasilitas('text...')
     setNote('text...')
 
+    console.log(create);
     createRef.push(create);
   };
-
-  const deleteImage = (id) => {
-    const uploadTask = storage.ref(`imagesPenginapan/`).child(id);
-    uploadTask.delete().then(function() {
-      // File deleted successfully
-    }).catch(function(error) {
-      // Uh-oh, an error occurred!
-    });
-  };
-
-  console.log("images: ", images);
-  console.log("urls", urls);
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
@@ -145,9 +104,9 @@ export default function PaketPenginapanAdmin() {
       <NavbarAdmin/>
         <div className='Background-admin'>
           <Title>
-              Penginapan
+              Trip
           </Title>
-        <Border>
+          <Border>        
         <MainInput>
           <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Penginapan"/>
         </MainInput>
@@ -155,32 +114,26 @@ export default function PaketPenginapanAdmin() {
               <div className='Title-3'>
                 Masukan Foto Penginapan
               </div>
-              <Progress>
-                <progress value={progress} max="100" />
-              </Progress>
               <div>
                 <ButtonImg type="file" multiple onChange={handleChange} />
               </div>
 
           <Cover>
             <div>
-                  {urls.map((url, i) => (
-                <img
-                    key={i}
-                    style={{ width: "350px" }}
-                    src={url || "http://via.placeholder.com/300"}
-                    alt="firebase"
-                    />
-                    ))}
-                  {urls.map((id) => (
-                <img key={id} className='main-image' onClick={() => deleteImage(id)} src={remove} alt="refresh"/>
-                ))}
+            {imageUrl ? imageUrl.map(({ id, url }) => {
+            return (
+              <div key={id}>
+                <img src={url} alt="" />
+              </div>
+            );
+          })
+        : ''}
             </div>
           </Cover>
           </Border>
 
           <form>
-            <Textarea value={caption} onChange={e => setCaption(e.target.value)}>Caption...</Textarea>
+            <Textarea value={caption} onChange={e => setCaption(e.target.value)} maxLength='900' >Caption...</Textarea>
           </form>
 
           <Content>
@@ -216,66 +169,57 @@ export default function PaketPenginapanAdmin() {
               </Boxpaket>
             </div>
 
-            <Content2>
+          <Content2>
             <div>
               <Header>
                 FASILITAS
               </Header>
               <form>
-                <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} >Text...</Textarea2>
+                <Textarea2 value={fasilitas} onChange={e => setFasilitas(e.target.value)} maxLength='220' >Text...</Textarea2>
               </form>
             </div>
-          
+
           <div>
             <Header>
               NOTE :
             </Header>
             <form>
-                <Textarea3 value={note} onChange={e => setNote(e.target.value)} >Text...</Textarea3>
+                <Textarea3 value={note} onChange={e => setNote(e.target.value)} maxLength='220' >Text...</Textarea3>
             </form>
           </div>
           </Content2>
           </Content>
-
           </Border>
-            <Button onClick={() => { savePenginapan(); handleOpen();}}>
+
+            <Button onClick={() => { saveTrip(); handleOpen();}}>
               UPLOAD
             </Button>
+
           <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            className={classes.modal}
-            open={open}
-            onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-              timeout: 500,
-            }}
-          >
-            <Fade in={open}>
-              <div className={classes.paper}>
-                <h2 id="transition-modal-title">Add Penginapan Berhasil!!</h2>
-                <br/>
-                <p id="transition-modal-description">Semoga makin banyak pengunjungnya</p>
-              </div>
-            </Fade>
-          </Modal>
+              aria-labelledby="transition-modal-title"
+              aria-describedby="transition-modal-description"
+              className={classes.modal}
+              open={open}
+              onClose={handleClose}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                timeout: 500,
+              }}
+            >
+              <Fade in={open}>
+                <div className={classes.paper}>
+                  <h2 id="transition-modal-title">Add Penginapan Berhasil!!</h2>
+                  <br/>
+                  <p id="transition-modal-description">Semoga makin banyak pengunjungnya</p>
+                </div>
+              </Fade>
+            </Modal>
       </div>
       </>
   )
 }
 
-
-// const ImgUp = styled.div`
-// display: flex;
-// margin: 20px 0px;
-// `;
-
-const Progress = styled.div`
-// background: blue;
-margin-left: 50px;
-`;
 const Header = styled.div`
 color: white;
 font-size: 20px;
@@ -336,7 +280,7 @@ margin: 0;
 `;
 
 // const Harga = styled.input`
-//   border: 2px solid black;
+// border: 2px solid black;
 //   border-radius: 10px;
 //   padding: 5px 10px;
 //   margin: 5px 20px;
@@ -347,7 +291,7 @@ margin: 0;
 //   }
 //   &::-webkit-inner-spin-button,
 //   -webkit-outer-spin-button{
-//   -webkit-appearance: none; 
+//     -webkit-appearance: none; 
 //   margin: 0;
 //   }
 // `;

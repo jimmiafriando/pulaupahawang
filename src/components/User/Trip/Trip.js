@@ -18,12 +18,12 @@ export default function Trip() {
       const trip = snapshot.val();
       const dataTrip = [];
       for (let id in trip) {
-        dataTrip.push(trip[id]);
+        dataTrip.push({id,...trip[id]} );
       }
       setDataTrip(dataTrip);
-      console.log(dataTrip)
     });
   },[]);
+
   return (
     <>
     <NavbarUser/>
@@ -33,17 +33,13 @@ export default function Trip() {
         </Title>
       
         <Card>
-    {dataTrip.map( (data) => {
-      const PaketTrip = { 
-        pathname: "/PaketTrip", 
-        param1: data
-        };
+        {dataTrip.map((data) => {
       return (
-        <>
-          <Link to={PaketTrip} className='line-dec'>
+        <div>
+          <Link to={`/trip/${data.id}`} className='line-dec'>
             <CardTripComp Title={data.name} Image={Images}/>
           </Link>
-        </>
+        </div>
       )
     })
 }
