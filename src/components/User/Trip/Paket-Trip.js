@@ -8,31 +8,29 @@ import Image3 from '../../../images/PaketTrip3.svg';
 import PaketWisata from '../../Paket/Paket-wisata';
 import Slider from 'infinite-react-carousel';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
+import { v4 as uuid } from 'uuid';
 
 
 export default function PaketTrip({match}) {
   const [dataTrip, setDataTrip] = useState({})
   // eslint-disable-next-line no-unused-vars
-  const [_, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState([]);
 
   useEffect(() => {
-    const id = match.params.id;
-    console.log(id);
-    const readTrip = firebase.database().ref('Trip').child(id);
+    const batchId = match.params.id;
+    console.log(batchId);
+    const readTrip = firebase.database().ref('Trip').child(batchId);
     readTrip.on('value', snapshot=>{
       const dataTrip = snapshot.val();
       setDataTrip(dataTrip);
       console.log('trip', dataTrip);
-    })
 
-    const imageRef = firebase.database().ref('Trip').child(id);
-    imageRef.on('value', (snapshot) => {
-      const val = snapshot.val()
       const images = [];
-      const ids = !!val.image ? Object.keys(val.image) : []
-      ids.forEach((e) => images.push({id: e, url: val.image[e]}))
+      const ids = !!dataTrip.image && typeof dataTrip.image === 'object' ? 
+        Object.keys(dataTrip.image) : []
+      ids.forEach((e) => images.push({id: e, url: dataTrip.image[e]}))
       setImageUrl(images);
-    });
+    })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return(
@@ -42,18 +40,18 @@ export default function PaketTrip({match}) {
           <Title>
             {dataTrip.name}
           </Title>
-            
-              <Slider className='Slider-cover' dots>
-                <div>
-                  <Imgslide src={Image} alt="PaketTrip"/>
-                </div>
-                <div>
-                  <Imgslide src={Image2} alt="PaketTrip"/>
-                </div>
-                <div>
-                  <Imgslide src={Image3} alt="PaketTrip"/>
-                </div>
-              </Slider>
+          {Array.isArray(imageUrl) && imageUrl.length > 0 ? (
+            <Slider className='Slider-cover' dots>
+            {imageUrl.map(({ id, url }) => {
+            return (
+              <div key={id}>
+                <Imgslide src={url} alt="" />
+              </div>
+                );
+              })
+            }
+          </Slider>
+          ) : <div></div>}
               
           <Artikel>
             {dataTrip.caption}

@@ -3,9 +3,38 @@ import firebase from '../../../config/firebase';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
+import { v4 as uuid } from 'uuid';
 
 export default function DetailPemesanan({match}) {
   const [dataList, setDataList] = useState({})
+  const [updatePembayaran] = useState([]);
+  const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState('');
+  const [nameAdmin, setNameAdmin] = useState('');
+
+  const handleChange = (e) => {
+    setFile(e.target.files[0]);
+};
+
+  const update = async () => {
+    const id = uuid();
+    const storageRef = firebase.storage().ref('bukti-pembayaran').child(id);
+    await storageRef.put(file);
+    const downloadUrl = await storageRef.getDownloadURL(); 
+    const newState = [...imageUrl, { id, url: downloadUrl }];
+    setImageUrl(newState);
+
+    const batchId = match.params.id;
+    const updateRef = firebase.database().ref('pemesanan').child(batchId);
+    const update = {
+      nameAdmin,
+      image: {
+        [id] : downloadUrl
+      }
+    };
+    console.log(update)
+    updateRef.update(update);
+  };
 
   useEffect(() => {
     const id = match.params.id;
@@ -14,10 +43,23 @@ export default function DetailPemesanan({match}) {
     readTrip.on('value', snapshot=>{
       const dataList = snapshot.val();
       setDataList(dataList);
-      console.log('trip', dataList);
+      console.log('pembayaran', dataList);
     })
+
+    const imageRef = firebase.database().ref('pemesanan').child(id);
+    imageRef.on('value', (snapshot) => {
+      const val = snapshot.val()
+      const images = [];
+      const ids = !!val.image ? Object.keys(val.image) : []
+      ids.forEach((e) => images.push({id: e, url: val.image[e]}))
+      setImageUrl(images);
+    });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    setNameAdmin(dataList.nameAdmin)
+  }, [dataList])
   return (
     <>
     <NavbarAdmin/>
@@ -93,11 +135,24 @@ export default function DetailPemesanan({match}) {
       Masukan Foto Bukti Pembayaran
     </div>
     <div>
-      <ButtonImg type="file" />
+      <Input value={nameAdmin} onChange={e => setNameAdmin(e.target.value)} type="text" id="#" name="#" placeholder="Nama Admin"/>
+    </div>
+    <div>
+      <ButtonImg type="file" onChange={handleChange} />
+    </div>
+    <div>
+    {imageUrl ? imageUrl.map(({ id, url }) => {
+            return (
+              <div key={id}>
+                <Image src={url} alt="" />
+              </div>
+            );
+          })
+        : ''}
     </div>
 
-    <Link to='/PemesananAdmin'>
-      <Button>
+    <Link>
+      <Button onClick={() => { update(updatePembayaran)}}>
         Accept
       </Button>
     </Link>
@@ -278,7 +333,6 @@ const Label = styled.p`
   text-align: justify;
 `;
 
-
 const Select = styled.div`
   background: white;
   border: 2px solid black;
@@ -321,5 +375,46 @@ const ButtonImg = styled.input`
     border-radius: 20px;
     border: 0px solid var(--white);
     transition: all 0.3s ease-out;
+  }
+`;
+
+const Image = styled.img`
+margin: 0px 50px;
+width: 200px;
+height: 300px;
+object-fit: cover;
+border-radius: 20px;
+
+// tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 150px;
+    height: 250px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 100px;
+    height: 200px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 100px;
+    height: 150px;
+  }
+`;
+
+const Input = styled.input`
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5px 10px;
+  margin: 5px 50px;
+  width: 30%;
+  outline: none;
+  &:focus{
+    border: 4px solid #6C63FF;
+  }
+  &::-webkit-inner-spin-button,
+  -webkit-outer-spin-button{
+    -webkit-appearance: none; 
+  margin: 0;
   }
 `;

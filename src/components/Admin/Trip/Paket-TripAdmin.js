@@ -8,8 +8,7 @@ import { v4 as uuid } from 'uuid';
 
 export default function PaketTripAdmin({match}) {
   // eslint-disable-next-line no-unused-vars
-  const [_, setImages] = useState({});
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState([]);
   const [name, setName] = useState('');
   const [caption, setCaption] = useState('Caption...');
   const [peserta1, setPeserta1] = useState('');
@@ -22,43 +21,47 @@ export default function PaketTripAdmin({match}) {
   const [harga4, setHarga4] = useState('');
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
-  const [dataTrip, setDataTrip] = useState({})
-  const [updateTrip] = useState([]);
   const [file, setFile] = useState(null);
 
-  const handleChange = (e) => {
+  const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-};
+  };
 
   const update = async () => {
     const id = uuid();
-    const storageRef = firebase.storage().ref('imagesTrip').child(id);
-    await storageRef.put(file);
-    const downloadUrl = await storageRef.getDownloadURL(); 
-    const newState = [...imageUrl, { id, url: downloadUrl }];
-    setImageUrl(newState);
+    let downloadUrl = '';
+
+    if (file) {
+      const storageRef = firebase.storage().ref('imagesTrip').child(id);
+      await storageRef.put(file);
+      downloadUrl = await storageRef.getDownloadURL(); 
+      setImageUrl((prev) => [...prev, { id, url: downloadUrl }]);
+    }
 
     const batchId = match.params.id;
     const updateRef = firebase.database().ref('Trip').child(batchId);
-    const update = {
-      name,
-      caption,
-      peserta1,
-      peserta2,
-      peserta3,
-      peserta4,
-      harga1,
-      harga2,
-      harga3,
-      harga4,
-      fasilitas,
-      note,
-      image: {
-        [id] : downloadUrl
-      }
-    };
-    console.log(update)
-    updateRef.set(update);
+    updateRef.on('value', (snapshot) => {
+      const oldValue = snapshot.val();
+      const oldImage = !!oldValue && !!oldValue.image ? oldValue.image : {}  
+      const newImage = !!downloadUrl ? { ...oldImage, [id]: downloadUrl } : undefined
+      const newData = {
+        name,
+        caption,
+        peserta1,
+        peserta2,
+        peserta3,
+        peserta4,
+        harga1,
+        harga2,
+        harga3,
+        harga4,
+        fasilitas,
+        note,
+        image: newImage
+      };
+      console.log(newData);
+      updateRef.set(newData);
+    });
   };
 
   useEffect(() => {
@@ -67,43 +70,41 @@ export default function PaketTripAdmin({match}) {
     const readTrip = firebase.database().ref('Trip').child(id);
     readTrip.on('value', snapshot=>{
       const dataTrip = snapshot.val();
-      setDataTrip(dataTrip);
+      setName(dataTrip.name)
+      setCaption(dataTrip.caption)
+      setPeserta1(dataTrip.peserta1)
+      setPeserta2(dataTrip.peserta2)
+      setPeserta3(dataTrip.peserta3)
+      setPeserta4(dataTrip.peserta4)
+      setHarga1(dataTrip.harga1)
+      setHarga2(dataTrip.harga2)
+      setHarga3(dataTrip.harga3)
+      setHarga4(dataTrip.harga4)
+      setFasilitas(dataTrip.fasilitas)
+      setNote(dataTrip.note)
       console.log('trip', dataTrip);
-    })
-
-    const imageRef = firebase.database().ref('Trip').child(id);
-    imageRef.on('value', (snapshot) => {
-      const val = snapshot.val()
       const images = [];
-      const ids = !!val.image ? Object.keys(val.image) : []
-      ids.forEach((e) => images.push({id: e, url: val.image[e]}))
+      const ids = !!dataTrip.image ? Object.keys(dataTrip.image) : []
+      ids.forEach((e) => images.push({id: e, url: dataTrip.image[e]}))
       setImageUrl(images);
-    });
+    })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    setName(dataTrip.name)
-    setCaption(dataTrip.caption)
-    setPeserta1(dataTrip.peserta1)
-    setPeserta2(dataTrip.peserta2)
-    setPeserta3(dataTrip.peserta3)
-    setPeserta4(dataTrip.peserta4)
-    setHarga1(dataTrip.harga1)
-    setHarga2(dataTrip.harga2)
-    setHarga3(dataTrip.harga3)
-    setHarga4(dataTrip.harga4)
-    setFasilitas(dataTrip.fasilitas)
-    setNote(dataTrip.note)
-  }, [dataTrip])
-
-  const deleteImage = (id) => {
+  const deleteImage = async (id) => {
     const batchId = match.params.id;
-    const storageRef = firebase.storage().ref('imagesTrip').child(id);
-    const imageRef = firebase.database().ref(`Trip/${batchId}/image`).child(id);
-    storageRef.delete().then(() => {
-      imageRef.remove();  
-    });
+    try {
+      const imageRef = firebase.database().ref(`Trip`).child(`${batchId}/image/${id}`);
+      await imageRef.remove();
+      setImageUrl((prev) => {
+        return prev.filter((v) => v.id !== id)
+      })
+      const storageRef = firebase.storage().ref('imagesTrip').child(id);
+      await storageRef.delete();
+
+    } catch (e) {
+      console.error(e)
+    }
   };
 
   return(
@@ -122,7 +123,7 @@ export default function PaketTripAdmin({match}) {
                 Masukan Foto Wisata
               </div>
               <div>
-                <ButtonImg type="file" onChange={handleChange}/>
+                <ButtonImg type="file" onChange={handleFileChange}/>
               </div>
           <Cover>
             <div>
@@ -199,7 +200,7 @@ export default function PaketTripAdmin({match}) {
           </Border>
 
           <div>
-            <Button onClick={() => { update(updateTrip)}}>
+            <Button onClick={update}>
               UPDATE
             </Button>
           </div>

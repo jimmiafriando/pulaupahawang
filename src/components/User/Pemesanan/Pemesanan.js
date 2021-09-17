@@ -25,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 export default function Pemesanan() {
+  const [dataTrip, setDataTrip] = useState([]);
+  const [dataPenginapan, setDataPenginapan] = useState([]);
   const [noteList, setNoteList] = useState();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -66,6 +68,27 @@ export default function Pemesanan() {
   };
 
   useEffect(()=>{
+    const readTrip = firebase.database().ref('Trip/');
+    readTrip.on('value', (snapshot)=>{
+      const trip = snapshot.val();
+      const dataTrip = [];
+      for (let id in trip) {
+        dataTrip.push({id,...trip[id]} );
+      }
+      setDataTrip(dataTrip);
+    });
+
+    const readPenginapan = firebase.database().ref('Penginapan/');
+    readPenginapan.on('value', (snapshot)=>{
+      const Penginapan = snapshot.val();
+      const dataPenginapan = [];
+      for (let id in Penginapan) {
+        dataPenginapan.push(Penginapan[id]);
+      }
+      setDataPenginapan(dataPenginapan);
+      console.log(dataPenginapan)
+    });
+
     const readNote = firebase.database().ref('pemesananAdmin/');
     readNote.on('value', (snapshot)=>{
       const note = snapshot.val();
@@ -112,21 +135,29 @@ return (
           </div>
           <div>
             {/* <Label>Tujuan :</Label> */}
+        <div>
             <Label>Trip : </Label>
             <Select value={wisata} onChange={e => setWisata(e.target.value)}>
               <option>--</option>
-              <option >Pulau Pahawang</option>
-              <option >Pahawang Kecil</option>
-              <option >Pasir Timbul</option>
+        {dataTrip.map((data) => {
+            return (
+              <option >{data.name}</option>
+            )
+          })
+        }
             </Select>
+        </div>
           </div>
           <div>
             <Label>Penginapan :</Label>
             <Select value={penginapan} onChange={e => setPenginapan(e.target.value)}>
               <option>--</option>
-              <option>Andreas Resort</option>
-              <option>Tenda Pahawang</option>
-              <option>Hotel Pahawang</option>
+        {dataPenginapan.map((data) => {
+            return (
+              <option >{data.name}</option>
+            )
+          })
+        }
             </Select>
           </div>
           <div>
