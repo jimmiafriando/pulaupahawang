@@ -16,7 +16,7 @@ export default function Penginapan() {
       const Penginapan = snapshot.val();
       const dataPenginapan = [];
       for (let id in Penginapan) {
-        dataPenginapan.push(Penginapan[id]);
+        dataPenginapan.push({id,...Penginapan[id]});
       }
       setDataPenginapan(dataPenginapan);
       console.log(dataPenginapan)
@@ -26,22 +26,20 @@ export default function Penginapan() {
     <>
     <NavbarUser/>
       <div className='Background-user'>
+        <Center>
         <Title>
           PILIHAN PAKET WISATA PENGINAPAN
         </Title>
+        </Center>
       
         <Card>
-        {dataPenginapan.map( (data) => {
-      const penginapan = { 
-        pathname: "/PaketPenginapan", 
-        param1: data
-        };
+        {dataPenginapan.map((data) => {
       return (
-        <>
-          <Link to={penginapan} className='line-dec'>
+        <div>
+          <Link to={`/penginapan/${data.id}`} className='line-dec'>
             <CardPenginapanComp Title={data.name} Image={Images}/>
           </Link>
-        </>
+        </div>
       )
     })
 }
@@ -53,33 +51,37 @@ export default function Penginapan() {
   );
 }
 
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Title = styled.div`
   color: white;
   font-size: 25px;
   font-weight: bold;
   background-color: #BE9427;
   text-align:center;
-  margin: 0px 400px;
   padding: 3px 0px;
   border-radius: 10px;
+  width: 400px;
 
-    // tab-land // tablet landscape (900px - 1200px)
-    @media (min-width:901px) and (max-width:1200px) {
-      width: 400px;
-      font-size: 20px;
-    }
-    // tab-port // tablet portrait
-    @media (min-width:601px) and (max-width:900px) {
-      width: 300px;
-      font-size: 17px;
-      margin: 0px 100px;
-    }
-    // phone
-    @media (min-width:0px) and (max-width:600px) {
-      width: 250px;
-      font-size: 17px;
-      margin: 0px 150px;
-    }
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    font-size: 20px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    font-size: 17px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    font-size: 17px;
+  }
 `;
 
 const Card = styled.div`

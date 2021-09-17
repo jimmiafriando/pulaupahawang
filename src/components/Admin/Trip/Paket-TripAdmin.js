@@ -40,10 +40,10 @@ export default function PaketTripAdmin({match}) {
 
     const batchId = match.params.id;
     const updateRef = firebase.database().ref('Trip').child(batchId);
-    updateRef.on('value', (snapshot) => {
+    updateRef.once('value', (snapshot) => {
       const oldValue = snapshot.val();
       const oldImage = !!oldValue && !!oldValue.image ? oldValue.image : {}  
-      const newImage = !!downloadUrl ? { ...oldImage, [id]: downloadUrl } : undefined
+      const newImage = !!downloadUrl ? {image: { ...oldImage, [id]: downloadUrl }} : {}
       const newData = {
         name,
         caption,
@@ -57,7 +57,7 @@ export default function PaketTripAdmin({match}) {
         harga4,
         fasilitas,
         note,
-        image: newImage
+        ...newImage
       };
       console.log(newData);
       updateRef.set(newData);
@@ -91,37 +91,32 @@ export default function PaketTripAdmin({match}) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const deleteImage = async (id) => {
+  const deleteImage = (id) => {
     const batchId = match.params.id;
-    try {
-      const imageRef = firebase.database().ref(`Trip`).child(`${batchId}/image/${id}`);
-      await imageRef.remove();
-      setImageUrl((prev) => {
-        return prev.filter((v) => v.id !== id)
-      })
-      const storageRef = firebase.storage().ref('imagesTrip').child(id);
-      await storageRef.delete();
-
-    } catch (e) {
-      console.error(e)
-    }
+    const storageRef = firebase.storage().ref('imagesTrip').child(id);
+    const imageRef = firebase.database().ref(`Trip/${batchId}/image`).child(id);
+    storageRef.delete().then(() => {
+      imageRef.remove();  
+    });
   };
 
   return(
       <>
       <NavbarAdmin/>
         <div className='Background-admin'>
+        <Center>
           <Title>
-              Trip
+            TRIP
           </Title>
+          </Center>
         <Border>
         <MainInput>
           <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Trip"/>
         </MainInput>
-          <Border>
-              <div className='Title-3'>
+          <Border2>
+              <Title2>
                 Masukan Foto Wisata
-              </div>
+              </Title2>
               <div>
                 <ButtonImg type="file" onChange={handleFileChange}/>
               </div>
@@ -138,7 +133,7 @@ export default function PaketTripAdmin({match}) {
         : ''}
             </div>
           </Cover>
-            </Border>
+            </Border2>
 
           <form>
             <Textarea value={caption} onChange={e => setCaption(e.target.value)} maxLength='900'>Caption...</Textarea>
@@ -209,6 +204,69 @@ export default function PaketTripAdmin({match}) {
   )
 }
 
+
+const Title2 = styled.div`
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  text-align:center;
+  padding: 3px 0px;
+  border-radius: 10px;
+  width: 400px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    margin: 0px 20px;
+    font-size: 20px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    margin: 0px 30px;
+    font-size: 17px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    margin: 0px 30px;
+    font-size: 17px;
+  }
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Title = styled.div`
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: #BE9427;
+  text-align:center;
+  padding: 3px 0px;
+  border-radius: 10px;
+  width: 400px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    font-size: 20px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    font-size: 17px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    font-size: 17px;
+  }
+`;
+
 const Imgdelete = styled.img`
 cursor: pointer;
 position: absolute;
@@ -275,26 +333,41 @@ margin: 10px 100px;
 @media (min-width:901px) and (max-width:1200px) {
   width: 100%;
   margin: 0px 0px;
-
 }
 // tab-port // tablet portrait
 @media (min-width:601px) and (max-width:900px) {
   width: 100%;
   margin: 0px 0px;
-  border: none;
 }
 // phone
 @media (min-width:0px) and (max-width:600px) {
   width: 100%;
-  border: none;
   margin: 0px 0px;
 }
 `;
 
-// const Progress = styled.div`
-// // background: blue;
-// margin-left: 50px;
-// `;
+const Border2 = styled.div`
+border: 2px solid white;
+border-radius: 30px;
+padding: 10px 0px;
+margin: 10px 100px;
+
+// tab-land // tablet landscape (900px - 1200px)
+@media (min-width:901px) and (max-width:1200px) {
+  border: none;
+  margin: 0px 0px;
+}
+// tab-port // tablet portrait
+@media (min-width:601px) and (max-width:900px) {
+  border: none;
+  margin: 0px 0px;
+}
+// phone
+@media (min-width:0px) and (max-width:600px) {
+  border: none;
+  margin: 0px 0px;
+}
+`;
 
 const Peserta = styled.input`
 border: 2px solid black;
@@ -311,53 +384,6 @@ outline: none;
   -webkit-appearance: none; 
 margin: 0;
 }
-`;
-
-// const Harga = styled.input`
-// border: 2px solid black;
-//   border-radius: 10px;
-//   padding: 5px 10px;
-//   margin: 5px 20px;
-//   width: 30%;
-//   outline: none;
-//   &:focus{
-//     border: 2px solid #6C63FF;
-//   }
-//   &::-webkit-inner-spin-button,
-//   -webkit-outer-spin-button{
-//     -webkit-appearance: none; 
-//   margin: 0;
-//   }
-// `;
-
-const Title = styled.div`
-  color: white;
-  font-size: 25px;
-  font-weight: bold;
-  background-color: #BE9427;
-  text-align:center;
-  margin: 0px 400px;
-  padding: 3px 0px;
-  border-radius: 10px;
-
-  // tab-land // tablet landscape (900px - 1200px)
-  @media (min-width:901px) and (max-width:1200px) {
-    width: 400px;
-    font-size: 20px;
-    margin: 0px 300px;
-  }
-  // tab-port // tablet portrait
-  @media (min-width:601px) and (max-width:900px) {
-    width: 300px;
-    font-size: 17px;
-    margin: 0px 250px;
-  }
-  // phone
-  @media (min-width:0px) and (max-width:600px) {
-    width: 150px;
-    font-size: 17px;
-    margin: 0px 100px;
-  }
 `;
 
 const Cover = styled.div`
@@ -447,7 +473,6 @@ text-align: center;
 
     }
 `;
-
 
 const Input = styled.input`
   border: 2px solid black;
@@ -597,25 +622,23 @@ const ButtonImg = styled.input`
     border: 0px solid var(--white);
     transition: all 0.3s ease-out;
   }
-`;
 
-// const ButtonImg2 = styled.button`
-//   margin: 10px 0px;
-//   padding: 10px 30px;
-//   border-radius: 20px;
-//   background: red;
-//   outline: none;
-//   border: none;
-//   cursor: pointer;
-//   color: white;
-//   font-weight: bold;
-//   &:hover {
-//     padding: 10px 30px;
-//     transition: all 0.3s ease-out;
-//     background-color: #F26A6A;
-//     color: white;
-//     border-radius: 20px;
-//     border: 0px solid var(--white);
-//     transition: all 0.3s ease-out;
-//   }
-// `;
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    margin-left: 100px;
+    padding: 5px 5px;
+    width: 20%;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    margin-left: 80px;
+    padding: 5px 5px;
+    width: 40%;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    margin-left: 50px;
+    padding: 5px 5px;
+    width: 50%;
+  }
+`;

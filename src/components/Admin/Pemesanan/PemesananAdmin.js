@@ -109,9 +109,12 @@ export default function CustomizedTables() {
     <>
       <NavbarAdmin/>
     <div className='Background-admin'>
+      <Center>
       <Title>
           PESANAN PAKET TOUR
       </Title>
+      </Center>
+
       <Border>
       <MainTable>
       <TableContainer component={Paper}>
@@ -258,34 +261,36 @@ const Textarea2 = styled.textarea`
   }
 `;
 
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Title = styled.div`
   color: black;
   font-size: 25px;
   font-weight: bold;
   background-color: white;
   text-align:center;
-  margin: 0px 400px;
-  margin-bottom: 20px;
   padding: 3px 0px;
   border-radius: 10px;
+  width: 400px;
 
   // tab-land // tablet landscape (900px - 1200px)
   @media (min-width:901px) and (max-width:1200px) {
     width: 400px;
     font-size: 20px;
-    margin: 0px 300px;
   }
   // tab-port // tablet portrait
   @media (min-width:601px) and (max-width:900px) {
     width: 300px;
     font-size: 17px;
-    margin: 0px 250px;
   }
   // phone
   @media (min-width:0px) and (max-width:600px) {
     width: 250px;
     font-size: 17px;
-    margin: 0px 150px;
   }
 `;
 

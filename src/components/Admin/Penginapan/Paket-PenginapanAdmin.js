@@ -6,10 +6,9 @@ import NavbarAdmin from '../../../components/NavbarAdmin/NavbarAdmin';
 import CurrencyFormat from 'react-currency-format';
 import { v4 as uuid } from 'uuid';
 
-export default function PaketTripAdmin({match}) {
+export default function PaketPenginapanAdmin({match}) {
   // eslint-disable-next-line no-unused-vars
-  const [_, setImages] = useState({});
-  const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState([]);
   const [name, setName] = useState('');
   const [caption, setCaption] = useState('Caption...');
   const [peserta1, setPeserta1] = useState('');
@@ -22,43 +21,47 @@ export default function PaketTripAdmin({match}) {
   const [harga4, setHarga4] = useState('');
   const [fasilitas, setFasilitas] = useState('text...');
   const [note, setNote] = useState('text...');
-  const [dataPenginapan, setDataPengipan] = useState({})
-  const [updatePenginapan] = useState([]);
   const [file, setFile] = useState(null);
 
-  const handleChange = (e) => {
+  const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-};
+  };
 
   const update = async () => {
     const id = uuid();
-    const storageRef = firebase.storage().ref('imagesPenginapan').child(id);
-    await storageRef.put(file);
-    const downloadUrl = await storageRef.getDownloadURL(); 
-    const newState = [...imageUrl, { id, url: downloadUrl }];
-    setImageUrl(newState);
+    let downloadUrl = '';
+
+    if (file) {
+      const storageRef = firebase.storage().ref('imagesPenginapan').child(id);
+      await storageRef.put(file);
+      downloadUrl = await storageRef.getDownloadURL(); 
+      setImageUrl((prev) => [...prev, { id, url: downloadUrl }]);
+    }
 
     const batchId = match.params.id;
     const updateRef = firebase.database().ref('Penginapan').child(batchId);
-    const update = {
-      name,
-      caption,
-      peserta1,
-      peserta2,
-      peserta3,
-      peserta4,
-      harga1,
-      harga2,
-      harga3,
-      harga4,
-      fasilitas,
-      note,
-      image: {
-        [id] : downloadUrl
-      }
-    };
-    console.log(update)
-    updateRef.set(update);
+    updateRef.once('value', (snapshot) => {
+      const oldValue = snapshot.val();
+      const oldImage = !!oldValue && !!oldValue.image ? oldValue.image : {}  
+      const newImage = !!downloadUrl ? {image: { ...oldImage, [id]: downloadUrl }} : {}
+      const newData = {
+        name,
+        caption,
+        peserta1,
+        peserta2,
+        peserta3,
+        peserta4,
+        harga1,
+        harga2,
+        harga3,
+        harga4,
+        fasilitas,
+        note,
+        ...newImage
+      };
+      console.log(newData);
+      updateRef.set(newData);
+    });
   };
 
   useEffect(() => {
@@ -66,36 +69,27 @@ export default function PaketTripAdmin({match}) {
     console.log(id);
     const readTrip = firebase.database().ref('Penginapan').child(id);
     readTrip.on('value', snapshot=>{
-      const dataPenginapan = snapshot.val();
-      setDataPengipan(dataPenginapan);
-      console.log('penginapan', dataPenginapan);
-    })
-
-    const imageRef = firebase.database().ref('Penginapan').child(id);
-    imageRef.on('value', (snapshot) => {
-      const val = snapshot.val()
+      const dataTrip = snapshot.val();
+      setName(dataTrip.name)
+      setCaption(dataTrip.caption)
+      setPeserta1(dataTrip.peserta1)
+      setPeserta2(dataTrip.peserta2)
+      setPeserta3(dataTrip.peserta3)
+      setPeserta4(dataTrip.peserta4)
+      setHarga1(dataTrip.harga1)
+      setHarga2(dataTrip.harga2)
+      setHarga3(dataTrip.harga3)
+      setHarga4(dataTrip.harga4)
+      setFasilitas(dataTrip.fasilitas)
+      setNote(dataTrip.note)
+      console.log('Penginapan', dataTrip);
       const images = [];
-      const ids = !!val.image ? Object.keys(val.image) : []
-      ids.forEach((e) => images.push({id: e, url: val.image[e]}))
+      const ids = !!dataTrip.image ? Object.keys(dataTrip.image) : []
+      ids.forEach((e) => images.push({id: e, url: dataTrip.image[e]}))
       setImageUrl(images);
-    });
+    })
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  useEffect(() => {
-    setName(dataPenginapan.name)
-    setCaption(dataPenginapan.caption)
-    setPeserta1(dataPenginapan.peserta1)
-    setPeserta2(dataPenginapan.peserta2)
-    setPeserta3(dataPenginapan.peserta3)
-    setPeserta4(dataPenginapan.peserta4)
-    setHarga1(dataPenginapan.harga1)
-    setHarga2(dataPenginapan.harga2)
-    setHarga3(dataPenginapan.harga3)
-    setHarga4(dataPenginapan.harga4)
-    setFasilitas(dataPenginapan.fasilitas)
-    setNote(dataPenginapan.note)
-  }, [dataPenginapan])
 
   const deleteImage = (id) => {
     const batchId = match.params.id;
@@ -110,19 +104,21 @@ export default function PaketTripAdmin({match}) {
       <>
       <NavbarAdmin/>
         <div className='Background-admin'>
+        <Center>
           <Title>
-              Penginapan
+            PENGINAPAN
           </Title>
+          </Center>
         <Border>
         <MainInput>
-          <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Penginapan"/>
+          <Input value={name} onChange={e => setName(e.target.value)} type="text" id="#" name="#" placeholder="Nama Trip"/>
         </MainInput>
-          <Border>
-              <div className='Title-3'>
-                Masukan Foto Wisata
-              </div>
+          <Border2>
+              <Title2>
+                Masukan Foto Penginapan
+              </Title2>
               <div>
-                <ButtonImg type="file" onChange={handleChange}/>
+                <ButtonImg type="file" onChange={handleFileChange}/>
               </div>
           <Cover>
             <div>
@@ -137,7 +133,7 @@ export default function PaketTripAdmin({match}) {
         : ''}
             </div>
           </Cover>
-            </Border>
+            </Border2>
 
           <form>
             <Textarea value={caption} onChange={e => setCaption(e.target.value)} maxLength='900'>Caption...</Textarea>
@@ -146,7 +142,7 @@ export default function PaketTripAdmin({match}) {
           <Content>
             <div>
               <Header>
-                PAKET WISATA
+                PAKET PENGINAPAN
               </Header>
               <Boxpaket>
                 <Content3>
@@ -199,7 +195,7 @@ export default function PaketTripAdmin({match}) {
           </Border>
 
           <div>
-            <Button onClick={() => { update(updatePenginapan)}}>
+            <Button onClick={update}>
               UPDATE
             </Button>
           </div>
@@ -207,6 +203,68 @@ export default function PaketTripAdmin({match}) {
       </>
   )
 }
+
+const Title2 = styled.div`
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  text-align:center;
+  padding: 3px 0px;
+  border-radius: 10px;
+  width: 400px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    margin: 0px 20px;
+    font-size: 20px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    margin: 0px 30px;
+    font-size: 17px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    margin: 0px 30px;
+    font-size: 17px;
+  }
+`;
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const Title = styled.div`
+  color: white;
+  font-size: 25px;
+  font-weight: bold;
+  background-color: #BE9427;
+  text-align:center;
+  padding: 3px 0px;
+  border-radius: 10px;
+  width: 400px;
+
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    width: 400px;
+    font-size: 20px;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    width: 300px;
+    font-size: 17px;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    width: 250px;
+    font-size: 17px;
+  }
+`;
 
 const Imgdelete = styled.img`
 cursor: pointer;
@@ -274,26 +332,41 @@ margin: 10px 100px;
 @media (min-width:901px) and (max-width:1200px) {
   width: 100%;
   margin: 0px 0px;
-
 }
 // tab-port // tablet portrait
 @media (min-width:601px) and (max-width:900px) {
   width: 100%;
   margin: 0px 0px;
-  border: none;
 }
 // phone
 @media (min-width:0px) and (max-width:600px) {
   width: 100%;
-  border: none;
   margin: 0px 0px;
 }
 `;
 
-// const Progress = styled.div`
-// // background: blue;
-// margin-left: 50px;
-// `;
+const Border2 = styled.div`
+border: 2px solid white;
+border-radius: 30px;
+padding: 10px 0px;
+margin: 10px 100px;
+
+// tab-land // tablet landscape (900px - 1200px)
+@media (min-width:901px) and (max-width:1200px) {
+  border: none;
+  margin: 0px 0px;
+}
+// tab-port // tablet portrait
+@media (min-width:601px) and (max-width:900px) {
+  border: none;
+  margin: 0px 0px;
+}
+// phone
+@media (min-width:0px) and (max-width:600px) {
+  border: none;
+  margin: 0px 0px;
+}
+`;
 
 const Peserta = styled.input`
 border: 2px solid black;
@@ -310,53 +383,6 @@ outline: none;
   -webkit-appearance: none; 
 margin: 0;
 }
-`;
-
-// const Harga = styled.input`
-// border: 2px solid black;
-//   border-radius: 10px;
-//   padding: 5px 10px;
-//   margin: 5px 20px;
-//   width: 30%;
-//   outline: none;
-//   &:focus{
-//     border: 2px solid #6C63FF;
-//   }
-//   &::-webkit-inner-spin-button,
-//   -webkit-outer-spin-button{
-//     -webkit-appearance: none; 
-//   margin: 0;
-//   }
-// `;
-
-const Title = styled.div`
-  color: white;
-  font-size: 25px;
-  font-weight: bold;
-  background-color: #BE9427;
-  text-align:center;
-  margin: 0px 400px;
-  padding: 3px 0px;
-  border-radius: 10px;
-
-  // tab-land // tablet landscape (900px - 1200px)
-  @media (min-width:901px) and (max-width:1200px) {
-    width: 400px;
-    font-size: 20px;
-    margin: 0px 300px;
-  }
-  // tab-port // tablet portrait
-  @media (min-width:601px) and (max-width:900px) {
-    width: 300px;
-    font-size: 17px;
-    margin: 0px 250px;
-  }
-  // phone
-  @media (min-width:0px) and (max-width:600px) {
-    width: 150px;
-    font-size: 17px;
-    margin: 0px 100px;
-  }
 `;
 
 const Cover = styled.div`
@@ -446,7 +472,6 @@ text-align: center;
 
     }
 `;
-
 
 const Input = styled.input`
   border: 2px solid black;
@@ -596,6 +621,23 @@ const ButtonImg = styled.input`
     border: 0px solid var(--white);
     transition: all 0.3s ease-out;
   }
-`;
 
-// const ButtonImg2 = styled.button`
+  // tab-land // tablet landscape (900px - 1200px)
+  @media (min-width:901px) and (max-width:1200px) {
+    margin-left: 100px;
+    padding: 5px 5px;
+    width: 20%;
+  }
+  // tab-port // tablet portrait
+  @media (min-width:601px) and (max-width:900px) {
+    margin-left: 80px;
+    padding: 5px 5px;
+    width: 40%;
+  }
+  // phone
+  @media (min-width:0px) and (max-width:600px) {
+    margin-left: 50px;
+    padding: 5px 5px;
+    width: 50%;
+  }
+`;

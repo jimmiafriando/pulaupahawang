@@ -5,7 +5,7 @@ import images from '../../images/admin.png'
 
 export function Button({onClick}) {
   return (
-    <Link to='Admin'onClick={onClick} >
+    <Link to='/Admin' onClick={onClick} >
       <img className='img' src={images} alt=''/>
       {/* <button className='btn'>Admin</button> */}
     </Link>

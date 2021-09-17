@@ -1,34 +1,54 @@
+import React, { useEffect, useState } from 'react';
+import firebase from '../../../config/firebase';
 import styled from 'styled-components';
-import Image from '../../../images/PaketPenginapan.svg';
-import Image2 from '../../../images/PaketTrip2.svg';
-import Image3 from '../../../images/PaketTrip3.svg';
 import PaketWisata from '../../Paket/Paket-wisata';
 import Slider from 'infinite-react-carousel';
 import NavbarUser from '../../../components/NavbarUser/Navbar';
 
 
-export default function PaketPenginapan(props) {
-  const dataPenginapan = props.location.param1
-  console.log(dataPenginapan)
+export default function PaketPenginapan({match}) {
+  const [dataPenginapan, setDataPenginapan] = useState({})
+  // eslint-disable-next-line no-unused-vars
+  const [imageUrl, setImageUrl] = useState([]);
+
+  useEffect(() => {
+    const batchId = match.params.id;
+    console.log(batchId);
+    const readTrip = firebase.database().ref('Penginapan').child(batchId);
+    readTrip.on('value', snapshot=>{
+      const dataPenginapan = snapshot.val();
+      setDataPenginapan(dataPenginapan);
+      console.log('penginapan', dataPenginapan);
+
+      const images = [];
+      const ids = !!dataPenginapan.image && typeof dataPenginapan.image === 'object' ? 
+        Object.keys(dataPenginapan.image) : []
+      ids.forEach((e) => images.push({id: e, url: dataPenginapan.image[e]}))
+      setImageUrl(images);
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return(
       <>
-      <NavbarUser/>
+         <NavbarUser/>
         <div className='Background-user'>
+          <Center>
           <Title>
             {dataPenginapan.name}
           </Title>
-            
-              <Slider className='Slider-cover' dots>
-                <div>
-                  <Imgslide src={Image} alt="PaketTrip"/>
-                </div>
-                <div>
-                  <Imgslide src={Image2} alt="PaketTrip"/>
-                </div>
-                <div>
-                  <Imgslide src={Image3} alt="PaketTrip"/>
-                </div>
-              </Slider>
+          </Center>
+          {Array.isArray(imageUrl) && imageUrl.length > 0 ? (
+            <Slider className='Slider-cover' dots>
+            {imageUrl.map(({ id, url }) => {
+            return (
+              <div key={id}>
+                <Imgslide src={url} alt="" />
+              </div>
+                );
+              })
+            }
+          </Slider>
+          ) : <div></div>}
               
           <Artikel>
             {dataPenginapan.caption}
@@ -55,20 +75,20 @@ export default function PaketPenginapan(props) {
               </Boxpaket>
             </div>
 
-            <Content2>
+          <Content2>
             <Mainflex>
-              <div className='Title-2'>
+              <Title2>
                 FASILITAS
-              </div>
+              </Title2>
               <Artikel2>
                 {dataPenginapan.fasilitas}
               </Artikel2>
             </Mainflex>
 
           <Mainflex>
-            <div className='Title-2'>
+            <Title2>
               NOTE :
-            </div>
+            </Title2>
             <Boxnote>
               <MainNote>
                 {dataPenginapan.note}
@@ -80,6 +100,7 @@ export default function PaketPenginapan(props) {
           </Content>
 
         </div>
+        
       </>
   )
 }
@@ -130,33 +151,36 @@ const Mainflex = styled.div`
 width: 50%
 `;
 
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const Title = styled.div`
   color: white;
   font-size: 25px;
   font-weight: bold;
   background-color: #BE9427;
   text-align:center;
-  margin: 0px 400px;
   padding: 3px 0px;
   border-radius: 10px;
+  width: 400px;
 
   // tab-land // tablet landscape (900px - 1200px)
   @media (min-width:901px) and (max-width:1200px) {
     width: 400px;
     font-size: 20px;
-    margin: 0px 300px;
   }
   // tab-port // tablet portrait
   @media (min-width:601px) and (max-width:900px) {
-    width: 50%;
+    width: 300px;
     font-size: 17px;
-    margin: 0px 150px;
   }
   // phone
   @media (min-width:0px) and (max-width:600px) {
-    width: 50%;
+    width: 250px;
     font-size: 17px;
-    margin: 0px 80px;
   }
 `;
 
@@ -186,20 +210,25 @@ const Imgslide = styled.img`
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
+  width: 800px;
+  height: 500px;
+  object-fit: cover;
   border-radius: 10%; 
 
     // tab-land // tablet landscape (900px - 1200px)
       @media (min-width:901px) and (max-width:1200px) {
-        width: 50%;
+        width: 500px;
+        height: 300px;
       }
       // tab-port // tablet portrait
       @media (min-width:601px) and (max-width:900px) {
-        width: 60%;
+        width: 400px;
+        height: 200px;
       }
       // phone
       @media (min-width:0px) and (max-width:600px) {
-        width: 60%;
+        width: 400px;
+        height: 200px;
       }
 `;
 
@@ -289,15 +318,15 @@ const Boxnote = styled.div`
   
   // tab-land // tablet landscape (900px - 1200px)
   @media (min-width:901px) and (max-width:1200px) {
-    height: 50% ;
+    height: 70% ;
   }
   // tab-port // tablet portrait
   @media (min-width:601px) and (max-width:900px) {
-    height: 50% ;
+    height: 70% ;
   }
   // phone
   @media (min-width:0px) and (max-width:600px) {
-    height: 50% ;
+    height: 90% ;
   }
 `;
 

@@ -43,8 +43,8 @@ export const Routers = () => {
             <Route path='/Lokasimaps' component={Lokasimaps} />
             <Route path='/Trip' exact component={Trip} />
             <Route path='/trip/:id' component={PaketTrip} />
-            <Route path='/Penginapan' component={Penginapan} />
-            <Route path='/PaketPenginapan' component={PaketPenginapan} />
+            <Route path='/Penginapan' exact component={Penginapan} />
+            <Route path='/penginapan/:id' component={PaketPenginapan} />
             <Route path='/Pemesanan' component={Pemesanan} />
             <Route path='/Admin' component={Admin} />
           </Switch>
