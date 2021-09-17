@@ -18,19 +18,21 @@ export default function DetailPemesanan({match}) {
 
   const update = async () => {
     const id = uuid();
-    const storageRef = firebase.storage().ref('bukti-pembayaran').child(id);
-    await storageRef.put(file);
-    const downloadUrl = await storageRef.getDownloadURL(); 
-    const newState = [...imageUrl, { id, url: downloadUrl }];
-    setImageUrl(newState);
+    let downloadUrl = '';
+
+    if (file) {
+      const storageRef = firebase.storage().ref('bukti-pembayaran').child(id);
+      await storageRef.put(file);
+      downloadUrl = await storageRef.getDownloadURL(); 
+      setImageUrl((prev) => [...prev, { id, url: downloadUrl }]);
+    }
 
     const batchId = match.params.id;
     const updateRef = firebase.database().ref('pemesanan').child(batchId);
+    const newImage = !!downloadUrl ? {image: { [id]: downloadUrl }} : {}
     const update = {
       nameAdmin,
-      image: {
-        [id] : downloadUrl
-      }
+      ...newImage,
     };
     console.log(update)
     updateRef.update(update);
@@ -44,14 +46,9 @@ export default function DetailPemesanan({match}) {
       const dataList = snapshot.val();
       setDataList(dataList);
       console.log('pembayaran', dataList);
-    })
-
-    const imageRef = firebase.database().ref('pemesanan').child(id);
-    imageRef.on('value', (snapshot) => {
-      const val = snapshot.val()
       const images = [];
-      const ids = !!val.image ? Object.keys(val.image) : []
-      ids.forEach((e) => images.push({id: e, url: val.image[e]}))
+      const ids = !!dataList.image ? Object.keys(dataList.image) : []
+      ids.forEach((e) => images.push({id: e, url: dataList.image[e]}))
       setImageUrl(images);
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
