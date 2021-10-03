@@ -13,7 +13,7 @@ export default function Trip() {
   const [dataTrip, setDataTrip] = useState([]);
   
   useEffect(()=>{
-    const readTrip = firebase.database().ref('Trip/');
+    const readTrip = firebase.database().ref('Trip');
     readTrip.on('value', (snapshot)=>{
       const trip = snapshot.val();
       const dataTrip = [];
@@ -21,8 +21,20 @@ export default function Trip() {
         dataTrip.push({id,...trip[id]} );
       }
       setDataTrip(dataTrip);
+      console.log('test', dataTrip)
     });
   },[]);
+
+  function getImageUrl(data) {
+    if (!!!data.image) 
+      return Images
+
+    const imageKeys = Object.keys(data.image)
+    if (Array.isArray(imageKeys) && imageKeys.length > 0)
+      return data.image[imageKeys[0]]
+
+    return Images  
+  }
 
   return (
     <>
@@ -39,7 +51,7 @@ export default function Trip() {
       return (
         <div>
           <Link to={`/trip/${data.id}`} className='line-dec'>
-            <CardTripComp Title={data.name} Image={Images}/>
+            <CardTripComp Title={data.name} Image={getImageUrl(data)}/>
           </Link>
         </div>
       )

@@ -335,7 +335,7 @@ const MainNote = styled.p`
   color: black;
   font-size: 20px;
   padding: 2px 40px;
-  text-align: justify;
+  // text-align: justify;
 
   // tab-land // tablet landscape (900px - 1200px)
   @media (min-width:901px) and (max-width:1200px) {

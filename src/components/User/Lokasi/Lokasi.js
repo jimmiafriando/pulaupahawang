@@ -60,7 +60,7 @@ export default function Lokasi() {
           <Title>
             Maps
           </Title>
-          <a className="nav-links" href="https://www.google.com/maps/place/Pahawang+Lampung/@-5.6764277,105.2197723,14z/data=!4m5!3m4!1s0x2e41254c9ea15fff:0xf8ac19b08a31f54a!8m2!3d-5.6752009!4d105.226013" target="_blank" rel="noreferrer">
+          <a className="nav-links" href="https://www.google.com/maps/search/dramaga+4+ketapang/@-5.5888814,105.2281065,17.27z" target="_blank" rel="noreferrer">
           Pahawang Island, Pardasuka, Pringsewu Regency, Lampung 35453
           </a>
         </Maps>

@@ -228,16 +228,6 @@ margin-left: 20%;
 margin-top: 10px;
 `;
 
-// const ImgUp = styled.div`
-// display: flex;
-// margin: 20px 0px;
-// `;
-
-// const Progress = styled.div`
-// // background: blue;
-// margin-left: 50px;
-// `;
-
 const Border = styled.div`
 border: 2px solid white;
 border-radius: 30px;
@@ -278,23 +268,6 @@ outline: none;
 margin: 0;
 }
 `;
-
-// const Harga = styled.input`
-// border: 2px solid black;
-//   border-radius: 10px;
-//   padding: 5px 10px;
-//   margin: 5px 20px;
-//   width: 30%;
-//   outline: none;
-//   &:focus{
-//     border: 2px solid #6C63FF;
-//   }
-//   &::-webkit-inner-spin-button,
-//   -webkit-outer-spin-button{
-//     -webkit-appearance: none; 
-//   margin: 0;
-//   }
-// `;
 
 const Title = styled.div`
   color: white;

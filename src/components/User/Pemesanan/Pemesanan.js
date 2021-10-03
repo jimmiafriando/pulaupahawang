@@ -38,6 +38,7 @@ export default function Pemesanan() {
   const [anak, setAnak] = useState('');
   const [catatan, setCatatan] = useState('Catatan...');
   const [waktu, setWaktu] = useState('');
+  const [status, setStatus] = useState('Waiting');
 
   const saveNotes = () => {
     const createRef = firebase.database().ref('pemesanan/');
@@ -51,7 +52,8 @@ export default function Pemesanan() {
       tanggal,
       anak,
       catatan,
-      waktu
+      waktu,
+      status,
     };
     setName('')
     setNumber('')
@@ -63,6 +65,7 @@ export default function Pemesanan() {
     setAnak('')
     setCatatan('')
     setWaktu('')
+    setStatus('Waiting')
 
     createRef.push(create);
   };
@@ -230,11 +233,6 @@ return (
           </div>
           <p className='Artikel-2'>
             {data.syarat}
-          {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut labore 
-          et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut 
-          aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in  voluptate velit esse cillum 
-          dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia 
-          deserunt mollit anim id est laborum. */}
           </p>
         </div>
 

@@ -77,14 +77,17 @@ export default function About() {
 
   const saveDashboard = async (e) => {
     const id = uuid();
-    const storageRef = firebase.storage().ref('imagesDashboard').child(id);
-    const imageRef = firebase.database().ref('imagesDashboard').child(id);
-    await storageRef.put(file);
-    storageRef.getDownloadURL().then((url) => {
-      imageRef.set(url);
-      const newState = [...imageUrl, { id, url }];
-      setImageUrl(newState);
-    });
+
+    if (file) {
+      const storageRef = firebase.storage().ref('imagesDashboard').child(id);
+      const imageRef = firebase.database().ref('imagesDashboard').child(id);
+      await storageRef.put(file);
+      storageRef.getDownloadURL().then((url) => {
+        imageRef.set(url);
+        const newState = [...imageUrl, { id, url }];
+        setImageUrl(newState);
+      });
+    }
 
       const createRef = firebase.database().ref('Dashboard/').child(DashboardList.id);
       const create = {
@@ -97,14 +100,6 @@ export default function About() {
       content2,
       content3,
     };
-    setName('')
-    setCaption('Caption...')
-    setHeader('')
-    setHeader2('')
-    setHeader3('')
-    setContent('')
-    setContent2('')
-    setContent3('')
 
     createRef.set(create);
     };

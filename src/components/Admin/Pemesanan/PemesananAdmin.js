@@ -138,7 +138,7 @@ export default function CustomizedTables() {
               <StyledTableCell align="right">{data.wisata}</StyledTableCell>
               <StyledTableCell align="right">{data.penginapan}</StyledTableCell>
               <StyledTableCell align="right">{data.tanggal}</StyledTableCell>
-              <StyledTableCell align="right">Waiting</StyledTableCell>
+              <StyledTableCell align="right">{data.status}</StyledTableCell>
               <StyledTableCell align="right"><Link className='line-dec' to={`/pemesanan-admin/${data.id}`}>Detail</Link></StyledTableCell>
         </StyledTableRow>
       )

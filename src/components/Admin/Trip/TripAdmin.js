@@ -25,9 +25,9 @@ export default function TripAdmin() {
   },[]);
 
   const deleteTrip = (id) => {
-    console.log('bangsat'+id)
+    console.log(+id)
     const tripRef = firebase.database().ref('Trip').child(id).remove()
-    console.log('ngentot', tripRef.remove)
+    console.log(tripRef.remove)
   };
 
   return (

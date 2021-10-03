@@ -22,6 +22,18 @@ export default function Penginapan() {
       console.log(dataPenginapan)
     });
   },[]);
+
+  function getImageUrl(data) {
+    if (!!!data.image) 
+      return Images
+
+    const imageKeys = Object.keys(data.image)
+    if (Array.isArray(imageKeys) && imageKeys.length > 0)
+      return data.image[imageKeys[0]]
+
+    return Images  
+  }
+
   return (
     <>
     <NavbarUser/>
@@ -37,7 +49,7 @@ export default function Penginapan() {
       return (
         <div>
           <Link to={`/penginapan/${data.id}`} className='line-dec'>
-            <CardPenginapanComp Title={data.name} Image={Images}/>
+            <CardPenginapanComp Title={data.name} Image={getImageUrl(data)}/>
           </Link>
         </div>
       )

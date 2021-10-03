@@ -11,6 +11,8 @@ export default function DetailPemesanan({match}) {
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [nameAdmin, setNameAdmin] = useState('');
+  const [setuju] = useState('Accept');
+  const [tolak] = useState('Reject');
 
   const handleChange = (e) => {
     setFile(e.target.files[0]);
@@ -32,7 +34,18 @@ export default function DetailPemesanan({match}) {
     const newImage = !!downloadUrl ? {image: { [id]: downloadUrl }} : {}
     const update = {
       nameAdmin,
+      status: setuju,
       ...newImage,
+    };
+    console.log(update)
+    updateRef.update(update);
+  };
+
+  const reject =() => {
+    const batchId = match.params.id;
+    const updateRef = firebase.database().ref('pemesanan').child(batchId);
+    const update = {
+      status: tolak,
     };
     console.log(update)
     updateRef.update(update);
@@ -156,7 +169,7 @@ export default function DetailPemesanan({match}) {
         Accept
       </Button>
     </Link>
-    <Link to='/PemesananAdmin'>
+    <Link onClick={reject}>
       <Button2>
         Reject
       </Button2>
